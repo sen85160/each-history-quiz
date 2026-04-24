@@ -1,0 +1,3293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>CodePen - A Pen by 千</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>歴史一問一答</title>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #ff6b1a;
+      --orange2: #ff9448;
+      --orange3: #ffb87a;
+      --yellow: #ffd94a;
+      --bg: #fff8f0;
+      --bg2: #fff2e3;
+      --surface: #ffffff;
+      --border: #ffd4b0;
+      --text: #2d1a00;
+      --text-sub: #a0663a;
+      --red: #e03030;
+      --green: #22a855;
+      --japan: #e03030;
+      --world: #2271e0;
+      --shadow: rgba(255, 107, 26, 0.18);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      min-height: 100vh;
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(255, 107, 26, 0.10) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255, 217, 74, 0.13) 0%, transparent 40%),
+        radial-gradient(circle at 60% 10%, rgba(255, 148, 72, 0.08) 0%, transparent 30%);
+    }
+
+    header {
+      background: var(--orange);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 4px 20px var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      right: -30px;
+      top: -30px;
+      width: 120px;
+      height: 120px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      right: 60px;
+      bottom: -40px;
+      width: 90px;
+      height: 90px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+    }
+
+    header h1 {
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 0.06em;
+      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.15);
+    }
+
+    .header-badge {
+      background: var(--yellow);
+      color: var(--orange);
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.1em;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 28px 20px;
+    }
+
+    .filter-panel {
+      background: var(--surface);
+      border: 2.5px solid var(--border);
+      border-radius: 20px;
+      padding: 24px 24px 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 6px 32px var(--shadow);
+    }
+
+    .panel-title {
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      color: var(--orange);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-title::before {
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: var(--orange);
+      border-radius: 50%;
+    }
+
+    .filter-group {
+      margin-bottom: 14px;
+    }
+
+    .filter-group:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .filter-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      color: var(--text-sub);
+      margin-bottom: 7px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .chip {
+      padding: 5px 13px;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      background: var(--bg2);
+      color: var(--text-sub);
+      font-size: 0.76rem;
+      font-weight: 700;
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.03em;
+      user-select: none;
+    }
+
+    .chip:hover {
+      border-color: var(--orange2);
+      color: var(--orange);
+      background: #fff5ee;
+      transform: translateY(-1px);
+    }
+
+    .chip.active {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #fff;
+      box-shadow: 0 3px 10px rgba(255, 107, 26, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .chip.subject-jp.active {
+      background: var(--japan);
+      border-color: var(--japan);
+    }
+
+    .chip.subject-wh.active {
+      background: var(--world);
+      border-color: var(--world);
+    }
+
+    .select-all-btn {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 2px dashed var(--border);
+      background: transparent;
+      color: var(--text-sub);
+      font-size: 0.68rem;
+      font-weight: 800;
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
+    .select-all-btn:hover {
+      border-color: var(--orange);
+      color: var(--orange);
+      background: #fff5ee;
+    }
+
+    .select-all-btn.all-selected {
+      border-color: var(--orange2);
+      color: var(--orange2);
+    }
+
+    .filter-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 2px dashed var(--border);
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 11px 26px;
+      border-radius: 999px;
+      border: none;
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.06em;
+    }
+
+    .btn-primary {
+      background: var(--orange);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(255, 107, 26, 0.4), 0 3px 0 #c44d00;
+    }
+
+    .btn-primary:hover {
+      background: var(--orange2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 107, 26, 0.5), 0 3px 0 #c44d00;
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 0 #c44d00;
+    }
+
+    .btn-ghost {
+      background: var(--bg2);
+      border: 2px solid var(--border);
+      color: var(--text-sub);
+      box-shadow: 0 2px 0 var(--border);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--orange2);
+      color: var(--orange);
+      transform: translateY(-1px);
+    }
+
+    .match-count {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      margin-left: auto;
+      background: var(--bg2);
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+    }
+
+    .match-count span {
+      color: var(--orange);
+      font-size: 1.1rem;
+      font-weight: 900;
+    }
+
+    /* クイズエリア */
+    .quiz-area {
+      display: none;
+    }
+
+    .quiz-area.active {
+      display: block;
+      animation: popIn 0.3s ease;
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: scale(0.97) translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .quiz-progress {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      background: var(--surface);
+      padding: 7px 16px;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+    }
+
+    .quiz-progress strong {
+      color: var(--orange);
+      font-size: 1.2rem;
+    }
+
+    .progress-bar {
+      height: 10px;
+      background: var(--border);
+      border-radius: 999px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--orange), var(--yellow));
+      border-radius: 999px;
+      transition: width 0.5s cubic-bezier(.4, 0, .2, 1);
+      box-shadow: 0 0 8px rgba(255, 107, 26, 0.5);
+    }
+
+    .card {
+      background: var(--surface);
+      border: 2.5px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 32px;
+      margin-bottom: 14px;
+      box-shadow: 0 6px 24px var(--shadow);
+      animation: popIn 0.25s ease;
+    }
+
+    .card-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .tag {
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.08em;
+    }
+
+    .tag-subject-jp {
+      background: #ffe0e0;
+      color: var(--japan);
+    }
+
+    .tag-subject-wh {
+      background: #ddeeff;
+      color: var(--world);
+    }
+
+    .tag-era {
+      background: var(--bg2);
+      color: var(--text-sub);
+      border: 1.5px solid var(--border);
+    }
+
+    .tag-region {
+      background: var(--bg2);
+      color: var(--text-sub);
+      border: 1.5px solid var(--border);
+    }
+
+    .tag-theme {
+      background: #fff3d0;
+      color: #c07800;
+      border: 1.5px solid #ffd98a;
+    }
+
+    .question-text {
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: 1.35rem;
+      line-height: 1.8;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .answer-area {
+      background: var(--bg2);
+      border: 2.5px dashed var(--border);
+      border-radius: 20px;
+      padding: 22px 32px;
+      margin-bottom: 14px;
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      flex-direction: column;
+      gap: 4px;
+      animation: popIn 0.25s ease;
+    }
+
+    .answer-area:hover {
+      border-color: var(--orange2);
+      background: #fff5ee;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--shadow);
+    }
+
+    .answer-area.revealed {
+      background: #fff8f0;
+      border: 2.5px solid var(--orange);
+      cursor: default;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .answer-hint-label {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      color: var(--text-sub);
+      margin-bottom: 4px;
+    }
+
+    .answer-text {
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--orange);
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      transform: scale(0.9);
+      text-shadow: 2px 2px 0 rgba(255, 107, 26, 0.15);
+    }
+
+    .answer-text.revealed {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .reveal-hint {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .reveal-hint::before {
+      content: '';
+      font-size: 1rem;
+    }
+
+    .judge-buttons {
+      display: flex;
+      gap: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+      transform: translateY(8px);
+    }
+
+    .judge-buttons.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+
+    .btn-correct {
+      flex: 1;
+      padding: 14px;
+      background: #e8faf0;
+      border: 2.5px solid var(--green);
+      color: var(--green);
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 800;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.15s;
+      box-shadow: 0 3px 0 #17854a;
+      letter-spacing: 0.06em;
+    }
+
+    .btn-correct:hover {
+      background: var(--green);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 0 #17854a;
+    }
+
+    .btn-correct:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 0 #17854a;
+    }
+
+    .btn-wrong {
+      flex: 1;
+      padding: 14px;
+      background: #fdeaea;
+      border: 2.5px solid var(--red);
+      color: var(--red);
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 800;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.15s;
+      box-shadow: 0 3px 0 #a01a1a;
+      letter-spacing: 0.06em;
+    }
+
+    .btn-wrong:hover {
+      background: var(--red);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 0 #a01a1a;
+    }
+
+    .btn-wrong:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 0 #a01a1a;
+    }
+
+    .result-screen {
+      display: none;
+      text-align: center;
+      padding: 50px 40px;
+      background: var(--surface);
+      border: 2.5px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 6px 32px var(--shadow);
+    }
+
+    .result-screen.active {
+      display: block;
+      animation: popIn 0.35s ease;
+    }
+
+    .result-emoji {
+      font-size: 3.5rem;
+      margin-bottom: 8px;
+    }
+
+    .result-score {
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: 5rem;
+      font-weight: 900;
+      color: var(--orange);
+      line-height: 1;
+      text-shadow: 3px 3px 0 rgba(255, 107, 26, 0.2);
+      margin-bottom: 4px;
+    }
+
+    .result-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      color: var(--text-sub);
+      margin-bottom: 28px;
+    }
+
+    .result-detail {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 36px;
+      background: var(--bg2);
+      border-radius: 16px;
+      padding: 20px;
+      border: 2px solid var(--border);
+    }
+
+    .result-item {
+      text-align: center;
+    }
+
+    .result-item .num {
+      font-size: 2.2rem;
+      font-weight: 900;
+      display: block;
+      font-family: 'Zen Maru Gothic', sans-serif;
+    }
+
+    .result-item .lbl {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-sub);
+    }
+
+    .num-correct {
+      color: var(--green);
+    }
+
+    .num-wrong {
+      color: var(--red);
+    }
+
+    .num-total {
+      color: var(--orange);
+    }
+
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: 48px;
+      color: var(--text-sub);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      background: var(--surface);
+      border: 2.5px dashed var(--border);
+      border-radius: 20px;
+    }
+
+    .empty-state.active {
+      display: block;
+    }
+
+    .empty-state-emoji {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .question-text {
+        font-size: 1.1rem;
+      }
+
+      .answer-text {
+        font-size: 1.3rem;
+      }
+
+      header h1 {
+        font-size: 1.15rem;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .answer-area {
+        padding: 18px 20px;
+      }
+    }
+
+    /* 問題一覧画面 */
+    .list-screen {
+      display: none;
+    }
+
+    .list-screen.active {
+      display: block;
+      animation: popIn 0.3s ease;
+    }
+
+    .list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .list-title {
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--orange);
+    }
+
+    .list-count {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      margin-bottom: 16px;
+      background: var(--bg2);
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+    }
+
+    .list-item {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 20px;
+      margin-bottom: 8px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: border-color 0.15s;
+      position: relative;
+    }
+
+    .list-item:hover {
+      border-color: var(--orange2);
+    }
+
+    .list-num {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--text-sub);
+      min-width: 28px;
+      padding-top: 3px;
+      letter-spacing: 0.05em;
+    }
+
+    .list-body {
+      flex: 1;
+    }
+
+    .list-tags {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+
+    .list-q {
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+
+    .list-a-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .list-a {
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 900;
+      color: var(--orange);
+      background: var(--orange);
+      border-radius: 4px;
+      padding: 2px 8px;
+      cursor: default;
+      user-select: none;
+      transition: background 0.2s, color 0.2s;
+      letter-spacing: 0.04em;
+    }
+
+    .list-a::before {
+      content: '答え: ';
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: inherit;
+      letter-spacing: 0.1em;
+      opacity: 0.7;
+    }
+
+    .list-item:hover .list-a {
+      background: #fff3e0;
+      color: var(--orange);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1> 歴史一問一答</h1>
+    <span class="header-badge">HIGH SCHOOL</span>
+  </header>
+
+  <div class="container">
+
+    <div class="filter-panel" id="filterPanel">
+      <div class="panel-title">絞り込み条件</div>
+
+      <div class="filter-group">
+        <div class="filter-label">
+          科目
+          <button class="select-all-btn" data-group="subject">すべて選択</button>
+        </div>
+        <div class="filter-chips">
+          <button class="chip subject-jp" data-group="subject" data-val="日本史"> 日本史</button>
+          <button class="chip subject-wh" data-group="subject" data-val="世界史"> 世界史</button>
+        </div>
+      </div>
+
+      <div class="filter-group" id="eraGroupJP" style="display:none">
+        <div class="filter-label">
+          時代（日本史）
+          <button class="select-all-btn" data-group="eraJP">すべて選択</button>
+        </div>
+        <div class="filter-chips" id="eraChipsJP"></div>
+      </div>
+      <div class="filter-group" id="eraGroupWH" style="display:none">
+        <div class="filter-label">
+          時代（世界史）
+          <button class="select-all-btn" data-group="eraWH">すべて選択</button>
+        </div>
+        <div class="filter-chips" id="eraChipsWH"></div>
+      </div>
+
+      <div class="filter-group" id="regionGroup">
+        <div class="filter-label">
+          地域
+          <button class="select-all-btn" data-group="region">すべて選択</button>
+        </div>
+        <div class="filter-chips">
+          <button class="chip" data-group="region" data-val="中華王朝">中華王朝</button>
+          <button class="chip" data-group="region" data-val="朝鮮半島">朝鮮半島</button>
+          <button class="chip" data-group="region" data-val="東南アジア">東南アジア</button>
+          <button class="chip" data-group="region" data-val="南アジア">南アジア</button>
+          <button class="chip" data-group="region" data-val="西アジア">西アジア</button>
+          <button class="chip" data-group="region" data-val="中央ユーラシア">中央ユーラシア</button>
+          <button class="chip" data-group="region" data-val="地中海沿岸">地中海沿岸</button>
+          <button class="chip" data-group="region" data-val="イスラム圏">イスラム圏</button>
+          <button class="chip" data-group="region" data-val="ヨーロッパ">ヨーロッパ</button>
+          <button class="chip" data-group="region" data-val="フランス">フランス</button>
+          <button class="chip" data-group="region" data-val="イギリス">イギリス</button>
+          <button class="chip" data-group="region" data-val="ドイツ">ドイツ</button>
+          <button class="chip" data-group="region" data-val="ロシア">ロシア</button>
+          <button class="chip" data-group="region" data-val="アフリカ">アフリカ</button>
+          <button class="chip" data-group="region" data-val="アメリカ">アメリカ</button>
+          <button class="chip" data-group="region" data-val="ラテン・南アメリカ">ラテン・南アメリカ</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-label">
+          テーマ
+          <button class="select-all-btn" data-group="theme">すべて選択</button>
+        </div>
+        <div class="filter-chips">
+          <button class="chip" data-group="theme" data-val="東洋文化">東洋文化</button>
+          <button class="chip" data-group="theme" data-val="西洋文化">西洋文化</button>
+          <button class="chip" data-group="theme" data-val="政策">政策</button>
+          <button class="chip" data-group="theme" data-val="遺産">遺産</button>
+          <button class="chip" data-group="theme" data-val="外交">外交</button>
+          <button class="chip" data-group="theme" data-val="人物">人物</button>
+          <button class="chip" data-group="theme" data-val="国家">国家</button>
+          <button class="chip" data-group="theme" data-val="地名">地名</button>
+          <button class="chip" data-group="theme" data-val="宗教">宗教</button>
+          <button class="chip" data-group="theme" data-val="戦争">戦争</button>
+          <button class="chip" data-group="theme" data-val="反乱・革命">反乱・革命</button>
+          <button class="chip" data-group="theme" data-val="その他">その他</button>
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn btn-primary" id="startBtn">▶ 出題開始</button>
+        <button class="btn btn-ghost" id="resetFilter">↺ リセット</button>
+        <button class="btn btn-ghost" id="listBtn">一覧を見る</button>
+        <div class="match-count">対象：<span id="matchCount">0</span> 問</div>
+      </div>
+    </div>
+
+    <div class="empty-state" id="emptyState">
+      <span class="empty-state-emoji"></span>
+      条件に一致する問題がありません。<br>フィルターを変更してみてください。
+    </div>
+
+    <div class="quiz-area" id="quizArea">
+      <div class="quiz-header">
+        <div class="quiz-progress">
+          <strong id="currentNum">1</strong> / <span id="totalNum">0</span> 問
+        </div>
+        <button class="btn btn-ghost" id="backToFilterBtn" style="font-size:0.75rem;padding:7px 16px;">← 戻る</button>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-tags" id="cardTags"></div>
+        <div class="question-text" id="questionText"></div>
+      </div>
+
+      <div class="answer-area" id="answerArea">
+        <div class="answer-hint-label">答え</div>
+        <div class="answer-text" id="answerText"></div>
+        <div class="reveal-hint" id="revealHint">タップして答えを表示</div>
+      </div>
+
+      <div class="judge-buttons" id="judgeButtons">
+        <button class="btn-correct" onclick="judge(true)">◯ 正解！</button>
+        <button class="btn-wrong" onclick="judge(false)"> 不正解</button>
+      </div>
+    </div>
+
+    <div class="result-screen" id="resultScreen">
+      <div class="result-emoji" id="resultEmoji"></div>
+      <div class="result-score" id="resultScore">0%</div>
+      <div class="result-label">正答率</div>
+      <div class="result-detail">
+        <div class="result-item">
+          <span class="num num-correct" id="resultCorrect">0</span>
+          <span class="lbl">正解</span>
+        </div>
+        <div class="result-item">
+          <span class="num num-wrong" id="resultWrong">0</span>
+          <span class="lbl">不正解</span>
+        </div>
+        <div class="result-item">
+          <span class="num num-total" id="resultTotal">0</span>
+          <span class="lbl">合計</span>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="backToFilter()" style="margin-right:10px">↺ もう一度</button>
+      <button class="btn btn-ghost" onclick="retryWrong()"> 不正解のみ再挑戦</button>
+    </div>
+
+    <!-- 問題一覧画面 -->
+    <div class="list-screen" id="listScreen">
+      <div class="list-header">
+        <div class="list-title">問題一覧</div>
+        <button class="btn btn-ghost" id="backFromListBtn" style="font-size:0.75rem;padding:7px 16px;">← 戻る</button>
+      </div>
+      <div class="list-count">全 <span id="listCount">0</span> 問（ホバーで答えを表示）</div>
+      <div id="listContainer"></div>
+    </div>
+
+  </div>
+
+  <script>
+    // ========== 問題データ ==========
+    const ALL_QUESTIONS = [{
+        q: "更新世の日本に南から渡ってきた動物の種類は何",
+        a: "ナウマンゾウ、オオツノジカなど",
+        subject: "日本史",
+        era: "旧石器",
+        region: "日本",
+        theme: ["その他"]
+      },
+      {
+        q: "更新世の日本に北から渡ってきた動物の種類は何",
+        a: "マンモス、ヘラジカなど",
+        subject: "日本史",
+        era: "旧石器",
+        region: "日本",
+        theme: ["その他"]
+      },
+      {
+        q: "更新世の日本で発見された化石人骨のうち、静岡県で発見されたものは何",
+        a: "浜北人",
+        subject: "日本史",
+        era: "旧石器",
+        region: "日本",
+        theme: ["人物", "その他"]
+      },
+      {
+        q: "更新世の日本で発見された化石人骨のうち、沖縄で発見されたものを２つ挙げよ",
+        a: "港川人、山下町第一洞穴",
+        subject: "日本史",
+        era: "旧石器",
+        region: "日本",
+        theme: ["人物", "その他"]
+      },
+      {
+        q: "打製石器の一種で、旧石器時代終末期に使用されるようなった木や骨に細石刃を複数埋め込んだものは何",
+        a: "細石器",
+        subject: "日本史",
+        era: "旧石器",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "旧石器時代に使われた石器で、柄の先端につけて槍として使われたものは何",
+        a: "尖頭器",
+        subject: "日本史",
+        era: "旧石器",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "旧石器時代に使われた石器で、皮や肉を切断する道具として使われたものは何",
+        a: "ナイフ形石器",
+        subject: "日本史",
+        era: "旧石器",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "約一万年頃から地球が温暖になり、日本列島が形成された時代をなんというか",
+        a: "完新世",
+        subject: "日本史",
+        era: "縄文",
+        region: "日本",
+        theme: ["その他"]
+      },
+      {
+        q: "厚手で黒褐色、低温で作られる土器の種類は何",
+        a: "縄文土器",
+        subject: "日本史",
+        era: "縄文",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "ナウマンゾウやオオツノジカなどの骨や牙が出土した長野県の遺跡は何",
+        a: "野尻湖遺跡",
+        subject: "日本史",
+        era: "旧石器",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "相沢忠洋が発見した、打製石器が出現した群馬県の遺跡は何",
+        a: "岩宿遺跡",
+        subject: "日本史",
+        era: "旧石器",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "黒曜石の産地和田峠がある長野県の遺跡は何",
+        a: "茶臼山・上ノ平遺跡",
+        subject: "日本史",
+        era: "旧石器",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "国内最大級の黒曜石原産地である北海道にある遺跡は何",
+        a: "白滝遺跡群",
+        subject: "日本史",
+        era: "旧石器",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "アメリカ人モースが発見した東京都にある貝塚は何",
+        a: "大森貝塚",
+        subject: "日本史",
+        era: "縄文",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "主に漁労で釣り針や森などに使われた道具は何",
+        a: "骨角器",
+        subject: "日本史",
+        era: "縄文",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "石器の材料で、和田峠や白滝を原産とするものは何",
+        a: "黒曜石",
+        subject: "日本史",
+        era: "縄文",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "石器の材料で、香川県や二上山を原産とするものは何",
+        a: "サヌカイト",
+        subject: "日本史",
+        era: "縄文",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "北陸を原産とする、装身具の材料として使われた石はなに",
+        a: "ひすい",
+        subject: "日本史",
+        era: "縄文",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "縄文人たちがあらゆる自然物などに霊威が存在すると考えたことをなんという",
+        a: "アニミズム",
+        subject: "日本史",
+        era: "縄文",
+        region: "日本",
+        theme: ["宗教", "東洋文化"]
+      },
+      {
+        q: "縄文時代に作られた、女性をかたどった人工物をなんという",
+        a: "土偶",
+        subject: "日本史",
+        era: "縄文",
+        region: "日本",
+        theme: ["遺産", "宗教", "東洋文化"]
+      },
+      {
+        q: "縄文時代に成人の通過儀礼として行われたものはなにか",
+        a: "抜歯",
+        subject: "日本史",
+        era: "縄文",
+        region: "日本",
+        theme: ["東洋文化", "その他"]
+      },
+      {
+        q: "縄文時代に多く見られる埋葬方法はなにか",
+        a: "屈葬",
+        subject: "日本史",
+        era: "縄文",
+        region: "日本",
+        theme: ["東洋文化", "その他"]
+      },
+      {
+        q: "弓矢の先端につけれ、主に黒曜石から作られた縄文時代の道具は何",
+        a: "石鏃",
+        subject: "日本史",
+        era: "縄文",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "主に縄文時代に作られた、片側に「つまみ」状の突起を持つ打製石器はなに",
+        a: "石匙",
+        subject: "日本史",
+        era: "縄文",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "縄文時代の代表的な遺跡で、青森県に存在するのは何",
+        a: "三内丸山遺跡",
+        subject: "日本史",
+        era: "縄文",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "縄文時代早期の遺跡で、鹿児島県にある代表的なものは何",
+        a: "上野原遺跡",
+        subject: "日本史",
+        era: "縄文",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "縄文時代晩期から弥生時代早期の遺跡で、水稲耕作の跡が残る遺跡は何",
+        a: "板付遺跡",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "日本最古の水田跡が残っている遺跡はどこ",
+        a: "菜畑遺跡",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産", "地名"]
+      },
+      {
+        q: "北海道では弥生時代以降でも縄文文化が続いたことをなんというか",
+        a: "続縄文文化",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["東洋文化", "その他"]
+      },
+      {
+        q: "沖縄や南西諸島で縄文時代以降も続いた食料最終文化中心の文化をなんというか",
+        a: "貝塚文化",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["東洋文化", "その他"]
+      },
+      {
+        q: "甕、壺、鉢などの種類がある、薄手で赤褐色、高温で作られる土器はなに",
+        a: "弥生土器",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "弥生時代前期にみられる田の状態は何",
+        a: "湿田",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["その他"]
+      },
+      {
+        q: "弥生時代後期にみられる田の状態は何",
+        a: "乾田",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["その他"]
+      },
+      {
+        q: "穂首刈りを行うのに使われた弥生時代の農具は何",
+        a: "石包丁",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "弥生時代に普及した死者の埋葬方法はなに",
+        a: "伸展葬",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["東洋文化", "その他"]
+      },
+      {
+        q: "弥生時代に各地で見られた、周囲に溝を掘りその土を盛った低い方形の墳丘を持つ墓はなに",
+        a: "方形周溝墓",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "九州北部に見られる、巨大な石を石で支えた形式の墓はなに",
+        a: "支石墓",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "九州北部に見られる、土器を棺として使用する墓の形態はなに",
+        a: "甕棺墓",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "弥生時代の吉備地方にみられる墓の形態は何",
+        a: "楯築墳丘墓",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "弥生時代の山陰地方に見られる、墓の形態は何",
+        a: "四隅突出型墳丘墓",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "弥生時代の青銅製祭器のうち、加茂岩倉遺跡からは39個出土した、近畿地方で普及したものは何",
+        a: "銅鐸",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産", "宗教", "東洋文化"]
+      },
+      {
+        q: "弥生時代の青銅製祭器のうち、荒神谷遺跡からは16個出土した、主に九州北部で普及したのは何",
+        a: "銅矛",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産", "宗教", "東洋文化"]
+      },
+      {
+        q: "弥生時代の青銅製祭器のうち、荒神谷遺跡からは358個出土した、主に瀬戸内で普及したものは何",
+        a: "銅剣",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産", "宗教", "東洋文化"]
+      },
+      {
+        q: "弥生時代の青銅製祭器のうち、九州北部や大阪湾沿岸の遺跡で発見されるものは何",
+        a: "銅戈",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産", "宗教", "東洋文化"]
+      },
+      {
+        q: "弥生時代最大の環濠集落が見られる佐賀県にある遺跡は何",
+        a: "吉野ケ里遺跡",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "銅矛と銅鐸が初めて同じ場所から出土した、島根県にある遺跡は何",
+        a: "荒神谷遺跡",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "一箇所から出土した銅鐸の数が最多である、島根県にある遺跡は何",
+        a: "加茂岩倉遺跡",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "弥生時代の水田跡が発見された、静岡県にある遺跡は何",
+        a: "登呂遺跡",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "多量の木製農具が発見された、弥生時代の遺跡は何",
+        a: "唐古・鍵遺跡",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "東日本では最古の水田跡が発見された、青森県にある遺跡は何",
+        a: "砂沢遺跡",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "弥生時代の集落の形態で、周囲に濠を巡らせた集落は何",
+        a: "環濠集落",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "弥生時代後期に西日本で多く見られた、弥生時代の集落の形態はなに",
+        a: "高地性集落",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "倭人が100あまりの国に分かれていることが記述された前漢の歴史書は何",
+        a: "漢書地理志",
+        subject: "日本史",
+        era: "弥生",
+        region: "中国",
+        theme: ["東洋文化", "その他"]
+      },
+      {
+        q: "漢書地理志で倭人が定期的に使者を送っていた場所はどこ",
+        a: "楽浪郡",
+        subject: "日本史",
+        era: "弥生",
+        region: "朝鮮半島",
+        theme: ["地名", "その他"]
+      },
+      {
+        q: "漢書地理志を記述した人物は誰",
+        a: "班固",
+        subject: "日本史",
+        era: "弥生",
+        region: "中国",
+        theme: ["人物", "その他"]
+      },
+      {
+        q: "後漢の歴史書で、倭国で大乱が起きたと記されているのは何",
+        a: "後漢書東夷伝",
+        subject: "日本史",
+        era: "弥生",
+        region: "中国",
+        theme: ["東洋文化", "その他"]
+      },
+      {
+        q: "後漢書東夷伝を記述した人物は誰",
+        a: "范曄",
+        subject: "日本史",
+        era: "弥生",
+        region: "中国",
+        theme: ["人物", "その他"]
+      },
+      {
+        q: "奴国の王が57年に印綬を与えられた後漢の皇帝は誰",
+        a: "光武帝",
+        subject: "日本史",
+        era: "弥生",
+        region: "中国",
+        theme: ["人物", "外交"]
+      },
+      {
+        q: "漢委奴国王と記された金印が発見された場所はどこ",
+        a: "志賀島",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["地名", "東洋文化", "その他"]
+      },
+      {
+        q: "107年に生口160人を安帝に献上したとされる人物は誰",
+        a: "帥升",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["人物", "外交"]
+      },
+      {
+        q: "須玖岡本遺跡が中心と考えられる、紀元前後に存在した国は何",
+        a: "奴国",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["国家", "その他"]
+      },
+      {
+        q: "邪馬台国が存在した頃の倭国についての記述がある魏の歴史書は何",
+        a: "魏志倭人伝",
+        subject: "日本史",
+        era: "弥生",
+        region: "中国",
+        theme: ["東洋文化", "その他"]
+      },
+      {
+        q: "魏志倭人伝を記述した人物は誰",
+        a: "陳寿",
+        subject: "日本史",
+        era: "弥生",
+        region: "中国",
+        theme: ["人物", "その他"]
+      },
+      {
+        q: "239年に魏に使いを送り、卑弥呼が銅鏡や金印とともに得た称号は何",
+        a: "親魏倭王",
+        subject: "日本史",
+        era: "弥生",
+        region: "中国",
+        theme: ["外交"]
+      },
+      {
+        q: "邪馬台国内での身分制度３つを身分が高い順に述べよ",
+        a: "大人・下戸・生口",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["政策", "東洋文化"]
+      },
+      {
+        q: "邪馬台国の卑弥呼が争っていた、邪馬台国の南にあった国は何",
+        a: "狗奴国",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["国家", "戦争"]
+      },
+      {
+        q: "卑弥呼の死後、内乱を経て邪馬台国の王となった人物は誰",
+        a: "壱与",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["人物", "その他"]
+      },
+      {
+        q: "邪馬台国の近畿説の証拠の一つである、奈良県にある３世紀の遺跡は何",
+        a: "纏向遺跡",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "弥生時代の高地性集落の代表的遺跡で、香川県にあるものは何",
+        a: "紫雲出山遺跡",
+        subject: "日本史",
+        era: "弥生",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "約700万年前にアフリカで誕生した代表的な猿人の一種は何",
+        a: "アウストラロピテクス",
+        subject: "世界史",
+        era: "先史・石器時代",
+        region: "アフリカ",
+        theme: ["人物", "その他"]
+      },
+      {
+        q: "猿人の一番の特色は何",
+        a: "直立二足歩行",
+        subject: "世界史",
+        era: "先史",
+        region: "アフリカ",
+        theme: ["その他"]
+      },
+      {
+        q: "原人が使用するようになり、生活が進化したのは何",
+        a: "火",
+        subject: "世界史",
+        era: "先史・石器時代",
+        region: "アフリカ",
+        theme: ["その他"]
+      },
+      {
+        q: "旧人のうち、ヨーロッパに多く分布した種はなに",
+        a: "ネアンデルタール人",
+        subject: "世界史",
+        era: "先史・石器時代",
+        region: "ヨーロッパ",
+        theme: ["人物", "西洋文化"]
+      },
+      {
+        q: "旧人の特徴であり、精神文化の発達がわかる文化は何",
+        a: "埋葬",
+        subject: "世界史",
+        era: "先史・石器時代",
+        region: "ヨーロッパ",
+        theme: ["宗教", "西洋文化"]
+      },
+      {
+        q: "新人のうち、中国に多く分布した種はなに",
+        a: "周口店上洞人",
+        subject: "世界史",
+        era: "先史・石器時代",
+        region: "中国",
+        theme: ["人物", "その他"]
+      },
+      {
+        q: "新人のうち、フランスに多く分布した種はなに",
+        a: "クロマニョン人",
+        subject: "世界史",
+        era: "先史・石器時代",
+        region: "ヨーロッパ",
+        theme: ["人物", "西洋文化"]
+      },
+      {
+        q: "スペインで発見された洞穴壁画は何",
+        a: "アルタミラ",
+        subject: "世界史",
+        era: "先史・石器時代",
+        region: "ヨーロッパ",
+        theme: ["遺産", "西洋文化"]
+      },
+      {
+        q: "フランスで発見された洞穴壁画は何",
+        a: "ラスコー",
+        subject: "世界史",
+        era: "先史・石器時代",
+        region: "ヨーロッパ",
+        theme: ["遺産", "西洋文化"]
+      },
+      {
+        q: "メソポタミアで行われた河川や地下水から人工的に農地へ水を引く技術は何",
+        a: "灌漑農法",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["政策"]
+      },
+      {
+        q: "古代メソポタミアで、ウルやウルクなどの都市国家を建設した前3000年頃の人類は何",
+        a: "シュメール人",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["国家"]
+      },
+      {
+        q: "シュメール人がつくった文字は何",
+        a: "楔形文字",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["遺産", "西洋文化"]
+      },
+      {
+        q: "シュメール人が用いた進法は何",
+        a: "六十進法",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["その他", "西洋文化"]
+      },
+      {
+        q: "シュメール人が用いた暦は何",
+        a: "太陰暦",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["その他", "西洋文化"]
+      },
+      {
+        q: "前24世紀にメソポタミア最初の統一国家を建設した人類は何",
+        a: "アッカド人",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["国家"]
+      },
+      {
+        q: "アッカド人やバビロン第一王朝の語族は何",
+        a: "セム語派",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["その他"]
+      },
+      {
+        q: "シュメール人によって建設された、階段状のピラミッド型聖塔・神殿は何",
+        a: "ジッグラト",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["遺産", "宗教"]
+      },
+      {
+        q: "アッカド人を率いてシュメール人の都市国家を征服して統一国家を建設した人物は誰",
+        a: "サルゴン一世",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["人物", "国家", "西洋文化"]
+      },
+      {
+        q: "アムル人が建国した前19世紀頃の統一王朝は何",
+        a: "バビロン第一王朝(古バビロニア)",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["国家"]
+      },
+      {
+        q: "バビロン第一王朝を建国したセム語派の人種は何",
+        a: "アムル人",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["人物"]
+      },
+      {
+        q: "バビロン第一王朝の王で、復讐法、身分法の特徴を持つ法典を作成した人物は誰",
+        a: "ハンムラビ王",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["人物", "政策", "西洋文化"]
+      },
+      {
+        q: "バビロン第一王朝を滅ぼし、アナトリア高原に成立した国の人種は何",
+        a: "ヒッタイト人",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["国家", "戦争"]
+      },
+      {
+        q: "ヒッタイト人やアケメネス朝に含まれる語族は何",
+        a: "インド・ヨーロッパ語族",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["その他"]
+      },
+      {
+        q: "ヒッタイト人がもたらした技術は何",
+        a: "鉄製武器",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["戦争", "西洋文化"]
+      },
+      {
+        q: "前15世紀にメソポタミア北部を統一した国家は何",
+        a: "ミタンニ王国",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["国家", "西洋文化"]
+      },
+      {
+        q: "滅亡後のバビロニアを支配した、メソポタミア南部を支配した人種は何",
+        a: "カッシート人",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["国家"]
+      },
+      {
+        q: "楔形文字を解読したイギリス人は誰",
+        a: "ローリンソン",
+        subject: "世界史",
+        era: "古代",
+        region: "ヨーロッパ",
+        theme: ["人物", "その他"]
+      },
+      {
+        q: "楔形文字解読のきっかけとなったドイツ人の高校教師は誰",
+        a: "グローテフェント",
+        subject: "世界史",
+        era: "古代",
+        region: "ヨーロッパ",
+        theme: ["人物", "その他"]
+      },
+      {
+        q: "バビロン第一王朝の都はどこ",
+        a: "バビロン",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["地名"]
+      },
+      {
+        q: "ヒッタイト人の国の首都はどこ",
+        a: "ホアズキョイ",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["地名"]
+      },
+      {
+        q: "古墳出現期最大の前方後円墳の奈良県にある古墳は何",
+        a: "箸墓古墳",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "前期古墳に多く見られた埴輪の種類は何",
+        a: "円筒埴輪",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "後期古墳に多く見られた埴輪の種類は何",
+        a: "形象埴輪",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "前期古墳に見られる埋蔵施設を２つ挙げよ",
+        a: "竪穴式石室、粘土槨",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "後期古墳から見られた埋蔵施設の形式は何",
+        a: "横穴式石室",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "横穴式石室の最大の特徴で、可能になった機能は何",
+        a: "追葬",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["その他"]
+      },
+      {
+        q: "前期古墳の副葬品の銅鏡の代表例はなにか",
+        a: "三角縁神獣鏡",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "前期古墳の副葬品から考えられる当時の王の性格はどのようなものか",
+        a: "司祭者的な性格",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["宗教", "政策"]
+      },
+      {
+        q: "仁徳天皇のものと考えられる国内最大の古墳なにか",
+        a: "大仙陵古墳",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "応神天皇のものと考えられる、国内２番目の規模の古墳はなにか",
+        a: "誉田御廟山古墳",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "倭国が朝鮮半島と関係もつ大きな理由であった、確保するべき資源は何",
+        a: "鉄",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["外交", "その他"]
+      },
+      {
+        q: "日本と高句麗が交戦し、高句麗が勝利したと記されている石碑は何",
+        a: "広開土王碑(好太王碑)",
+        subject: "日本史",
+        era: "古墳",
+        region: "朝鮮半島",
+        theme: ["遺産", "外交", "戦争"]
+      },
+      {
+        q: "倭の五王が中国に朝貢していたとの記述がある、中国の歴史書は何",
+        a: "宋書倭国伝",
+        subject: "日本史",
+        era: "古墳",
+        region: "中国",
+        theme: ["外交", "その他"]
+      },
+      {
+        q: "宋書倭国伝の作者は誰か",
+        a: "沈約",
+        subject: "日本史",
+        era: "古墳",
+        region: "中国",
+        theme: ["人物", "その他"]
+      },
+      {
+        q: "倭の五王をすべて挙げよ",
+        a: "讃・珍・済・興・武",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["人物", "外交"]
+      },
+      {
+        q: "倭の五王の武だと考えられている日本の天皇は誰",
+        a: "雄略天皇",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["人物"]
+      },
+      {
+        q: "倭王武が上表文を送った当時の中国の皇帝は誰",
+        a: "順帝",
+        subject: "日本史",
+        era: "古墳",
+        region: "中国",
+        theme: ["人物", "外交"]
+      },
+      {
+        q: "渡来人がもたらした硬質で灰色の土器は何",
+        a: "須恵器",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "「論語」「千文字」を日本に伝えた渡来人は誰",
+        a: "王仁",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["人物", "東洋文化"]
+      },
+      {
+        q: "史部の管理した５世紀の渡来人は誰",
+        a: "阿知使主",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["人物", "東洋文化"]
+      },
+      {
+        q: "養蚕や機織を伝えたとされる５世紀の渡来人は誰",
+        a: "弓月君",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["人物", "東洋文化"]
+      },
+      {
+        q: "日本に儒教を伝えた六世紀の渡来人は誰",
+        a: "五経博士",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["人物", "東洋文化", "宗教"]
+      },
+      {
+        q: "日本に仏教を伝えたとされる百済の人物は誰",
+        a: "聖明王",
+        subject: "日本史",
+        era: "古墳",
+        region: "朝鮮半島",
+        theme: ["人物", "宗教", "東洋文化"]
+      },
+      {
+        q: "仏教公伝当時の日本の天皇は誰",
+        a: "欽明天皇",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["人物", "宗教"]
+      },
+      {
+        q: "ヤマト政権の政治制度で、大王を中心とする豪族支配の身分秩序は何",
+        a: "氏姓制度",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "豪族が血縁を中心に構成した同族集団は何",
+        a: "氏",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "大和政権が豪族に氏単位で与えた役職・称号は何",
+        a: "姓",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "大王家から別れた皇別氏族に与えられた姓は何",
+        a: "臣",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "特定職能の氏族に与えられた姓は何",
+        a: "連",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "地方の有力豪族に与えられた姓は何",
+        a: "君",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "一般の地方豪族に与えられた姓は何",
+        a: "直",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "ヤマト政権の直轄地をなんというか",
+        a: "屯倉",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "大和政権の直轄民をなんというか",
+        a: "名代・子代",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "有力豪族の私有地をなんというか",
+        a: "田荘",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "有力豪族の私有民をなんというか",
+        a: "部曲",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "大王家は豪族が所有した身分の低い隷属者を何と言うか",
+        a: "奴(奴婢)",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "地方豪族に与え、行政や屯倉の管理に当たらせるための地位は何",
+        a: "国造",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "手工業生産や軍事・祭祀などヤマト政権の職務を分担して継承する団体の首長は何",
+        a: "伴造",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "527年に新羅と組んで反乱を起こした人物は誰か",
+        a: "筑紫国造磐井",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["人物", "戦争", "外交"]
+      },
+      {
+        q: "磐井の乱発生当時の大王は誰か",
+        a: "継体天皇",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["人物"]
+      },
+      {
+        q: "6,7世紀にかけて前方後円墳の造営が停止されたのはなぜか",
+        a: "中央集権を進めるため",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "古墳時代に、春に豊作を願って行われた祭りは何",
+        a: "祈年の祭",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["宗教", "東洋文化"]
+      },
+      {
+        q: "古墳時代に、秋に収穫を感謝して行った祭りは何",
+        a: "新嘗の祭",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["宗教", "東洋文化"]
+      },
+      {
+        q: "天皇が即位してから初めて行われる新嘗の祭をなんという",
+        a: "大嘗祭",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["宗教", "東洋文化"]
+      },
+      {
+        q: "身についた汚れを落とし清め、災いを免れるために行った古墳時代の呪術を２つ挙げよ",
+        a: "禊・祓",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["宗教", "東洋文化"]
+      },
+      {
+        q: "弥生土器の流れをくんで古墳時代に作られた赤焼きの土器は何",
+        a: "土師器",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "６世紀頃から九州や東日本にみられた古墳の特徴は何",
+        a: "装飾古墳",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "古墳時代後期に、各地でつくられた小規模な円墳や横穴墓をなんという",
+        a: "群集墳",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "天武・持統天皇の合葬稜の種類は何",
+        a: "八角墳",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["遺産"]
+      },
+      {
+        q: "動物の骨の割れ目から吉凶を占う、古墳時代の呪術的風習をなんという",
+        a: "太占の法",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["宗教", "東洋文化"]
+      },
+      {
+        q: "熱湯に手を入れて火傷の程度で裁判の審議を判断する古墳時代の呪術的風習をなんという",
+        a: "盟神探湯",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["宗教", "東洋文化"]
+      },
+      {
+        q: "任那の一部を百済に割譲して失脚した大連は誰",
+        a: "大伴金村",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["人物", "外交"]
+      },
+      {
+        q: "崇仏論争において、崇仏派であった大臣は誰",
+        a: "蘇我稲目",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["人物", "宗教"]
+      },
+      {
+        q: "崇仏論争において、排仏派であった大連は誰",
+        a: "物部尾輿",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["人物", "宗教"]
+      },
+      {
+        q: "蘇我稲目が財政を握るために管理した機関は何",
+        a: "三蔵",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "587年に物部守屋を滅ぼして仏教の受容を進めた大臣はだれ",
+        a: "蘇我馬子",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["人物", "宗教", "戦争"]
+      },
+      {
+        q: "物部尾輿の子で、蘇我馬子に滅ぼされた人物は誰",
+        a: "物部守屋",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["人物", "宗教", "戦争"]
+      },
+      {
+        q: "蘇我馬子が暗殺して政治権力を集中にした人物は誰",
+        a: "崇峻天皇",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["人物"]
+      },
+      {
+        q: "603年に制定された、個人の才能や功績に応じて冠位を与える制度は何",
+        a: "冠位十二階",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "日本",
+        theme: ["政策"]
+      },
+      {
+        q: "604年に制定された、役人の心得を説いた全17条からなる法は何",
+        a: "憲法十七条",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "日本",
+        theme: ["政策", "宗教", "東洋文化"]
+      },
+      {
+        q: "607年に第一回遣隋使の大使として派遣された人物は誰",
+        a: "小野妹子",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "日本",
+        theme: ["人物", "外交"]
+      },
+      {
+        q: "第一回遣隋使の国書（「日出づる処の天子…」）の内容に激怒した隋の皇帝は誰",
+        a: "煬帝",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "中国",
+        theme: ["人物", "外交"]
+      },
+      {
+        q: "608年に遣隋使の答礼使として来日した隋の使節は誰",
+        a: "裴世清",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "中国",
+        theme: ["人物", "外交"]
+      },
+      {
+        q: "遣隋使とともに派遣された留学生で、後の改新で国博士となったのは誰",
+        a: "高向玄理",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "日本",
+        theme: ["人物", "外交", "東洋文化"]
+      },
+      {
+        q: "遣隋使とともに派遣された留学僧で、後の改新で国博士となったのは誰",
+        a: "旻",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "日本",
+        theme: ["人物", "外交", "宗教", "東洋文化"]
+      },
+      {
+        q: "遣隋使とともに派遣された留学僧で、国博士にはなっていないが中大兄皇子らに学問を教えたのは誰",
+        a: "南淵請安",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "日本",
+        theme: ["人物", "外交", "東洋文化"]
+      },
+      {
+        q: "寺院における塔や金堂、講堂などの建物の配置を何というか",
+        a: "伽藍配置",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "蘇我氏の氏寺で、日本最古の本格的仏教寺院は何",
+        a: "飛鳥寺",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "日本",
+        theme: ["遺産", "宗教", "東洋文化"]
+      },
+      {
+        q: "聖徳太子が建立したとされ、世界最古の木造建築が現存する寺院は何",
+        a: "法隆寺",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "日本",
+        theme: ["遺産", "宗教", "東洋文化"]
+      },
+      {
+        q: "聖徳太子の住居である斑鳩宮跡に建てられたとされる尼寺は何",
+        a: "中宮寺",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "日本",
+        theme: ["遺産", "宗教", "東洋文化"]
+      },
+      {
+        q: "秦河勝が建立したとされる、京都にある寺院は何",
+        a: "広隆寺",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "日本",
+        theme: ["遺産", "宗教", "東洋文化"]
+      },
+      {
+        q: "舒明天皇が建立した、最初の官寺とされる大寺は何",
+        a: "百済大寺",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "日本",
+        theme: ["遺産", "宗教", "東洋文化"]
+      },
+      {
+        q: "法隆寺金堂釈迦三尊像に見られる、鋭角的で力強い彫刻様式は何",
+        a: "北魏様式",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "法隆寺金堂釈迦三尊像を制作した、渡来人系の仏師は誰",
+        a: "鞍作鳥",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "日本",
+        theme: ["人物", "遺産", "東洋文化"]
+      },
+      {
+        q: "広隆寺弥勒菩薩像に見られる、優美で柔和な彫刻様式は何",
+        a: "百済・中国南朝様式",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "倭王武上表文で、関東地方方面の何んでいたか",
+        a: "毛人",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["人物", "その他"]
+      },
+      {
+        q: "倭王武上表文で、西国方面の人をなんと呼んでいたか",
+        a: "衆夷",
+        subject: "日本史",
+        era: "古墳",
+        region: "日本",
+        theme: ["その他"]
+      },
+      {
+        q: "高句麗の僧で、日本に紙・墨・彩色を伝えたとされるのは誰",
+        a: "曇徴",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "朝鮮半島",
+        theme: ["人物", "東洋文化"]
+      },
+      {
+        q: "百済の僧で、日本に暦法や天文・地理を伝えたとされるのは誰",
+        a: "観勒",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "朝鮮半島",
+        theme: ["人物", "東洋文化"]
+      },
+      {
+        q: "法隆寺に伝わる、透かし彫りの金具の下に玉虫の羽を敷き詰めた工芸品は何",
+        a: "玉虫厨子",
+        subject: "日本史",
+        era: "飛鳥",
+        region: "日本",
+        theme: ["遺産", "東洋文化"]
+      },
+      {
+        q: "前13世紀末から前12世紀にかけて、ヒッタイトやエジプト新王国を攻撃して弱体化させた民族集団は何",
+        a: "海の民",
+        subject: "世界史",
+        era: "古代",
+        region: "地中海沿岸",
+        theme: ["戦争"]
+      },
+      {
+        q: "古代エジプトの行政単位である村落共同体を何というか",
+        a: "ノモス",
+        subject: "世界史",
+        era: "古代",
+        region: "エジプト",
+        theme: ["政策"]
+      },
+      {
+        q: "古代エジプト王国の王のことをなんという",
+        a: "ファラオ",
+        subject: "世界史",
+        era: "古代",
+        region: "エジプト",
+        theme: ["人物", "政策"]
+      },
+      {
+        q: "古代エジプトで崇拝された、万物の創造主とされる太陽神は何",
+        a: "ラー",
+        subject: "世界史",
+        era: "古代",
+        region: "エジプト",
+        theme: ["宗教"]
+      },
+      {
+        q: "エジプト古王国の首都が置かれた場所はどこ",
+        a: "メンフィス",
+        subject: "世界史",
+        era: "古代",
+        region: "エジプト",
+        theme: ["地名"]
+      },
+      {
+        q: "ギザに最大級のピラミッドを建設した、古王国第4王朝の王は誰",
+        a: "クフ王",
+        subject: "世界史",
+        era: "古代",
+        region: "エジプト",
+        theme: ["人物", "遺産"]
+      },
+      {
+        q: "エジプト中王国・新王国の首都が置かれた場所はどこ",
+        a: "テーベ",
+        subject: "世界史",
+        era: "古代",
+        region: "エジプト",
+        theme: ["地名"]
+      },
+      {
+        q: "中王国時代末期に、馬と戦車をもってシリア方面から侵入・支配した遊牧民族は何",
+        a: "ヒクソス",
+        subject: "世界史",
+        era: "古代",
+        region: "エジプト",
+        theme: ["戦争"]
+      },
+      {
+        q: "シリア・ヌビアを征服し、エジプト史上最大の領土を築いた「エジプトのナポレオン」と呼ばれる王は誰",
+        a: "トトメス3世",
+        subject: "世界史",
+        era: "古代",
+        region: "エジプト",
+        theme: ["人物"]
+      },
+      {
+        q: "アモン神を中心とする神官勢力に対抗し、宗教改革を行った新王国の王は誰",
+        a: "アメンホテプ4世",
+        subject: "世界史",
+        era: "古代",
+        region: "エジプト",
+        theme: ["人物", "宗教"]
+      },
+      {
+        q: "アメンホテプ4世が宗教改革の際に改名した、その名前は何",
+        a: "イクナートン",
+        subject: "世界史",
+        era: "古代",
+        region: "エジプト",
+        theme: ["人物", "宗教"]
+      },
+      {
+        q: "アメンホテプ4世が唯一神として崇拝を強制した、太陽円盤の神は何",
+        a: "アトン神",
+        subject: "世界史",
+        era: "古代",
+        region: "エジプト",
+        theme: ["宗教"]
+      },
+      {
+        q: "アメンホテプ4世がテーベから遷都した、新首都の場所はどこ",
+        a: "アマルナ",
+        subject: "世界史",
+        era: "古代",
+        region: "エジプト",
+        theme: ["地名"]
+      },
+      {
+        q: "アメンホテプ4世の死後、都をテーベに戻し、伝統的な宗教を復活させた若き王は誰",
+        a: "ツタンカーメン",
+        subject: "世界史",
+        era: "古代",
+        region: "エジプト",
+        theme: ["人物", "宗教"]
+      },
+      {
+        q: "アメンホテプ４世の時代に開花した、従来の形式にとらわれない写実的な芸術様式を何というか",
+        a: "アマルナ美術",
+        subject: "世界史",
+        era: "古代",
+        region: "エジプト",
+        theme: ["遺産", "西洋文化"]
+      },
+      {
+        q: "新王国第19王朝の王で、ヒッタイトと戦い、ヌビエにアブ・シンベル神殿を残したのは誰",
+        a: "ラムセス2世",
+        subject: "世界史",
+        era: "古代",
+        region: "エジプト",
+        theme: ["人物", "遺産"]
+      },
+      {
+        q: "前1285年頃、ラムセス2世率いるエジプトとヒッタイトがシリアの領有権をめぐって戦った衝突は何",
+        a: "カデシュの戦い",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["戦争"]
+      },
+      {
+        q: "古代エジプトで使用された象形文字は何",
+        a: "ヒエログリフ",
+        subject: "世界史",
+        era: "古代",
+        region: "アフリカ",
+        theme: ["遺産", "西洋文化"]
+      },
+      {
+        q: "エジプトの死後の世界の案内書で、パピルスに記されたものは何",
+        a: "死者の書",
+        subject: "世界史",
+        era: "古代",
+        region: "アフリカ",
+        theme: ["宗教", "西洋文化"]
+      },
+      {
+        q: "古代エジプトで使われた暦はなにか",
+        a: "太陽暦",
+        subject: "世界史",
+        era: "古代",
+        region: "アフリカ",
+        theme: ["西洋文化", "その他"]
+      },
+      {
+        q: "ヒエログリフが簡略化された、民用の文字は何",
+        a: "デモティック",
+        subject: "世界史",
+        era: "古代",
+        region: "アフリカ",
+        theme: ["遺産", "西洋文化"]
+      },
+      {
+        q: "デモティックが書かれていた一種の紙は何",
+        a: "パピルス",
+        subject: "世界史",
+        era: "古代",
+        region: "アフリカ",
+        theme: ["遺産", "西洋文化"]
+      },
+      {
+        q: "ヒエログリフを解読したフランスの人物は誰",
+        a: "シャンポリオン",
+        subject: "世界史",
+        era: "古代",
+        region: "アフリカ",
+        theme: ["人物", "その他"]
+      },
+      {
+        q: "ヒエログリフ解読のきっかけとなった、ナポレオンのエジプト遠征で発見された石板は何",
+        a: "ロゼッタストーン",
+        subject: "世界史",
+        era: "古代",
+        region: "アフリカ",
+        theme: ["遺産", "西洋文化"]
+      },
+      {
+        q: "シドン・ティルスなどに港市国家築いて地中海貿易で栄えた民族は誰",
+        a: "フェニキア人",
+        subject: "世界史",
+        era: "古代",
+        region: "地中海沿岸",
+        theme: ["人物", "西洋文化"]
+      },
+      {
+        q: "フェニキア人が建設した港市国家の例を２つ挙げよ",
+        a: "シドン・ティルス",
+        subject: "世界史",
+        era: "古代",
+        region: "地中海沿岸",
+        theme: ["地名", "国家"]
+      },
+      {
+        q: "フェニキア人が建設した北アフリカの植民市はどこ",
+        a: "カルタゴ",
+        subject: "世界史",
+        era: "古代",
+        region: "アフリカ",
+        theme: ["地名", "国家"]
+      },
+      {
+        q: "ギリシャに伝わってアルファベットの起源となった文字は何",
+        a: "フェニキア文字",
+        subject: "世界史",
+        era: "古代",
+        region: "地中海沿岸",
+        theme: ["遺産", "西洋文化"]
+      },
+      {
+        q: "ダマスクスを拠点に内陸の中継貿易で栄えた民族は何",
+        a: "アラム人",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["人物"]
+      },
+      {
+        q: "アラム人が中継貿易の拠点とした都市はどこ",
+        a: "ダマスクス",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["地名"]
+      },
+      {
+        q: "オリエントで国際商業語として利用され、後にアラビア、ヘブライ、モンゴル文字に派生する文字はなに",
+        a: "アラム文字",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["遺産", "西洋文化"]
+      },
+      {
+        q: "前1000年頃、パレスチナ王国建設した民族は誰",
+        a: "ヘブライ人",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["人物", "国家"]
+      },
+      {
+        q: "ヘブライ人の出エジプトを率いたのは誰",
+        a: "モーセ",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["人物", "宗教"]
+      },
+      {
+        q: "ヘブライ王国の都はどこ",
+        a: "イェルサレム",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["地名", "宗教", "西洋文化"]
+      },
+      {
+        q: "前1000年頃、ヘブライ王国の最盛期を築いた第2・3代国王は何",
+        a: "ダヴィデ王、ソロモン王",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["人物", "国家"]
+      },
+      {
+        q: "ヘブライ人が唯一神として信仰したのは誰",
+        a: "ヤハウェ",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["宗教"]
+      },
+      {
+        q: "ヘブライ人が確立した宗教はなに",
+        a: "ユダヤ教",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["宗教", "西洋文化"]
+      },
+      {
+        q: "ユダヤ教の信仰の特徴を２つ挙げよ",
+        a: "選民思想、メシアを待望する",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["宗教", "西洋文化"]
+      },
+      {
+        q: "ヘブライ王国から分離独立した北部パレスチナに成立したのは何",
+        a: "イスラエル王国",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["国家"]
+      },
+      {
+        q: "ヘブライ王国のうち、南部が分立した王国は何",
+        a: "ユダ王国",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["国家"]
+      },
+      {
+        q: "前722年にイスラエル王国を滅ぼした国はどこ",
+        a: "アッシリア",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["戦争", "国家"]
+      },
+      {
+        q: "前586年にユダ王国を滅ぼした国はどこ",
+        a: "新バビロニア",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["戦争", "国家"]
+      },
+      {
+        q: "新バビロニアがユダ王国のヘブライ人を強制移住させた出来事をなんという",
+        a: "バビロン捕囚",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["西洋文化", "宗教"]
+      },
+      {
+        q: "前663年頃、史上初めてオリエント統一を果たした国はどこ",
+        a: "アッシリア王国",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["国家", "外交"]
+      },
+      {
+        q: "王立図書館でも有名なアッシリア王国の首都はどこ",
+        a: "ニネヴェ",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["地名", "西洋文化"]
+      },
+      {
+        q: "前9世紀頃にアッシリアが製造に成功した、軍事力を支えたもの２つは何か",
+        a: "戦車、鉄製武具",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["戦争"]
+      },
+      {
+        q: "領土拡大に努め、アラム人やバビロンを征服したアッシリア王は誰",
+        a: "ティグラト・ピレセル3世",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["人物", "戦争"]
+      },
+      {
+        q: "エジプトを征服してオリエント統一を完成させたアッシリア王は誰",
+        a: "アッシュールバニパル王",
+        subject: "世界史",
+        era: "古代",
+        region: "アフリカ",
+        theme: ["人物", "戦争"]
+      },
+      {
+        q: "アッシリア王国がオリエント統一したのはいつ頃か",
+        a: "前663年頃",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["国家", "外交"]
+      },
+      {
+        q: "前722年にイスラエル王国を征服したアッシリア王は誰",
+        a: "サルゴン二世",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["人物", "戦争"]
+      },
+      {
+        q: "アッシリア滅亡の主な理由と、滅亡した年はいつか",
+        a: "威圧的支配に対する諸民族の反抗、前612年",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["戦争", "反乱・革命"]
+      },
+      {
+        q: "アッシリア崩壊後の4王国分立時代、メソポタミアを支配した国は何",
+        a: "新バビロニア",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["国家"]
+      },
+      {
+        q: "4王国分立時代、小アジア（アナトリア）に成立した国は何",
+        a: "リディア",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["国家"]
+      },
+      {
+        q: "新バビロニアと連合してニネヴェを陥落させた、イラン高原の国は何",
+        a: "メディア",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["国家", "戦争"]
+      },
+      {
+        q: "バビロン捕囚を行い、新バビロニアの全盛期を築いた王は誰",
+        a: "ネブカドネザル2世",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["人物", "政策"]
+      },
+      {
+        q: "新バビロニアの首都はどこ",
+        a: "バビロン",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["地名"]
+      },
+      {
+        q: "メディアの首都はどこ",
+        a: "エクバタナ",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["地名"]
+      },
+      {
+        q: "小アジアのリディアで世界で初めて行われたことは何",
+        a: "金属貨幣の鋳造",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["政策"]
+      },
+      {
+        q: "メディアから独立し、アケメネス朝を建国した人物は誰",
+        a: "キュロス2世",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["人物", "国家"]
+      },
+      {
+        q: "アケメネス朝がオリエントを再統一したのはいつか",
+        a: "前525年",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["国家", "外交"]
+      },
+      {
+        q: "アケメネス朝の最盛期を築いた第3代の王は誰",
+        a: "ダレイオス1世",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["人物", "国家"]
+      },
+      {
+        q: "ダレイオス1世が全国に置いた州に派遣した、知事（太守）を何というか",
+        a: "サトラップ",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["政策"]
+      },
+      {
+        q: "サトラップを監視するために中央から派遣された巡察使を何というか",
+        a: "王の目、王の耳",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["政策"]
+      },
+      {
+        q: "ダレイオス1世が祭儀のために建設した、壮大な宮殿がある都はどこ",
+        a: "ペルセポリス",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["地名", "遺産", "西洋文化"]
+      },
+      {
+        q: "アケメネス朝の政治・行政上の中心地であった首都はどこ",
+        a: "スサ",
+        subject: "世界史",
+        era: "古代",
+        region: "西アジア",
+        theme: ["地名", "政策"]
+      }
+    ];
+    // ========== 状態 ==========
+    const filters = {
+      subject: [],
+      era: [],
+      region: [],
+      theme: []
+    };
+    let currentQuestions = [],
+      currentIndex = 0,
+      correctCount = 0,
+      wrongQuestions = [],
+      answered = false;
+    // ========== 時代定義 ==========
+    const ERA_JP = ["旧石器", "縄文", "弥生", "古墳", "飛鳥", "奈良", "平安", "鎌倉", "室町", "戦国", "江戸", "明治", "大正", "戦前", "戦後", "現代"];
+    const ERA_WH = ["先史・石器時代", "古代", "中世", "近世", "近代", "現代"];
+    // 日本史・世界史それぞれの時代フィルター
+    const filtersEraJP = [];
+    const filtersEraWH = [];
+
+    function buildEraChipsFor(eras, containerId, filtersArr, groupKey) {
+      const container = document.getElementById(containerId);
+      const prevActive = new Set(filtersArr.slice());
+      filtersArr.length = 0;
+      container.innerHTML = '';
+      eras.forEach(val => {
+        const btn = document.createElement('button');
+        btn.className = 'chip' + (prevActive.has(val) ? ' active' : '');
+        btn.dataset.group = groupKey;
+        btn.dataset.val = val;
+        btn.textContent = val;
+        if (prevActive.has(val)) filtersArr.push(val);
+        btn.addEventListener('click', () => {
+          const idx = filtersArr.indexOf(val);
+          if (idx === -1) {
+            filtersArr.push(val);
+            btn.classList.add('active');
+          } else {
+            filtersArr.splice(idx, 1);
+            btn.classList.remove('active');
+          }
+          updateMatchCount();
+          updateSelectAllBtnsEra();
+        });
+        container.appendChild(btn);
+      });
+    }
+
+    function updateSelectAllBtnsEra() {
+      // JP
+      const jpBtn = document.querySelector('.select-all-btn[data-group="eraJP"]');
+      if (jpBtn) {
+        const allSel = ERA_JP.every(v => filtersEraJP.includes(v));
+        jpBtn.textContent = allSel ? 'すべて解除' : 'すべて選択';
+        jpBtn.classList.toggle('all-selected', allSel);
+      }
+      // WH
+      const whBtn = document.querySelector('.select-all-btn[data-group="eraWH"]');
+      if (whBtn) {
+        const allSel = ERA_WH.every(v => filtersEraWH.includes(v));
+        whBtn.textContent = allSel ? 'すべて解除' : 'すべて選択';
+        whBtn.classList.toggle('all-selected', allSel);
+      }
+    }
+    // すべて選択ボタン（era用）
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.select-all-btn');
+      if (!btn) return;
+      const group = btn.dataset.group;
+      if (group === 'eraJP') {
+        const allSel = ERA_JP.every(v => filtersEraJP.includes(v));
+        if (allSel) {
+          filtersEraJP.length = 0;
+          document.querySelectorAll('#eraChipsJP .chip').forEach(c => c.classList.remove('active'));
+        } else {
+          filtersEraJP.length = 0;
+          ERA_JP.forEach(v => filtersEraJP.push(v));
+          document.querySelectorAll('#eraChipsJP .chip').forEach(c => c.classList.add('active'));
+        }
+        updateMatchCount();
+        updateSelectAllBtnsEra();
+      } else if (group === 'eraWH') {
+        const allSel = ERA_WH.every(v => filtersEraWH.includes(v));
+        if (allSel) {
+          filtersEraWH.length = 0;
+          document.querySelectorAll('#eraChipsWH .chip').forEach(c => c.classList.remove('active'));
+        } else {
+          filtersEraWH.length = 0;
+          ERA_WH.forEach(v => filtersEraWH.push(v));
+          document.querySelectorAll('#eraChipsWH .chip').forEach(c => c.classList.add('active'));
+        }
+        updateMatchCount();
+        updateSelectAllBtnsEra();
+      }
+    });
+
+    function updateFilterMode() {
+      const hasJP = filters.subject.includes('日本史');
+      const hasWH = filters.subject.includes('世界史');
+      const jpOnly = hasJP && !hasWH;
+      const regionGroup = document.getElementById('regionGroup');
+      // 地域フィルター：日本史のみなら非表示、それ以外は表示
+      regionGroup.style.display = jpOnly ? 'none' : '';
+      if (jpOnly) filters.region = [];
+      // 日本史時代パネル
+      const eraGroupJP = document.getElementById('eraGroupJP');
+      if (hasJP) {
+        eraGroupJP.style.display = '';
+        buildEraChipsFor(ERA_JP, 'eraChipsJP', filtersEraJP, 'eraJP');
+      } else {
+        eraGroupJP.style.display = 'none';
+        filtersEraJP.length = 0;
+      }
+      // 世界史時代パネル
+      const eraGroupWH = document.getElementById('eraGroupWH');
+      if (hasWH) {
+        eraGroupWH.style.display = '';
+        buildEraChipsFor(ERA_WH, 'eraChipsWH', filtersEraWH, 'eraWH');
+      } else {
+        eraGroupWH.style.display = 'none';
+        filtersEraWH.length = 0;
+      }
+      updateMatchCount();
+      updateSelectAllBtnsEra();
+    }
+    // ========== チップ ==========
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const {
+          group,
+          val
+        } = chip.dataset;
+        const idx = filters[group].indexOf(val);
+        if (idx === -1) {
+          filters[group].push(val);
+          chip.classList.add('active');
+        } else {
+          filters[group].splice(idx, 1);
+          chip.classList.remove('active');
+        }
+        if (group === 'subject') updateFilterMode();
+        updateMatchCount();
+        updateSelectAllBtns();
+      });
+    });
+    // ========== すべて選択 ==========
+    document.querySelectorAll('.select-all-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const group = btn.dataset.group;
+        const chips = [...document.querySelectorAll(`.chip[data-group="${group}"]`)];
+        const vals = chips.map(c => c.dataset.val);
+        const allSelected = vals.every(v => filters[group].includes(v));
+        if (allSelected) {
+          filters[group] = [];
+          chips.forEach(c => c.classList.remove('active'));
+        } else {
+          filters[group] = [...vals];
+          chips.forEach(c => c.classList.add('active'));
+        }
+        if (group === 'subject') updateFilterMode();
+        updateMatchCount();
+        updateSelectAllBtns();
+      });
+    });
+
+    function updateSelectAllBtns() {
+      document.querySelectorAll('.select-all-btn').forEach(btn => {
+        const group = btn.dataset.group;
+        const chips = [...document.querySelectorAll(`.chip[data-group="${group}"]`)];
+        const allSelected = chips.every(c => filters[group].includes(c.dataset.val));
+        btn.textContent = allSelected ? 'すべて解除' : 'すべて選択';
+        btn.classList.toggle('all-selected', allSelected);
+      });
+    }
+    // ========== リセット ==========
+    document.getElementById('resetFilter').addEventListener('click', () => {
+      ['subject', 'region', 'theme'].forEach(g => filters[g] = []);
+      filtersEraJP.length = 0;
+      filtersEraWH.length = 0;
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      updateFilterMode();
+      updateMatchCount();
+      updateSelectAllBtns();
+    });
+    // ========== フィルタリング ==========
+    function getFiltered() {
+      const hasJP = filters.subject.includes('日本史');
+      const hasWH = filters.subject.includes('世界史');
+      const jpOnly = hasJP && !hasWH;
+      return ALL_QUESTIONS.filter(q => {
+        // 科目フィルター
+        if (filters.subject.length && !filters.subject.includes(q.subject)) return false;
+        // 時代フィルター（科目ごとに独立）
+        if (q.subject === '日本史' && filtersEraJP.length && !filtersEraJP.includes(q.era)) return false;
+        if (q.subject === '世界史' && filtersEraWH.length && !filtersEraWH.includes(q.era)) return false;
+        // 地域フィルター（世界史のみ適用、日本史はスキップ）
+        if (q.subject !== '日本史' && filters.region.length && !filters.region.includes(q.region)) return false;
+        // テーマフィルター
+        if (filters.theme.length && !filters.theme.some(t => (Array.isArray(q.theme) ? q.theme : [q.theme]).includes(t))) return false;
+        return true;
+      });
+    }
+
+    function updateMatchCount() {
+      document.getElementById('matchCount').textContent = getFiltered().length;
+    }
+    updateMatchCount();
+    // ========== 出題開始 ==========
+    document.getElementById('startBtn').addEventListener('click', () => {
+      const filtered = getFiltered();
+      document.getElementById('emptyState').classList.remove('active');
+      if (filtered.length === 0) {
+        document.getElementById('emptyState').classList.add('active');
+        return;
+      }
+      startQuiz(shuffle(filtered));
+    });
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function startQuiz(questions) {
+      currentQuestions = questions;
+      currentIndex = 0;
+      correctCount = 0;
+      wrongQuestions = [];
+      document.getElementById('filterPanel').style.display = 'none';
+      document.getElementById('resultScreen').classList.remove('active');
+      document.getElementById('quizArea').classList.add('active');
+      document.getElementById('totalNum').textContent = questions.length;
+      showQuestion();
+    }
+
+    function showQuestion() {
+      answered = false;
+      const q = currentQuestions[currentIndex];
+      document.getElementById('currentNum').textContent = currentIndex + 1;
+      document.getElementById('progressFill').style.width = (currentIndex / currentQuestions.length * 100) + '%';
+      const themes = (Array.isArray(q.theme) ? q.theme : [q.theme]);
+      document.getElementById('cardTags').innerHTML =
+        `<span class="tag tag-subject-${q.subject === '日本史' ? 'jp' : 'wh'}">${q.subject}</span>` +
+        `<span class="tag tag-era">${q.era}</span>` +
+        `<span class="tag tag-region">${q.region}</span>` +
+        themes.map(t => `<span class="tag tag-theme">${t}</span>`).join('');
+      document.getElementById('questionText').textContent = q.q;
+      const answerEl = document.getElementById('answerText');
+      const area = document.getElementById('answerArea');
+      // トランジションを無効化して即座にopacity:0＆テキスト差し替え
+      answerEl.style.transition = 'none';
+      answerEl.style.opacity = '0';
+      answerEl.style.transform = 'scale(0.9)';
+      answerEl.classList.remove('revealed');
+      area.classList.remove('revealed');
+      answerEl.textContent = q.a;
+      // 次フレームでトランジションを戻す
+      requestAnimationFrame(() => {
+        answerEl.style.transition = '';
+        answerEl.style.opacity = '';
+        answerEl.style.transform = '';
+      });
+      document.getElementById('revealHint').style.display = 'flex';
+      document.getElementById('judgeButtons').classList.remove('active');
+      area.onclick = revealAnswer;
+    }
+
+    function revealAnswer() {
+      if (answered) return;
+      answered = true;
+      document.getElementById('answerText').classList.add('revealed');
+      document.getElementById('revealHint').style.display = 'none';
+      document.getElementById('judgeButtons').classList.add('active');
+      const area = document.getElementById('answerArea');
+      area.classList.add('revealed');
+      area.onclick = null;
+    }
+
+    function judge(isCorrect) {
+      if (isCorrect) correctCount++;
+      else wrongQuestions.push(currentQuestions[currentIndex]);
+      currentIndex++;
+      if (currentIndex >= currentQuestions.length) showResult();
+      else showQuestion();
+    }
+
+    function showResult() {
+      document.getElementById('quizArea').classList.remove('active');
+      const total = currentQuestions.length;
+      const pct = Math.round(correctCount / total * 100);
+      const emoji = pct >= 90 ? '' : pct >= 70 ? '' : pct >= 50 ? '' : '';
+      document.getElementById('resultEmoji').textContent = emoji;
+      document.getElementById('resultScore').textContent = pct + '%';
+      document.getElementById('resultCorrect').textContent = correctCount;
+      document.getElementById('resultWrong').textContent = total - correctCount;
+      document.getElementById('resultTotal').textContent = total;
+      document.getElementById('resultScreen').classList.add('active');
+    }
+
+    function backToFilter() {
+      document.getElementById('resultScreen').classList.remove('active');
+      document.getElementById('filterPanel').style.display = 'block';
+      updateMatchCount();
+    }
+
+    function retryWrong() {
+      if (!wrongQuestions.length) {
+        backToFilter();
+        return;
+      }
+      document.getElementById('resultScreen').classList.remove('active');
+      startQuiz(shuffle(wrongQuestions));
+    }
+    document.getElementById('backToFilterBtn').addEventListener('click', () => {
+      document.getElementById('quizArea').classList.remove('active');
+      document.getElementById('filterPanel').style.display = 'block';
+      updateMatchCount();
+    });
+    // ========== 問題一覧 ==========
+    document.getElementById('listBtn').addEventListener('click', () => {
+      const filtered = getFiltered();
+      document.getElementById('filterPanel').style.display = 'none';
+      document.getElementById('emptyState').classList.remove('active');
+      if (filtered.length === 0) {
+        document.getElementById('filterPanel').style.display = 'block';
+        document.getElementById('emptyState').classList.add('active');
+        return;
+      }
+      document.getElementById('listCount').textContent = filtered.length;
+      const container = document.getElementById('listContainer');
+      container.innerHTML = '';
+      filtered.forEach((q, i) => {
+        const themes = Array.isArray(q.theme) ? q.theme : [q.theme];
+        const subjectClass = q.subject === '日本史' ? 'jp' : 'wh';
+        const tagsHtml =
+          `<span class="tag tag-subject-${subjectClass}">${q.subject}</span>` +
+          `<span class="tag tag-era">${q.era}</span>` +
+          `<span class="tag tag-region">${q.region}</span>` +
+          themes.map(t => `<span class="tag tag-theme">${t}</span>`).join('');
+        const item = document.createElement('div');
+        item.className = 'list-item';
+        item.innerHTML = `
+      <div class="list-num">${i + 1}</div>
+      <div class="list-body">
+        <div class="list-tags">${tagsHtml}</div>
+        <div class="list-q">${q.q}</div>
+        <div class="list-a-wrap"><span class="list-a">${q.a}</span></div>
+      </div>
+    `;
+        container.appendChild(item);
+      });
+      document.getElementById('listScreen').classList.add('active');
+    });
+    document.getElementById('backFromListBtn').addEventListener('click', () => {
+      document.getElementById('listScreen').classList.remove('active');
+      document.getElementById('filterPanel').style.display = 'block';
+      updateMatchCount();
+    });
+  </script>
+</body>
+
+</html>
+    
+  </body>
+  
+</html>
