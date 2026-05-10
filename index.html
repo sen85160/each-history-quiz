@@ -279,7 +279,30 @@
       color: var(--text-sub);
       box-shadow: 0 2px 0 var(--border);
     }
+.btn-outline-blue {
+  background: #fff;
+  border: 3px solid #2f8cff;
+  color: #2f5fae;
+  border-radius: 999px;
+  padding: 14px 28px;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  box-shadow: 0 2px 0 rgba(47, 140, 255, 0.15);
+}
 
+.btn-outline-blue:hover {
+  background: #f4f9ff;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(47, 140, 255, 0.18);
+}
+
+.btn-outline-blue:active {
+  transform: translateY(1px);
+}
     .btn-ghost:hover {
       border-color: var(--orange2);
       color: var(--orange);
@@ -975,11 +998,18 @@
       </div>
 
       <div class="filter-actions">
-        <button class="btn btn-primary" id="startBtn">▶ 出題開始</button>
-        <button class="btn btn-ghost" id="resetFilter">↺ リセット</button>
-        <button class="btn btn-ghost" id="listBtn">一覧を見る</button>
-        <div class="match-count">対象：<span id="matchCount">0</span> 問</div>
-      </div>
+  <button class="btn btn-primary" id="startBtn">▶ 出題開始</button>
+
+  <button
+    class="btn-outline-blue"
+    onclick="window.location.href='https://sen85160.github.io/history-narabikae-quiz/'">
+    年表形式で見る
+  </button>
+
+  <button class="btn btn-ghost" id="listBtn">一覧を見る</button>
+
+  <div class="match-count">対象：<span id="matchCount">0</span> 問</div>
+</div>
     </div>
 
     <div class="empty-state" id="emptyState">
