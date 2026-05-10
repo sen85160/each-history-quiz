@@ -671,25 +671,12 @@
     }
 
     @media (max-width: 600px) {
-      .question-text {
-        font-size: 1.1rem;
-      }
-
-      .answer-text {
-        font-size: 1.3rem;
-      }
-
-      header h1 {
-        font-size: 1.15rem;
-      }
-
-      .card {
-        padding: 20px;
-      }
-
-      .answer-area {
-        padding: 18px 20px;
-      }
+      .question-text { font-size: 1.1rem; }
+      .answer-text { font-size: 1.3rem; }
+      header h1 { font-size: 1.15rem; }
+      .card { padding: 20px; }
+      .answer-area { padding: 18px 20px; }
+      .filter-row-2col { flex-direction: column; }
     }
 
     /* 問題一覧画面 */
@@ -805,6 +792,78 @@
       background: #fff3e0;
       color: var(--orange);
     }
+
+    /* ── 横並び2列 ── */
+    .filter-row-2col {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+      margin-bottom: 14px;
+    }
+    .filter-row-2col .filter-group {
+      flex: 1;
+      min-width: 0;
+      margin-bottom: 0;
+    }
+
+    /* ── 折りたたみ ── */
+    .collapsible {
+      overflow: hidden;
+      transition: max-height 0.35s ease, opacity 0.3s ease;
+      max-height: 600px;
+      opacity: 1;
+      padding-top: 6px;
+    }
+    .collapsible.collapsed {
+      max-height: 0;
+      opacity: 0;
+      padding-top: 0;
+    }
+    .collapse-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #fff5ee, #fff8f2);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s;
+    }
+    .collapse-header:hover {
+      background: linear-gradient(135deg, #ffe8d6, #fff0e6);
+      border-color: var(--orange2);
+    }
+    .collapse-header:active { transform: scale(0.98); }
+    .collapse-title {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--orange);
+      letter-spacing: 0.12em;
+      flex: 1;
+    }
+    .collapse-hint {
+      font-size: 0.62rem;
+      color: var(--orange);
+      background: rgba(255, 107, 26, 0.10);
+      border-radius: 20px;
+      padding: 2px 8px;
+      white-space: nowrap;
+      font-weight: 800;
+    }
+    .collapse-arrow {
+      font-size: 10px;
+      color: var(--orange2);
+      transition: transform 0.25s;
+      display: inline-block;
+    }
+    .collapse-arrow.open { transform: rotate(90deg); }
+    .collapsible-btns {
+      display: flex;
+      gap: 6px;
+      padding: 4px 2px 6px;
+    }
   </style>
 </head>
 
@@ -818,7 +877,7 @@
   <div class="container">
 
     <div class="filter-panel" id="filterPanel">
-      <div class="panel-title">絞り込み条件</div>
+      <div class="panel-title">出題条件を絞り込む</div>
 
       <div class="filter-group">
         <div class="filter-label">
@@ -826,69 +885,92 @@
           <button class="select-all-btn" data-group="subject">すべて選択</button>
         </div>
         <div class="filter-chips">
-          <button class="chip subject-jp" data-group="subject" data-val="日本史"> 日本史</button>
-          <button class="chip subject-wh" data-group="subject" data-val="世界史"> 世界史</button>
+          <button class="chip subject-jp active" data-group="subject" data-val="日本史">日本史</button>
+          <button class="chip subject-wh active" data-group="subject" data-val="世界史">世界史</button>
         </div>
       </div>
 
-      <div class="filter-group" id="eraGroupJP" style="display:none">
-        <div class="filter-label">
-          時代（日本史）
-          <button class="select-all-btn" data-group="eraJP">すべて選択</button>
+      <div class="filter-row-2col">
+        <div class="filter-group" id="eraGroupJP" style="display:none">
+          <div class="collapse-header" onclick="toggleCollapse('eraJP')">
+            <span class="collapse-arrow" id="arrow-eraJP">▶</span>
+            <span class="collapse-title">時代（日本史）</span>
+          </div>
+          <div class="collapsible collapsed" id="wrap-eraJP">
+            <div class="collapsible-btns">
+              <button class="select-all-btn" data-group="eraJP">すべて選択</button>
+            </div>
+            <div class="filter-chips" id="eraChipsJP"></div>
+          </div>
         </div>
-        <div class="filter-chips" id="eraChipsJP"></div>
-      </div>
-      <div class="filter-group" id="eraGroupWH" style="display:none">
-        <div class="filter-label">
-          時代（世界史）
-          <button class="select-all-btn" data-group="eraWH">すべて選択</button>
-        </div>
-        <div class="filter-chips" id="eraChipsWH"></div>
-      </div>
-
-      <div class="filter-group" id="regionGroup">
-        <div class="filter-label">
-          地域
-          <button class="select-all-btn" data-group="region">すべて選択</button>
-        </div>
-        <div class="filter-chips">
-          <button class="chip" data-group="region" data-val="中華王朝">中華王朝</button>
-          <button class="chip" data-group="region" data-val="朝鮮半島">朝鮮半島</button>
-          <button class="chip" data-group="region" data-val="東南アジア">東南アジア</button>
-          <button class="chip" data-group="region" data-val="南アジア">南アジア</button>
-          <button class="chip" data-group="region" data-val="西アジア">西アジア</button>
-          <button class="chip" data-group="region" data-val="中央ユーラシア">中央ユーラシア</button>
-          <button class="chip" data-group="region" data-val="地中海沿岸">地中海沿岸</button>
-          <button class="chip" data-group="region" data-val="イスラム圏">イスラム圏</button>
-          <button class="chip" data-group="region" data-val="ヨーロッパ">ヨーロッパ</button>
-          <button class="chip" data-group="region" data-val="フランス">フランス</button>
-          <button class="chip" data-group="region" data-val="イギリス">イギリス</button>
-          <button class="chip" data-group="region" data-val="ドイツ">ドイツ</button>
-          <button class="chip" data-group="region" data-val="ロシア">ロシア</button>
-          <button class="chip" data-group="region" data-val="アフリカ">アフリカ</button>
-          <button class="chip" data-group="region" data-val="アメリカ">アメリカ</button>
-          <button class="chip" data-group="region" data-val="ラテン・南アメリカ">ラテン・南アメリカ</button>
+        <div class="filter-group" id="eraGroupWH" style="display:none">
+          <div class="collapse-header" onclick="toggleCollapse('eraWH')">
+            <span class="collapse-arrow" id="arrow-eraWH">▶</span>
+            <span class="collapse-title">時代（世界史）</span>
+          </div>
+          <div class="collapsible collapsed" id="wrap-eraWH">
+            <div class="collapsible-btns">
+              <button class="select-all-btn" data-group="eraWH">すべて選択</button>
+            </div>
+            <div class="filter-chips" id="eraChipsWH"></div>
+          </div>
         </div>
       </div>
 
-      <div class="filter-group">
-        <div class="filter-label">
-          テーマ
-          <button class="select-all-btn" data-group="theme">すべて選択</button>
+      <div class="filter-row-2col">
+        <div class="filter-group" id="regionGroup">
+          <div class="collapse-header" onclick="toggleCollapse('region')">
+            <span class="collapse-arrow" id="arrow-region">▶</span>
+            <span class="collapse-title">地域</span>
+          </div>
+          <div class="collapsible collapsed" id="wrap-region">
+            <div class="collapsible-btns">
+              <button class="select-all-btn" data-group="region">すべて選択</button>
+            </div>
+            <div class="filter-chips">
+              <button class="chip" data-group="region" data-val="中華王朝">中華王朝</button>
+              <button class="chip" data-group="region" data-val="朝鮮半島">朝鮮半島</button>
+              <button class="chip" data-group="region" data-val="東南アジア">東南アジア</button>
+              <button class="chip" data-group="region" data-val="南アジア">南アジア</button>
+              <button class="chip" data-group="region" data-val="西アジア">西アジア</button>
+              <button class="chip" data-group="region" data-val="中央ユーラシア">中央ユーラシア</button>
+              <button class="chip" data-group="region" data-val="地中海沿岸">地中海沿岸</button>
+              <button class="chip" data-group="region" data-val="イスラム圏">イスラム圏</button>
+              <button class="chip" data-group="region" data-val="ヨーロッパ">ヨーロッパ</button>
+              <button class="chip" data-group="region" data-val="フランス">フランス</button>
+              <button class="chip" data-group="region" data-val="イギリス">イギリス</button>
+              <button class="chip" data-group="region" data-val="ドイツ">ドイツ</button>
+              <button class="chip" data-group="region" data-val="ロシア">ロシア</button>
+              <button class="chip" data-group="region" data-val="アフリカ">アフリカ</button>
+              <button class="chip" data-group="region" data-val="アメリカ">アメリカ</button>
+              <button class="chip" data-group="region" data-val="ラテン・南アメリカ">ラテン・南アメリカ</button>
+            </div>
+          </div>
         </div>
-        <div class="filter-chips">
-          <button class="chip" data-group="theme" data-val="東洋文化">東洋文化</button>
-          <button class="chip" data-group="theme" data-val="西洋文化">西洋文化</button>
-          <button class="chip" data-group="theme" data-val="政策">政策</button>
-          <button class="chip" data-group="theme" data-val="遺産">遺産</button>
-          <button class="chip" data-group="theme" data-val="外交">外交</button>
-          <button class="chip" data-group="theme" data-val="人物">人物</button>
-          <button class="chip" data-group="theme" data-val="国家">国家</button>
-          <button class="chip" data-group="theme" data-val="地名">地名</button>
-          <button class="chip" data-group="theme" data-val="宗教">宗教</button>
-          <button class="chip" data-group="theme" data-val="戦争">戦争</button>
-          <button class="chip" data-group="theme" data-val="反乱・革命">反乱・革命</button>
-          <button class="chip" data-group="theme" data-val="その他">その他</button>
+        <div class="filter-group">
+          <div class="collapse-header" onclick="toggleCollapse('theme')">
+            <span class="collapse-arrow" id="arrow-theme">▶</span>
+            <span class="collapse-title">テーマ</span>
+          </div>
+          <div class="collapsible collapsed" id="wrap-theme">
+            <div class="collapsible-btns">
+              <button class="select-all-btn" data-group="theme">すべて選択</button>
+            </div>
+            <div class="filter-chips">
+              <button class="chip" data-group="theme" data-val="東洋文化">東洋文化</button>
+              <button class="chip" data-group="theme" data-val="西洋文化">西洋文化</button>
+              <button class="chip" data-group="theme" data-val="政策">政策</button>
+              <button class="chip" data-group="theme" data-val="遺産">遺産</button>
+              <button class="chip" data-group="theme" data-val="外交">外交</button>
+              <button class="chip" data-group="theme" data-val="人物">人物</button>
+              <button class="chip" data-group="theme" data-val="国家">国家</button>
+              <button class="chip" data-group="theme" data-val="地名">地名</button>
+              <button class="chip" data-group="theme" data-val="宗教">宗教</button>
+              <button class="chip" data-group="theme" data-val="戦争">戦争</button>
+              <button class="chip" data-group="theme" data-val="反乱・革命">反乱・革命</button>
+              <button class="chip" data-group="theme" data-val="その他">その他</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -968,6 +1050,21 @@
   </div>
 
   <script>
+    // ========== 折りたたみ ==========
+    function toggleCollapse(group) {
+      const wrap = document.getElementById('wrap-' + group);
+      const arrow = document.getElementById('arrow-' + group);
+      const hint = document.getElementById('hint-' + group);
+      if (!wrap) return;
+      wrap.classList.toggle('collapsed');
+      const opened = !wrap.classList.contains('collapsed');
+      arrow.classList.toggle('open', opened);
+      if (hint) {
+        hint.textContent = opened ? '▲ 閉じる' : 'タップで絞り込む';
+        hint.style.background = opened ? 'rgba(255,107,26,0.15)' : 'rgba(255,107,26,0.10)';
+      }
+    }
+
     // ========== 問題データ ==========
     const ALL_QUESTIONS = [{
         q: "更新世の日本に南から渡ってきた動物の種類は何",
@@ -3158,6 +3255,10 @@
       updateMatchCount();
       updateSelectAllBtnsEra();
     }
+    // ========== 初期状態：科目を両方選択 ==========
+    filters.subject = ['日本史', '世界史'];
+    updateFilterMode();
+
     // ========== チップ ==========
     document.querySelectorAll('.chip').forEach(chip => {
       chip.addEventListener('click', () => {
