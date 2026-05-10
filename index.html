@@ -3339,16 +3339,7 @@
         btn.classList.toggle('all-selected', allSelected);
       });
     }
-    // ========== リセット ==========
-    document.getElementById('resetFilter').addEventListener('click', () => {
-      ['subject', 'region', 'theme'].forEach(g => filters[g] = []);
-      filtersEraJP.length = 0;
-      filtersEraWH.length = 0;
-      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-      updateFilterMode();
-      updateMatchCount();
-      updateSelectAllBtns();
-    });
+    
     // ========== フィルタリング ==========
     function getFiltered() {
       const hasJP = filters.subject.includes('日本史');
