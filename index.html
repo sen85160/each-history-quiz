@@ -925,8 +925,8 @@
   <div class="filter-chips">
     <button class="chip active"
       data-group="difficulty"
-      data-val="通常">
-      通常
+      data-val="基本">
+      基本
     </button>
 
     <button class="chip active"
@@ -3536,7 +3536,7 @@
     }
     // ========== 初期状態：科目を両方選択 ==========
     filters.subject = ['日本史', '世界史'];　
-    filters.difficulty = ['通常', '難関'];
+    filters.difficulty = ['基本', '難関'];
     updateFilterMode();
 
     // ========== チップ ==========
@@ -3608,7 +3608,7 @@
 // 難易度フィルター
 if (
   filters.difficulty.length &&
-  !filters.difficulty.includes(q.difficulty || "通常")
+  !filters.difficulty.includes(q.difficulty || "基本")
 ) return false;        
         return true;
       });
