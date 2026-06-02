@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>歴史一問一答</title>
+  <title>日本史・世界史　復習</title>
   
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-2EDDC8HMK0"></script>
@@ -15,6 +15,8 @@
 
   gtag('config', 'G-2EDDC8HMK0');
 </script>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <link rel="manifest" href="manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
@@ -63,6 +65,7 @@
     }
 
     body {
+      padding-bottom:80px;
       background: var(--bg);
       color: var(--text);
       font-family: 'M PLUS Rounded 1c', sans-serif;
@@ -129,15 +132,15 @@
     .container {
       max-width: 900px;
       margin: 0 auto;
-      padding: 28px 20px;
+      padding: 0px 20px;
     }
 
     .filter-panel {
       background: var(--surface);
       border: 2.5px solid var(--border);
       border-radius: 20px;
-      padding: 24px 24px 20px;
-      margin-bottom: 24px;
+      padding: 32px 28px 20px;
+      margin-bottom:　20px;
       box-shadow: 0 6px 32px var(--shadow);
     }
 
@@ -440,7 +443,6 @@
       padding: 28px 32px;
       margin-bottom: 14px;
       box-shadow: 0 6px 24px var(--shadow);
-      animation: popIn 0.25s ease;
     }
 
     .card-tags {
@@ -509,7 +511,6 @@
       position: relative;
       flex-direction: column;
       gap: 4px;
-      animation: popIn 0.25s ease;
     }
 
     .answer-area:hover {
@@ -924,7 +925,6 @@
     .collapse-arrow {
       font-size: 10px;
       color: var(--orange2);
-      transition: transform 0.25s;
       display: inline-block;
     }
     .collapse-arrow.open { transform: rotate(90deg); }
@@ -933,17 +933,675 @@
       gap: 6px;
       padding: 4px 2px 6px;
     }
+    
+    .bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:70px;
+
+  background:white;
+  border-top:2px solid var(--border);
+
+  display:flex;
+  justify-content:space-around;
+  align-items:center;　
+  padding:0 8px;
+
+  z-index:9999;
+}
+
+.bottom-nav button{
+  border:none;
+  background:none;
+  cursor:pointer;
+
+  font-size:12px;
+  font-weight:700;
+  color:var(--text-sub);
+}
+   #homeScreen{
+  display:none;
+}
+
+.home-card{
+  max-width:800px;
+  margin:30px auto;
+  padding:25px;
+
+  background:white;
+  border:2px solid var(--border);
+  border-radius:20px;
+}
+    
+.bottom-nav button{
+  border:none;
+  background:none;
+
+  color:#777;
+  font-size:12px;
+
+  padding:8px 12px;
+  border-radius:16px;
+
+  transition:all 0.2s ease;
+}
+
+.bottom-nav button.active{
+  background:var(--main-green);
+
+  color:white;
+  font-weight:700;
+
+  transform:translateY(-3px);
+
+  box-shadow:0 3px 10px rgba(0,0,0,0.15);
+}
+    
+  .bottom-nav i{
+  font-size:20px;
+  margin-bottom:4px;
+}
+  
+  /* ══ 並び替え・年表セクション共通 ══ */
+#sortSection, #timelineSection {
+  display: none;
+}
+#sortSection.active, #timelineSection.active {
+  display: block;
+}
+#timelineSection.active {
+  background: #ffffff;
+  min-height: 100vh;
+}
+#sortSection.active, #timelineSection.active {
+  display: block;
+}
+
+/* ══ 並び替えフィルター ══ */
+.sort-panel-title {
+  font-size: 16px; font-weight: 800; color: var(--text);
+  padding: 18px 16px 6px; letter-spacing: 1px;
+}
+.sort-filter-card {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 14px; padding: 12px 14px; margin: 0 12px 10px;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+.sort-filter-label {
+  font-size: 11px; font-weight: 700; color: var(--text-sub);
+  margin-bottom: 8px; letter-spacing: 1px;
+  display: flex; align-items: center; gap: 8px;
+}
+.sort-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.sort-tag {
+  padding: 4px 12px; border-radius: 50px;
+  border: 1.5px solid var(--border); background: var(--bg2);
+  font-size: 12px; font-weight: 700; cursor: pointer;
+  color: var(--text-sub); user-select: none; transition: all 0.15s;
+}
+.sort-tag:hover { border-color: var(--orange); }
+.sort-tag.selected { background: var(--orange); border-color: var(--orange); color: #fff; }
+.sort-tag.subject-jp.selected { background: var(--japan); border-color: var(--japan); }
+.sort-tag.subject-world.selected { background: var(--world); border-color: var(--world); }
+.sort-opt-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.sort-opt-btn {
+  padding: 5px 14px; border-radius: 50px;
+  border: 1.5px solid var(--border); background: var(--bg2);
+  font-size: 12px; font-weight: 700; cursor: pointer;
+  color: var(--text-sub); transition: all 0.15s;
+}
+.sort-opt-btn.selected { background: var(--orange); border-color: var(--orange); color: #fff; }
+.sort-count-badge {
+  background: var(--bg2); border: 1.5px solid var(--border);
+  border-radius: 50px; padding: 6px 16px;
+  font-size: 13px; font-weight: 700; color: var(--text); margin-left: auto;
+}
+.sort-count-badge span { color: var(--main-green); font-size: 18px; font-weight: 900; }
+.sort-filter-footer {
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap; padding: 10px 14px 14px;
+}
+.sort-sel-all-btn {
+  font-size: 11px; background: var(--bg2); color: var(--text-sub);
+  border: 1.5px solid var(--border); border-radius: 20px;
+  padding: 3px 10px; cursor: pointer; font-weight: 700;
+}
+.sort-sel-all-btn:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
+.sort-clr-btn {
+  font-size: 11px; color: #aaa; background: none;
+  border: 1.5px dashed #ccc; border-radius: 20px;
+  padding: 3px 10px; cursor: pointer;
+}
+.sort-clr-btn:hover { color: var(--red); border-color: var(--red); }
+.sort-collapse-header {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--bg2); border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 7px 12px; cursor: pointer;
+  user-select: none; transition: all 0.15s; margin-bottom: 0;
+}
+.sort-collapse-header:hover { border-color: var(--orange); }
+.sort-collapse-title { font-size: 12px; font-weight: 700; color: var(--text); letter-spacing: 1px; flex: 1; }
+.sort-collapse-hint { font-size: 10px; color: var(--orange); background: rgba(120,214,31,0.1); border-radius: 20px; padding: 2px 8px; white-space: nowrap; }
+.sort-collapse-arrow { font-size: 11px; color: var(--orange); transition: transform 0.25s; display: inline-block; }
+.sort-collapse-arrow.open { transform: rotate(90deg); }
+.sort-collapsible { overflow: hidden; transition: max-height 0.35s ease, opacity 0.3s ease; max-height: 600px; opacity: 1; padding-top: 4px; }
+.sort-collapsible.collapsed { max-height: 0; opacity: 0; padding-top: 0; }
+.sort-filter-row-2col { display: flex; gap: 8px; margin: 0 12px 10px; }
+.sort-filter-row-2col .sort-filter-card { flex: 1; min-width: 0; margin: 0; }
+.sort-start-btn {
+  background: var(--main-green); color: #fff; border: none;
+  border-radius: 50px; padding: 12px 32px; font-size: 15px;
+  font-weight: 800; cursor: pointer; box-shadow: 0 4px 16px rgba(47,158,68,0.3);
+  transition: all 0.2s; letter-spacing: 1px;
+}
+.sort-start-btn:hover { background: var(--main-green-dark); transform: translateY(-1px); }
+.sort-start-btn:disabled { background: #ccc; box-shadow: none; cursor: not-allowed; transform: none; }
+.sort-timeline-btn {
+  background: var(--surface); color: var(--main-green-dark);
+  border: 2px solid var(--main-green); border-radius: 50px;
+  padding: 10px 20px; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+}
+.sort-timeline-btn:hover { background: var(--bg2); }
+
+/* ══ 並び替えゲーム ══ */
+#sg-screen-filter { display: block; }
+#sg-screen-sort, #sg-screen-explain, #sg-screen-clear { display: none; }
+.sg-screen { animation: fadeIn 0.3s ease; }
+.sg-top-bar {
+  background: rgba(120,214,31,0.12); border-bottom: 1px solid var(--border);
+  display: flex; align-items: stretch; min-height: 28px; flex-shrink: 0; overflow: hidden;
+}
+.sg-progress-cell {
+  flex: 1; border-right: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: rgba(120,214,31,0.35); min-width: 0;
+}
+.sg-progress-cell.done { background: rgba(120,214,31,0.2); color: var(--main-green); }
+.sg-progress-cell.current { background: var(--orange); color: #fff; }
+.sg-hud {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px; background: var(--surface); border-bottom: 1.5px solid var(--border);
+}
+.sg-hud-back {
+  background: var(--bg2); border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 5px 12px; font-size: 11px;
+  font-weight: 700; color: var(--text-sub); cursor: pointer;
+}
+.sg-hud-back:hover { border-color: var(--orange); color: var(--text); }
+.sg-hud-label { font-size: 12px; font-weight: 800; color: var(--text-sub); letter-spacing: 1px; }
+.sg-sort-wrap {
+  padding: 16px; display: flex; flex-direction: column;
+  align-items: center; gap: 14px;
+  min-height: calc(100vh - 200px); justify-content: center;
+}
+.sg-instruction {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 8px 18px;
+  font-size: 13px; font-weight: 700; color: var(--text-sub); text-align: center;
+}
+.sg-slots-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.sg-slot {
+  width: 130px; min-height: 80px; border-radius: 12px;
+  border: 2.5px dashed var(--border); background: var(--bg2);
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; position: relative; transition: all 0.2s;
+}
+.sg-slot .sg-slot-num {
+  font-size: 11px; font-weight: 700; color: var(--text-sub);
+  letter-spacing: 2px; position: absolute; top: 5px; left: 0; right: 0; text-align: center;
+}
+.sg-slot.drag-over { border-color: var(--orange); background: rgba(120,214,31,0.12); transform: scale(1.04); }
+.sg-slot.filled { border-style: solid; border-color: var(--orange); background: var(--surface); }
+.sg-slot-card {
+  width: 100%; height: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 10px; text-align: center; cursor: grab;
+}
+.sg-slot-card-text { font-size: 12px; font-weight: 800; color: var(--text); line-height: 1.35; }
+.sg-sort-arrow { font-size: 18px; color: var(--border); display: flex; align-items: center; }
+.sg-cards-row {
+  display: flex; gap: 8px; justify-content: center;
+  flex-wrap: wrap; max-width: 600px; width: 100%;
+}
+.sg-card {
+  background: var(--surface); border: 2px solid var(--border);
+  border-radius: 10px; padding: 12px 16px; font-size: 13px;
+  font-weight: 800; color: var(--text); cursor: grab; user-select: none;
+  touch-action: none; transition: all 0.15s;
+  box-shadow: 0 2px 8px var(--shadow); min-width: 100px; text-align: center;
+}
+.sg-card:hover { border-color: var(--orange); transform: translateY(-2px); }
+.sg-card.dragging-card { opacity: 0.3; transform: scale(0.95); }
+.sg-card.used { opacity: 0; pointer-events: none; }
+.sg-submit-area {
+  padding: 14px 16px 20px; display: flex; flex-direction: column;
+  align-items: center; gap: 8px;
+  background: var(--surface); border-top: 1.5px solid var(--border);
+}
+.sg-submit-btn {
+  background: var(--main-green); color: #fff; border: none;
+  border-radius: 50px; padding: 13px 44px; font-size: 15px;
+  font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(47,158,68,0.3);
+  transition: all 0.2s; letter-spacing: 2px;
+}
+.sg-submit-btn:hover { background: var(--main-green-dark); }
+.sg-submit-btn:disabled { background: #ccc; box-shadow: none; cursor: not-allowed; }
+.sg-explain-wrap {
+  padding: 24px 16px; display: flex; flex-direction: column;
+  align-items: center; gap: 14px;
+  min-height: calc(100vh - 80px); justify-content: center;
+}
+.sg-explain-card {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 18px; padding: 24px; max-width: 480px; width: 100%;
+  box-shadow: 0 4px 20px var(--shadow);
+}
+.sg-badge {
+  display: inline-block; padding: 6px 24px; border-radius: 50px;
+  font-size: 13px; font-weight: 900; margin-bottom: 16px; letter-spacing: 2px;
+}
+.sg-badge.correct { background: rgba(77,187,52,0.15); color: var(--green); border: 2px solid var(--green); }
+.sg-badge.wrong { background: rgba(223,59,59,0.1); color: var(--red); border: 2px solid var(--red); }
+.sg-sort-table { width: 100%; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); margin-bottom: 12px; }
+.sg-sort-row { display: grid; grid-template-columns: 28px 72px 18px 1fr; align-items: center; border-bottom: 1px solid var(--bg2); }
+.sg-sort-row:last-child { border-bottom: none; }
+.sg-sort-rank { font-size: 11px; font-weight: 900; color: var(--text-sub); text-align: center; padding: 10px 0; background: var(--bg2); border-right: 1px solid var(--border); }
+.sg-sort-year { font-size: 13px; font-weight: 900; color: var(--main-green-dark); text-align: center; padding: 10px 4px; background: var(--bg2); border-right: 1px solid var(--border); }
+.sg-sort-arrow-cell { font-size: 10px; color: var(--text-sub); text-align: center; }
+.sg-sort-event { font-size: 12px; font-weight: 700; color: var(--text); padding: 10px 12px; line-height: 1.4; }
+.sg-sort-row.correct-row .sg-sort-rank { background: rgba(77,187,52,0.15); color: var(--green); }
+.sg-sort-row.wrong-row .sg-sort-rank { background: rgba(223,59,59,0.1); color: var(--red); }
+.sg-sort-row.wrong-row .sg-sort-year { color: var(--red); }
+.sg-sort-row.wrong-row .sg-sort-event { color: var(--red); }
+.sg-your-label { font-size: 11px; font-weight: 700; color: var(--text-sub); margin: 12px 0 6px; letter-spacing: 1px; }
+.sg-your-table { width: 100%; border-radius: 10px; overflow: hidden; border: 1.5px solid rgba(223,59,59,0.3); }
+.sg-your-row { display: grid; grid-template-columns: 28px 1fr; align-items: center; border-bottom: 1px solid var(--bg2); }
+.sg-your-row:last-child { border-bottom: none; }
+.sg-your-rank { font-size: 11px; font-weight: 900; text-align: center; padding: 8px 0; background: var(--bg2); color: var(--text-sub); border-right: 1px solid var(--border); }
+.sg-your-event { font-size: 12px; font-weight: 700; color: var(--text); padding: 8px 12px; line-height: 1.4; }
+.sg-your-row.wrong-pos .sg-your-rank { color: var(--red); background: rgba(223,59,59,0.1); }
+.sg-your-row.wrong-pos .sg-your-event { color: var(--red); }
+.sg-next-btn {
+  background: var(--main-green); color: #fff; border: none;
+  border-radius: 50px; padding: 14px 48px; font-size: 15px;
+  font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(47,158,68,0.3);
+  transition: all 0.2s; letter-spacing: 2px; margin-top: 16px; display: block; width: 100%;
+}
+.sg-next-btn:hover { background: var(--main-green-dark); }
+.sg-clear-wrap {
+  padding: 40px 20px; display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  min-height: calc(100vh - 80px); justify-content: center; gap: 16px;
+}
+.sg-clear-icon { font-size: 64px; animation: popIn 0.5s ease; }
+.sg-clear-title { font-size: 42px; font-weight: 900; color: var(--main-green-dark); letter-spacing: 4px; }
+.sg-clear-stats { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.sg-stat-box { background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 14px 24px; min-width: 100px; }
+.sg-stat-num { font-size: 30px; font-weight: 900; color: var(--main-green); }
+.sg-stat-label { font-size: 11px; color: var(--text-sub); margin-top: 4px; letter-spacing: 2px; }
+.sg-retry-btn {
+  background: var(--surface); color: var(--main-green-dark);
+  border: 2px solid var(--main-green); border-radius: 50px;
+  padding: 12px 32px; font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.2s;
+}
+.sg-retry-btn:hover { background: var(--bg2); }
+.sg-flash {
+  position: fixed; inset: 0; pointer-events: none; z-index: 9998;
+  display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s;
+}
+.sg-flash.show { opacity: 1; }
+.sg-flash.correct-flash { background: rgba(77,187,52,0.2); }
+.sg-flash.wrong-flash { background: rgba(223,59,59,0.2); }
+.sg-flash-label {
+  font-size: clamp(48px,10vw,80px); font-weight: 900; color: #fff;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.3); animation: flash-pop 0.4s ease;
+}
+@keyframes flash-pop { 0%{transform:scale(0.5);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1} }
+
+/* ══ 年表 ══ */
+.timeline-panel-title { font-size: 16px; font-weight: 800; color: var(--text); padding: 18px 16px 8px; }
+.timeline-filter-bar { padding: 0 12px 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+.tl-tag {
+  padding: 4px 12px; border-radius: 50px; border: 1.5px solid var(--border);
+  background: var(--bg2); font-size: 12px; font-weight: 700;
+  cursor: pointer; color: var(--text-sub); transition: all 0.15s;
+}
+.tl-tag.selected { background: var(--orange); border-color: var(--orange); color: #fff; }
+.tl-tag.subject-jp.selected { background: var(--japan); border-color: var(--japan); }
+.tl-tag.subject-world.selected { background: var(--world); border-color: var(--world); }
+.tl-count-bar { padding: 4px 14px 8px; font-size: 12px; color: var(--text-sub); font-weight: 700; }
+.timeline-list-wrap { padding: 0 12px 20px; }
+.tl-item { display: flex; align-items: stretch; border-bottom: 1px solid var(--border); }
+.tl-item:last-child { border-bottom: none; }
+.tl-year {
+  min-width: 86px; padding: 10px; font-size: 12px; font-weight: 900;
+  color: var(--main-green-dark); background: var(--bg2);
+  display: flex; align-items: center; justify-content: flex-end;
+  border-right: 3px solid var(--orange); flex-shrink: 0;
+}
+.tl-body { padding: 10px 12px; flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+.tl-event { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.4; }
+.tl-tags { display: flex; flex-wrap: wrap; gap: 3px; }
+.tl-tag-sm { font-size: 10px; background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 1px 7px; color: var(--text-sub); }
+.tl-empty { text-align: center; padding: 40px 20px; color: var(--text-sub); font-size: 14px; }
+
+    @media(max-width:480px) {
+
+  .sg-slots-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    width:85%;
+  }
+
+  .sg-slot{
+    min-height:64px;
+    width:100%;
+  }
+
+  .sg-cards-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    width:85%;
+  }
+
+  .sg-card{
+    min-width:0;
+    padding:10px 8px;
+    font-size:12px;
+    min-height:54px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+}
+    
+    
+    #quizArea:not(.active),
+#resultScreen[style*="display: none"],
+#listScreen:not(.active) {
+  display: none !important;
+}
+  
+    
+
+
+/* ══ ホーム画面 ══ */
+#homeScreen {
+  display: none;
+  padding: 12px 0 0;
+}
+
+/* 統計カード */
+.home-stats-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin: 0 12px 14px;
+  box-shadow: 0 2px 12px var(--shadow);
+}
+.home-stats-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-sub);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+.home-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 6px;
+}
+.home-stat-item {
+  text-align: center;
+  background: var(--bg2);
+  border-radius: 10px;
+  padding: 8px 4px;
+}
+.home-stat-num {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--main-green);
+  line-height: 1.1;
+}
+.home-stat-label {
+  font-size: 9px;
+  color: var(--text-sub);
+  margin-top: 3px;
+  font-weight: 700;
+}
+
+.home-main-area {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 12px;
+  padding: 0 12px 16px;
+}
+.home-person-block {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 0;
+}
+.home-person-img {
+  height: 160px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.10));
+  flex-shrink: 0;
+  align-self: flex-end;
+}
+.home-bubble-wrap {
+  position: relative;
+  width: 160px;
+  flex-shrink: 0;
+  align-self: center;
+  margin-left: 4px;
+  margin-bottom: 20px;
+}
+.home-bubble-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.home-bubble-content {
+  position: absolute;
+  top: 0;
+  left: 14px;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 12px;
+}
+.home-bubble-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.home-bubble-divider {
+  height: 1.5px;
+  background: var(--border);
+  margin: 6px 0;
+}
+.home-bubble-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-sub);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.home-bubble-val {
+  display: flex;
+  align-items: baseline;
+  gap: 1px;
+}
+.home-days-num {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--main-green);
+  line-height: 1.1;
+  font-family: 'Zen Maru Gothic', sans-serif;
+}
+.home-days-unit {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text);
+}
+.home-tbd-box {
+  flex: 1;
+  min-width: 0;
+  min-height: 180px;
+  background: #ffffff;
+  border: 2.5px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 2px 12px var(--shadow);
+}
+
+@media (max-width: 600px) {
+  .home-stats-grid { grid-template-columns: 1fr 1fr; }
+  .home-stat-num { font-size: 18px; }
+  .home-main-area {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .home-person-block { justify-content: center; }
+  .home-person-img { height: 130px; }
+  .home-tbd-box { min-height: 140px; width: 100%; }
+  .home-bubble-wrap { width: 140px; }
+}
+   
+/* クイズ画面全体の余白調整 */
+#quizArea {
+  padding: 0px 150px 80px;   /* 下に余裕を持たせる */
+}
+    
+    @media (max-width: 600px) {
+  #quizArea {
+    padding: 0 10px 80px;
+  }
+}
+
+/* モバイル対応強化 */
+@media (max-width: 600px) {
+  .card {
+    padding: 28px 20px;
+    min-height: 240px;
+  }
+  .answer-area {
+    padding: 36px 24px;
+    min-height: 160px;
+  }
+}
+    
   </style>
+  
 </head>
 
 <body>
 
   <header>
-    <h1> 歴史一問一答 </h1>
+    <h1> 日本史・世界史　復習 </h1>
   </header>
 
   <div class="container">
+　
+<div id="homeScreen">
 
+  <!-- 統計カード -->
+  <div class="home-stats-card">
+    <div class="home-stats-title">📊 学習記録</div>
+    <div class="home-stats-grid">
+      <div class="home-stat-item">
+        <div class="home-stat-num" id="stat-total">--</div>
+        <div class="home-stat-label">総回答数</div>
+      </div>
+      <div class="home-stat-item">
+        <div class="home-stat-num" id="stat-rate">--%</div>
+        <div class="home-stat-label">総正答率</div>
+      </div>
+      <div class="home-stat-item">
+        <div class="home-stat-num" id="stat-time">--</div>
+        <div class="home-stat-label">総学習時間</div>
+      </div>
+      <div class="home-stat-item">
+        <div class="home-stat-num" id="stat-streak">--</div>
+        <div class="home-stat-label">連続学習日数</div>
+      </div>
+    </div>
+  </div>
+
+  
+
+  <!-- メインエリア -->
+<div class="home-main-area">
+
+  <!-- 左：偉人＋吹き出し -->
+  <div class="home-person-block">
+    <img id="home-person-img" src="" alt="偉人" class="home-person-img" onerror="this.style.display='none'">
+
+    <div class="home-bubble-wrap">
+      <svg class="home-bubble-svg" viewBox="0 0 160 110" xmlns="http://www.w3.org/2000/svg">
+        <rect x="14" y="0" width="146" height="110" rx="14" ry="14"
+              fill="white" stroke="var(--orange)" stroke-width="3"/>
+        <polygon points="14,42 0,55 14,68" fill="white"/>
+        <polyline points="14,42 0,55 14,68"
+                  fill="none" stroke="var(--orange)" stroke-width="3"
+                  stroke-linejoin="round"/>
+        <line x1="14" y1="43" x2="14" y2="67" stroke="white" stroke-width="4"/>
+      </svg>
+      <div class="home-bubble-content">
+        <div class="home-bubble-row">
+          <div class="home-bubble-label">定期テストまで</div>
+          <div class="home-bubble-val">
+            <span id="days-regular-num" class="home-days-num">--</span>
+            <span class="home-days-unit">日</span>
+          </div>
+        </div>
+        <div class="home-bubble-divider"></div>
+        <div class="home-bubble-row">
+          <div class="home-bubble-label">共通テストまで</div>
+          <div class="home-bubble-val">
+            <span id="days-common-num" class="home-days-num">--</span>
+            <span class="home-days-unit">日</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右：未定枠 -->
+  <div class="home-tbd-box"></div>
+
+</div>
+ 
+
+
+</div>
+
+
+    
+    
+    <div class="home-person-wrap">
+      <img id="home-person-img" src="" alt="" class="home-person-img" onerror="this.style.display='none'">
+    </div>
+  </div>
+
+</div>
+    
+    <button id="goQuizBtn" style="display:none;"></button>
+    
     <div class="filter-panel" id="filterPanel">
       <div class="panel-title">出題条件を絞り込む　</div>
 
@@ -1076,19 +1734,6 @@
       <div class="filter-actions">
   <button class="btn btn-primary" id="startBtn">▶ 出題開始</button>
 
-  <button
-    type="button"
-    class="btn-outline-blue"
-    onclick="window.location.href='https://sen85160.github.io/history-narabikae-quiz/'">
-    並び替え問題を対策
-  </button>
-        
-<button
-  type="button"
-  class="btn-outline-orange"
-  onclick="window.location.href='https://sen85160.github.io/history-test-quiz/'">
-  第二回テスト範囲のみ出題
-</button>
         
   <button class="btn btn-ghost" id="listBtn">一覧を見る</button>
         
@@ -1163,6 +1808,262 @@
     </div>
 
   </div>
+
+  
+  <!-- 並び替えセクション -->
+  <div id="sortSection">
+    <div class="sg-flash" id="sg-flash"><div class="sg-flash-label" id="sg-flash-label"></div></div>
+
+    <div id="sg-screen-filter" class="sg-screen">
+      <div class="sort-panel-title">🔀 並び替え — 出題条件</div>
+      <div class="sort-filter-card">
+        <div class="sort-filter-label">科目 <button class="sort-clr-btn" onclick="sgClearFilter('subject')">すべて解除</button></div>
+        <div class="sort-tags" id="sg-tags-subject">
+          <div class="sort-tag subject-jp selected" data-group="subject" data-val="日本史" onclick="sgToggleTag(this)">日本史</div>
+          <div class="sort-tag subject-world selected" data-group="subject" data-val="世界史" onclick="sgToggleTag(this)">世界史</div>
+        </div>
+      </div>
+      <div class="sort-filter-row-2col">
+        <div class="sort-filter-card" id="sg-era-jp-card">
+          <div class="sort-collapse-header" onclick="sgToggleCollapse('era-jp')">
+            <span class="sort-collapse-arrow" id="sg-arrow-era-jp">▶</span>
+            <span class="sort-collapse-title">時代（日本史）</span>
+            <span class="sort-collapse-hint" id="sg-hint-era-jp">絞り込む</span>
+          </div>
+          <div class="sort-collapsible collapsed" id="sg-tags-wrap-era-jp">
+            <div style="display:flex;gap:4px;padding:6px 2px 4px;">
+              <button class="sort-sel-all-btn" onclick="sgSelectAll('era-jp')">すべて</button>
+              <button class="sort-clr-btn" onclick="sgClearFilter('era-jp')">解除</button>
+            </div>
+            <div class="sort-tags" id="sg-tags-era-jp">
+              <div class="sort-tag selected" data-group="era-jp" data-val="旧石器" onclick="sgToggleTag(this)">旧石器</div>
+              <div class="sort-tag selected" data-group="era-jp" data-val="縄文" onclick="sgToggleTag(this)">縄文</div>
+              <div class="sort-tag selected" data-group="era-jp" data-val="弥生" onclick="sgToggleTag(this)">弥生</div>
+              <div class="sort-tag selected" data-group="era-jp" data-val="古墳" onclick="sgToggleTag(this)">古墳</div>
+              <div class="sort-tag selected" data-group="era-jp" data-val="飛鳥" onclick="sgToggleTag(this)">飛鳥</div>
+              <div class="sort-tag selected" data-group="era-jp" data-val="奈良" onclick="sgToggleTag(this)">奈良</div>
+              <div class="sort-tag selected" data-group="era-jp" data-val="平安" onclick="sgToggleTag(this)">平安</div>
+              <div class="sort-tag selected" data-group="era-jp" data-val="鎌倉" onclick="sgToggleTag(this)">鎌倉</div>
+              <div class="sort-tag selected" data-group="era-jp" data-val="室町" onclick="sgToggleTag(this)">室町</div>
+              <div class="sort-tag selected" data-group="era-jp" data-val="戦国" onclick="sgToggleTag(this)">戦国</div>
+              <div class="sort-tag selected" data-group="era-jp" data-val="江戸" onclick="sgToggleTag(this)">江戸</div>
+              <div class="sort-tag selected" data-group="era-jp" data-val="明治" onclick="sgToggleTag(this)">明治</div>
+              <div class="sort-tag selected" data-group="era-jp" data-val="大正" onclick="sgToggleTag(this)">大正</div>
+              <div class="sort-tag selected" data-group="era-jp" data-val="戦前" onclick="sgToggleTag(this)">戦前</div>
+              <div class="sort-tag selected" data-group="era-jp" data-val="戦後" onclick="sgToggleTag(this)">戦後</div>
+              <div class="sort-tag selected" data-group="era-jp" data-val="現代" onclick="sgToggleTag(this)">現代</div>
+            </div>
+          </div>
+        </div>
+        <div class="sort-filter-card" id="sg-era-world-card">
+          <div class="sort-collapse-header" onclick="sgToggleCollapse('era-world')">
+            <span class="sort-collapse-arrow" id="sg-arrow-era-world">▶</span>
+            <span class="sort-collapse-title">時代（世界史）</span>
+            <span class="sort-collapse-hint" id="sg-hint-era-world">絞り込む</span>
+          </div>
+          <div class="sort-collapsible collapsed" id="sg-tags-wrap-era-world">
+            <div style="display:flex;gap:4px;padding:6px 2px 4px;">
+              <button class="sort-sel-all-btn" onclick="sgSelectAll('era-world')">すべて</button>
+              <button class="sort-clr-btn" onclick="sgClearFilter('era-world')">解除</button>
+            </div>
+            <div class="sort-tags" id="sg-tags-era-world">
+              <div class="sort-tag selected" data-group="era-world" data-val="先史・石器時代" onclick="sgToggleTag(this)">先史・石器時代</div>
+              <div class="sort-tag selected" data-group="era-world" data-val="古代" onclick="sgToggleTag(this)">古代</div>
+              <div class="sort-tag selected" data-group="era-world" data-val="中世" onclick="sgToggleTag(this)">中世</div>
+              <div class="sort-tag selected" data-group="era-world" data-val="近世" onclick="sgToggleTag(this)">近世</div>
+              <div class="sort-tag selected" data-group="era-world" data-val="近代" onclick="sgToggleTag(this)">近代</div>
+              <div class="sort-tag selected" data-group="era-world" data-val="現代" onclick="sgToggleTag(this)">現代</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sort-filter-row-2col">
+        <div class="sort-filter-card">
+          <div class="sort-collapse-header" onclick="sgToggleCollapse('region')">
+            <span class="sort-collapse-arrow" id="sg-arrow-region">▶</span>
+            <span class="sort-collapse-title">地域</span>
+            <span class="sort-collapse-hint" id="sg-hint-region">絞り込む</span>
+          </div>
+          <div class="sort-collapsible collapsed" id="sg-tags-wrap-region">
+            <div style="display:flex;gap:4px;padding:6px 2px 4px;">
+              <button class="sort-sel-all-btn" onclick="sgSelectAll('region')">すべて</button>
+              <button class="sort-clr-btn" onclick="sgClearFilter('region')">解除</button>
+            </div>
+            <div class="sort-tags" id="sg-tags-region">
+              <div class="sort-tag selected" data-group="region" data-val="中華王朝" onclick="sgToggleTag(this)">中華王朝</div>
+              <div class="sort-tag selected" data-group="region" data-val="朝鮮半島" onclick="sgToggleTag(this)">朝鮮半島</div>
+              <div class="sort-tag selected" data-group="region" data-val="東南アジア" onclick="sgToggleTag(this)">東南アジア</div>
+              <div class="sort-tag selected" data-group="region" data-val="南アジア" onclick="sgToggleTag(this)">南アジア</div>
+              <div class="sort-tag selected" data-group="region" data-val="西アジア" onclick="sgToggleTag(this)">西アジア</div>
+              <div class="sort-tag selected" data-group="region" data-val="地中海沿岸" onclick="sgToggleTag(this)">地中海沿岸</div>
+              <div class="sort-tag selected" data-group="region" data-val="ヨーロッパ" onclick="sgToggleTag(this)">ヨーロッパ</div>
+              <div class="sort-tag selected" data-group="region" data-val="アフリカ" onclick="sgToggleTag(this)">アフリカ</div>
+              <div class="sort-tag selected" data-group="region" data-val="アメリカ" onclick="sgToggleTag(this)">アメリカ</div>
+              <div class="sort-tag selected" data-group="region" data-val="日本" onclick="sgToggleTag(this)">日本</div>
+            </div>
+          </div>
+        </div>
+        <div class="sort-filter-card">
+          <div class="sort-collapse-header" onclick="sgToggleCollapse('theme')">
+            <span class="sort-collapse-arrow" id="sg-arrow-theme">▶</span>
+            <span class="sort-collapse-title">テーマ</span>
+            <span class="sort-collapse-hint" id="sg-hint-theme">絞り込む</span>
+          </div>
+          <div class="sort-collapsible collapsed" id="sg-tags-wrap-theme">
+            <div style="display:flex;gap:4px;padding:6px 2px 4px;">
+              <button class="sort-sel-all-btn" onclick="sgSelectAll('theme')">すべて</button>
+              <button class="sort-clr-btn" onclick="sgClearFilter('theme')">解除</button>
+            </div>
+            <div class="sort-tags" id="sg-tags-theme">
+              <div class="sort-tag selected" data-group="theme" data-val="戦争" onclick="sgToggleTag(this)">戦争</div>
+              <div class="sort-tag selected" data-group="theme" data-val="文化" onclick="sgToggleTag(this)">文化</div>
+              <div class="sort-tag selected" data-group="theme" data-val="国家" onclick="sgToggleTag(this)">国家</div>
+              <div class="sort-tag selected" data-group="theme" data-val="政策" onclick="sgToggleTag(this)">政策</div>
+              <div class="sort-tag selected" data-group="theme" data-val="その他" onclick="sgToggleTag(this)">その他</div>
+              <div class="sort-tag selected" data-group="theme" data-val="反乱・革命" onclick="sgToggleTag(this)">反乱・革命</div>
+　　　　　　　　<div class="sort-tag selected" data-group="theme" data-val="外交" onclick="sgToggleTag(this)">外交</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sort-filter-card">
+        <div class="sort-filter-label">出題数</div>
+        <div class="sort-opt-row" id="sg-count-options">
+          <button class="sort-opt-btn selected" data-val="7" onclick="sgSelectCount(this)">7問</button>
+          <button class="sort-opt-btn" data-val="10" onclick="sgSelectCount(this)">10問</button>
+          <button class="sort-opt-btn" data-val="15" onclick="sgSelectCount(this)">15問</button>
+          <button class="sort-opt-btn" data-val="25" onclick="sgSelectCount(this)">25問</button>
+          <button class="sort-opt-btn" data-val="all" onclick="sgSelectCount(this)">すべて</button>
+        </div>
+      </div>
+      <div class="sort-filter-footer">
+        <button class="sort-timeline-btn" onclick="showNavSection('timelineSection')">📅 年表で見る</button>
+        <div class="sort-count-badge">対象：<span id="sg-count-display">0</span> 問</div>
+        <button class="sort-start-btn" id="sg-start-btn" onclick="sgStartGame()">▶ スタート</button>
+      </div>
+    </div>
+
+    <div id="sg-screen-sort" class="sg-screen" style="display:none;">
+      <div class="sg-top-bar" id="sg-top-bar"></div>
+      <div class="sg-hud">
+        <button class="sg-hud-back" onclick="sgBackToFilter()">← 戻る</button>
+        <div class="sg-hud-label">並び替え &nbsp; <span id="sg-cur">1</span> / <span id="sg-total">7</span></div>
+        <div style="width:60px;"></div>
+      </div>
+      <div class="sg-sort-wrap">
+        <div class="sg-instruction">古い順（左が古い）にカードをはめよう</div>
+        <div class="sg-slots-row" id="sg-slots-row"></div>
+        <div class="sg-cards-row" id="sg-cards-row"></div>
+      </div>
+      <div class="sg-submit-area">
+        <button class="sg-submit-btn" id="sg-submit-btn" onclick="sgSubmitSort()" disabled>回答</button>
+        <div style="font-size:11px;color:var(--text-sub);">4つすべてはめると回答できます</div>
+      </div>
+    </div>
+
+    <div id="sg-screen-explain" class="sg-screen" style="display:none;">
+      <div class="sg-explain-wrap">
+        <div class="sg-explain-card">
+          <div class="sg-badge" id="sg-badge">正解！</div>
+          <div class="sg-sort-table" id="sg-sort-table"></div>
+          <div id="sg-your-wrap" style="display:none;">
+            <div class="sg-your-label">あなたの解答</div>
+            <div class="sg-your-table" id="sg-your-table"></div>
+          </div>
+          <button class="sg-next-btn" onclick="sgNextQuestion()">次へ →</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="sg-screen-clear" class="sg-screen" style="display:none;">
+      <div class="sg-clear-wrap">
+        <div class="sg-clear-icon">🏆</div>
+        <div class="sg-clear-title">クリア！</div>
+        <div class="sg-clear-stats">
+          <div class="sg-stat-box"><div class="sg-stat-num" id="sg-cl-correct">0</div><div class="sg-stat-label">正解数</div></div>
+          <div class="sg-stat-box"><div class="sg-stat-num" id="sg-cl-total">0</div><div class="sg-stat-label">出題数</div></div>
+          <div class="sg-stat-box"><div class="sg-stat-num" id="sg-cl-rate">0%</div><div class="sg-stat-label">正答率</div></div>
+        </div>
+        <button class="sg-retry-btn" onclick="sgBackToFilter()">↺ もう一度</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 年表セクション -->
+  <div id="timelineSection">
+    <div class="timeline-panel-title">📅 年表</div>
+    <div class="timeline-filter-bar">
+      <div class="tl-tag subject-jp selected" data-tl-group="subject" data-tl-val="日本史" onclick="tlToggleTag(this)">日本史</div>
+      <div class="tl-tag subject-world selected" data-tl-group="subject" data-tl-val="世界史" onclick="tlToggleTag(this)">世界史</div>
+    </div>
+    <div class="tl-count-bar">全 <span id="tl-count">0</span> 件</div>
+    <div class="timeline-list-wrap" id="tl-list"></div>
+  </div>
+  
+<!-- 設定画面 -->
+<div id="settingsScreen" style="display:none;">
+  <div class="settings-wrap">
+
+    <div class="settings-section-title">🎨 カラーテーマ</div>
+    <div class="settings-card">
+      <div class="color-theme-grid" id="colorThemeGrid">
+        <button class="color-theme-btn active" data-theme="green" style="--tc:#78d61f;">
+          <span class="color-swatch" style="background:#78d61f;"></span>黄緑
+        </button>
+        <button class="color-theme-btn" data-theme="blue" style="--tc:#2f8cff;">
+          <span class="color-swatch" style="background:#2f8cff;"></span>ブルー
+        </button>
+        <button class="color-theme-btn" data-theme="purple" style="--tc:#9b59b6;">
+          <span class="color-swatch" style="background:#9b59b6;"></span>パープル
+        </button>
+        <button class="color-theme-btn" data-theme="red" style="--tc:#e74c3c;">
+          <span class="color-swatch" style="background:#e74c3c;"></span>レッド
+        </button>
+        <button class="color-theme-btn" data-theme="orange" style="--tc:#e67e22;">
+          <span class="color-swatch" style="background:#e67e22;"></span>オレンジ
+        </button>
+        <button class="color-theme-btn" data-theme="pink" style="--tc:#e91e8c;">
+          <span class="color-swatch" style="background:#e91e8c;"></span>ピンク
+        </button>
+        <button class="color-theme-btn" data-theme="teal" style="--tc:#00897b;">
+          <span class="color-swatch" style="background:#00897b;"></span>ティール
+        </button>
+        <button class="color-theme-btn" data-theme="navy" style="--tc:#1a237e;">
+          <span class="color-swatch" style="background:#1a237e;"></span>ネイビー
+        </button>
+      </div>
+    </div>
+
+    <div class="settings-section-title">📋 その他</div>
+    <div class="settings-card settings-list">
+
+      <button class="settings-row" onclick="openFeedback()">
+        <span class="settings-row-icon">💬</span>
+        <span class="settings-row-label">フィードバックを送る</span>
+        <span class="settings-row-arrow">›</span>
+      </button>
+
+      <button class="settings-row" onclick="openContact()">
+        <span class="settings-row-icon">✉️</span>
+        <span class="settings-row-label">お問い合わせ</span>
+        <span class="settings-row-arrow">›</span>
+      </button>
+
+      <button class="settings-row settings-row-danger" onclick="confirmResetStats()">
+        <span class="settings-row-icon">🗑️</span>
+        <span class="settings-row-label">学習記録をリセット</span>
+        <span class="settings-row-arrow">›</span>
+      </button>
+
+    </div>
+
+    <div class="settings-version">ver. 1.0.0</div>
+
+  </div>
+</div>
+
+
+
 
   <script>
     // ========== 折りたたみ ==========
@@ -3553,6 +4454,7 @@
   { q: "天平文化の絵画で、吉祥天が描かれたものはなにか", a: "薬師寺吉祥天像", subject: "日本史", era: "奈良", region: "日本", theme: ["遺産", "文化"] },
   { q: "正倉院宝物におさめられている南アジアの影響を受けた琵琶は何", a: "螺鈿紫檀五絃琵琶", subject: "日本史", era: "奈良", region: "日本", theme: ["遺産", "文化"] },
   { q: "現存最古の印刷物と言われている、称徳天皇が作成した百万塔に残る呪文はなに", a: "百万塔陀羅尼", subject: "日本史", era: "奈良", region: "日本", theme: ["遺産", "文化"] }
+
  
     ];
     // ========== 状態 ==========
@@ -3787,6 +4689,7 @@ if (
     }
 
     function startQuiz(questions) {
+      startStudyTimer();
       currentQuestions = questions;
       currentIndex = 0;
       correctCount = 0;
@@ -3841,15 +4744,18 @@ if (
       area.onclick = null;
     }
 
-    function judge(isCorrect) {
-      if (isCorrect) correctCount++;
-      else wrongQuestions.push(currentQuestions[currentIndex]);
-      currentIndex++;
-      if (currentIndex >= currentQuestions.length) showResult();
-      else showQuestion();
-    }
+function judge(isCorrect) {
+  if (isCorrect) correctCount++;
+  else wrongQuestions.push(currentQuestions[currentIndex]);
+  recordAnswer(isCorrect); // ← 追加
+  currentIndex++;
+  if (currentIndex >= currentQuestions.length) showResult();
+  else showQuestion();
+}
 
     function showResult() {
+      stopStudyTimer(); // ← 追加
+  　　loadStats();      // ← 追加
       document.getElementById('quizArea').classList.remove('active');
       const total = currentQuestions.length;
       const pct = Math.round(correctCount / total * 100);
@@ -3923,13 +4829,879 @@ if (
     });
   </script>
   
+  <div class="bottom-nav">
+  <button id="navHome">
+  <i class="fa-solid fa-house"></i><br>
+  ホーム
+</button>
+
+<button id="navQuiz">
+  <i class="fa-solid fa-book-open"></i><br>
+  一問一答
+</button>
+
+<button id="navSort">
+  <i class="fa-solid fa-shuffle"></i><br>
+  並び替え
+</button>
+
+<button id="navTimeline">
+  <i class="fa-solid fa-clock-rotate-left"></i><br>
+  年表
+</button>
+
+<button id="navSettings">
+  <i class="fa-solid fa-gear"></i><br>
+  設定
+</button>
+</div>
+  
+  
     <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(() => console.log('SW registered'))
     .catch(err => console.log('SW failed', err));
 }
+      
+const homeScreen = document.getElementById('homeScreen');
+const filterPanel = document.getElementById('filterPanel');
+const sortSection = document.getElementById('sortSection');
+const timelineSection = document.getElementById('timelineSection');
+const settingsScreen = document.getElementById('settingsScreen');
+
+function showNavSection(section) {
+  homeScreen.style.display = 'none';
+  filterPanel.style.display = 'none';
+  document.getElementById('quizArea').classList.remove('active');
+  document.getElementById('resultScreen').style.display = 'none';
+  document.getElementById('listScreen').classList.remove('active');
+  sortSection.classList.remove('active');
+  timelineSection.classList.remove('active');
+  settingsScreen.style.display = 'none';
+  document.querySelectorAll('.bottom-nav button').forEach(btn => btn.classList.remove('active'));
+
+  if (section === 'homeScreen') {
+    homeScreen.style.display = 'block';
+    document.getElementById('navHome').classList.add('active');
+    loadStats();
+  } else if (section === 'filterPanel') {
+    filterPanel.style.display = 'block';
+    document.getElementById('navQuiz').classList.add('active');
+  } else if (section === 'sortSection') {
+    sortSection.classList.add('active');
+    document.getElementById('navSort').classList.add('active');
+    sgUpdateCountDisplay();
+    sgUpdateSubjectCards();
+  } else if (section === 'timelineSection') {
+    timelineSection.classList.add('active');
+    document.getElementById('navTimeline').classList.add('active');
+    tlRender();
+  }
+}
+
+document.getElementById('navHome').addEventListener('click', () => showNavSection('homeScreen'));
+document.getElementById('navQuiz').addEventListener('click', () => showNavSection('filterPanel'));
+document.getElementById('navSort').addEventListener('click', () => showNavSection('sortSection'));
+document.getElementById('navTimeline').addEventListener('click', () => showNavSection('timelineSection'));
+      
+
+// ナビの設定ボタンを上書き
+document.getElementById('navSettings').addEventListener('click', () => {
+  homeScreen.style.display = 'none';
+  filterPanel.style.display = 'none';
+  document.getElementById('quizArea').classList.remove('active');
+  document.getElementById('resultScreen').style.display = 'none';
+  document.getElementById('listScreen').classList.remove('active');
+  sortSection.classList.remove('active');
+  timelineSection.classList.remove('active');
+  settingsScreen.style.display = 'block';
+  document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('navSettings').classList.add('active');
+});
+
+// カラーテーマ定義
+const COLOR_THEMES = {
+  green:  { orange:'#78d61f', orange2:'#92eb39', orange3:'#b6f56e', yellow:'#e5ff54', mainGreen:'#2f9e44', mainGreenDark:'#237536', bg:'#f8fff0', bg2:'#f1ffe2', border:'#cde7a7', textSub:'#6d8a2e', shadow:'rgba(120,214,31,0.22)' },
+  blue:   { orange:'#2f8cff', orange2:'#55a3ff', orange3:'#90c4ff', yellow:'#cce5ff', mainGreen:'#1565c0', mainGreenDark:'#0d47a1', bg:'#f0f7ff', bg2:'#e3f2fd', border:'#90caf9', textSub:'#1976d2', shadow:'rgba(47,140,255,0.18)' },
+  purple: { orange:'#9b59b6', orange2:'#b07cc6', orange3:'#ce9fde', yellow:'#eed6ff', mainGreen:'#7b1fa2', mainGreenDark:'#6a1b9a', bg:'#faf5ff', bg2:'#f3e5f5', border:'#ce93d8', textSub:'#8e24aa', shadow:'rgba(155,89,182,0.18)' },
+  red:    { orange:'#e74c3c', orange2:'#f06655', orange3:'#f89a90', yellow:'#ffd7d4', mainGreen:'#c62828', mainGreenDark:'#b71c1c', bg:'#fff8f7', bg2:'#ffebee', border:'#ffcdd2', textSub:'#d32f2f', shadow:'rgba(231,76,60,0.18)' },
+  orange: { orange:'#e67e22', orange2:'#f0953a', orange3:'#f8be82', yellow:'#ffecc7', mainGreen:'#e65100', mainGreenDark:'#bf360c', bg:'#fffaf5', bg2:'#fff3e0', border:'#ffcc80', textSub:'#ef6c00', shadow:'rgba(230,126,34,0.18)' },
+  pink:   { orange:'#e91e8c', orange2:'#f040a1', orange3:'#f891c8', yellow:'#ffd6ef', mainGreen:'#c2185b', mainGreenDark:'#ad1457', bg:'#fff5fb', bg2:'#fce4ec', border:'#f48fb1', textSub:'#d81b60', shadow:'rgba(233,30,140,0.18)' },
+  teal:   { orange:'#00897b', orange2:'#26a69a', orange3:'#80cbc4', yellow:'#ccf2ef', mainGreen:'#00695c', mainGreenDark:'#004d40', bg:'#f0faf9', bg2:'#e0f2f1', border:'#80cbc4', textSub:'#00796b', shadow:'rgba(0,137,123,0.18)' },
+  navy:   { orange:'#3949ab', orange2:'#5c6bc0', orange3:'#9fa8da', yellow:'#dde1f9', mainGreen:'#1a237e', mainGreenDark:'#0d1660', bg:'#f5f6ff', bg2:'#e8eaf6', border:'#9fa8da', textSub:'#303f9f', shadow:'rgba(57,73,171,0.18)' },
+};
+
+function applyTheme(name) {
+  const t = COLOR_THEMES[name];
+  if (!t) return;
+  const r = document.documentElement.style;
+  r.setProperty('--orange',        t.orange);
+  r.setProperty('--orange2',       t.orange2);
+  r.setProperty('--orange3',       t.orange3);
+  r.setProperty('--yellow',        t.yellow);
+  r.setProperty('--main-green',    t.mainGreen);
+  r.setProperty('--main-green-dark', t.mainGreenDark);
+  r.setProperty('--bg',            t.bg);
+  r.setProperty('--bg2',           t.bg2);
+  r.setProperty('--border',        t.border);
+  r.setProperty('--text-sub',      t.textSub);
+  r.setProperty('--shadow',        t.shadow);
+  localStorage.setItem('colorTheme', name);
+  // ボタンのactive更新
+  document.querySelectorAll('.color-theme-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.theme === name);
+  });
+}
+
+document.querySelectorAll('.color-theme-btn').forEach(btn => {
+  btn.addEventListener('click', () => applyTheme(btn.dataset.theme));
+});
+
+// 起動時にテーマ復元
+const savedTheme = localStorage.getItem('colorTheme') || 'green';
+applyTheme(savedTheme);
+
+// 学習記録リセット
+function confirmResetStats() {
+  if (confirm('学習記録をすべてリセットしますか？\nこの操作は取り消せません。')) {
+    localStorage.removeItem('historyAppStats');
+    loadStats();
+    alert('リセットしました。');
+  }
+}
+
+// フィードバック・問い合わせ
+// ↓ GoogleフォームのURLをここに入れてください
+function openFeedback() {
+  window.open('https://docs.google.com/forms/d/YOUR_FEEDBACK_FORM_ID/viewform', '_blank');
+}
+function openContact() {
+  window.open('https://docs.google.com/forms/d/YOUR_CONTACT_FORM_ID/viewform', '_blank');
+}
+      
+      
+document.getElementById('goQuizBtn').addEventListener('click', () => showNavSection('filterPanel'));
+
+showNavSection('filterPanel');
+
+      
+      
+// ========== 並び替えデータ ==========
+const SG_QUESTIONS = [
+{ q:"シュメール人が都市国家を建設（◯世紀）", a:"前30世紀", subject:"世界史", era:"古代", region:"西アジア", theme:["国家"], century:true, ans:-30 },
+  { q:"弥生時代の成立（◯世紀）", a:"前4世紀", subject:"日本史", era:"弥生", region:"日本", theme:["その他"], century:true, ans:-4 },
+  { q:"奴国の王が光武帝から金印を与えられる", a:"57", subject:"日本史", era:"弥生", region:"日本", theme:["政策"], ans:57 },
+  { q:"帥升が生口160人を安帝に献上", a:"107", subject:"日本史", era:"弥生", region:"日本", theme:["政策"], ans:107 },
+  { q:"倭国大乱（◯世紀）", a:"2世紀", subject:"日本史", era:"弥生", region:"日本", theme:["戦争"], century:true, ans:2 },
+  { q:"卑弥呼が親魏倭王の称号を与えられる", a:"239", subject:"日本史", era:"弥生", region:"日本", theme:["政策"], ans:239 },
+  { q:"磐井の乱", a:"527", subject:"日本史", era:"古墳", region:"日本", theme:["戦争"], ans:527 },
+  { q:"仏教公伝", a:"538", subject:"日本史", era:"古墳", region:"日本", theme:["その他"], ans:538 },
+  { q:"物部守屋が滅ぼされる", a:"587", subject:"日本史", era:"飛鳥", region:"日本", theme:["戦争"], ans:587 },
+  { q:"蘇我馬子、崇峻天皇を暗殺", a:"592", subject:"日本史", era:"飛鳥", region:"日本", theme:["その他"], ans:592 },
+  { q:"冠位十二階の制", a:"603", subject:"日本史", era:"飛鳥", region:"日本", theme:["政策"], ans:603 },
+  { q:"憲法十七条", a:"604", subject:"日本史", era:"飛鳥", region:"日本", theme:["政策"], ans:604 },
+  { q:"第一回遣隋使派遣", a:"600", subject:"日本史", era:"飛鳥", region:"日本", theme:["政策"], ans:600 },
+  { q:"小野妹子を遣隋使として派遣", a:"607", subject:"日本史", era:"飛鳥", region:"日本", theme:["政策"], ans:607 },
+  { q:"アッカド人の国家が成立（◯世紀）", a:"前24世紀", subject:"世界史", era:"古代", region:"西アジア", theme:["国家"], century:true, ans:-24 },
+  { q:"古バビロニアの成立（◯世紀）", a:"前19世紀", subject:"世界史", era:"古代", region:"西アジア", theme:["国家"], century:true, ans:-19 },
+  { q:"ヒッタイト人の国が建国", a:"前1680", subject:"世界史", era:"古代", region:"西アジア", theme:["国家"], ans:-1680 },
+  { q:"エジプト古王国の成立（◯世紀）", a:"前27世紀", subject:"世界史", era:"古代", region:"アフリカ", theme:["国家"], century:true, ans:-27 },
+  { q:"エジプト中王国の成立（◯世紀）", a:"前21世紀", subject:"世界史", era:"古代", region:"アフリカ", theme:["国家"], century:true, ans:-21 },
+  { q:"ヒクソスの侵入（◯世紀）", a:"前18世紀", subject:"世界史", era:"古代", region:"アフリカ", theme:["戦争"], century:true, ans:-18 },
+  { q:"エジプト新王国の成立（◯世紀）", a:"前16世紀", subject:"世界史", era:"古代", region:"アフリカ", theme:["国家"], century:true, ans:-16 },
+  { q:"ヘブライ王国の分裂（◯世紀）", a:"前10世紀", subject:"世界史", era:"古代", region:"西アジア", theme:["国家"], century:true, ans:-10 },
+  { q:"アッシリア王国がオリエントを統一", a:"前663", subject:"世界史", era:"古代", region:"西アジア", theme:["国家"], ans:-663 },
+  { q:"4王国分立", a:"前612", subject:"世界史", era:"古代", region:"西アジア", theme:["政策"], ans:-612 },
+  { q:"アケメネス朝がオリエントを統一", a:"前525", subject:"世界史", era:"古代", region:"西アジア", theme:["国家"], ans:-525 },
+  { q:"蘇我入鹿、山背大兄王を暗殺", a:"643", subject:"日本史", era:"飛鳥", region:"日本", theme:["その他"], ans:643 },
+  { q:"乙巳の変", a:"645", subject:"日本史", era:"飛鳥", region:"日本", theme:["戦争"], ans:645 },
+  { q:"改新の詔", a:"646", subject:"日本史", era:"飛鳥", region:"日本", theme:["政策"], ans:646 },
+  { q:"白村江の戦い", a:"663", subject:"日本史", era:"飛鳥", region:"日本", theme:["戦争", "政策"], ans:663 },
+  { q:"近江大津宮遷都", a:"667", subject:"日本史", era:"飛鳥", region:"日本", theme:["政策"], ans:667 },
+  { q:"庚午年籍", a:"670", subject:"日本史", era:"飛鳥", region:"日本", theme:["政策"], ans:670 },
+  { q:"壬申の乱", a:"672", subject:"日本史", era:"飛鳥", region:"日本", theme:["戦争"], ans:672 },
+  { q:"八色の姓", a:"683", subject:"日本史", era:"飛鳥", region:"日本", theme:["政策"], ans:683 },
+  { q:"飛鳥浄御原令", a:"689", subject:"日本史", era:"飛鳥", region:"日本", theme:["政策"], ans:689 },
+  { q:"庚寅年籍", a:"690", subject:"日本史", era:"飛鳥", region:"日本", theme:["政策"], ans:690 },
+  { q:"藤原京遷都", a:"694", subject:"日本史", era:"飛鳥", region:"日本", theme:["政策"], ans:694 },
+  { q:"インダス文明、おこる(◯世紀)", a:"前26世紀", subject:"世界史", era:"古代", region:"南アジア", theme:["国家"], century:true, ans:-26 },
+  { q:"クレタ文明、生まれる(◯世紀)", a:"前20世紀", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["国家"], century:true, ans:-20 },
+  { q:"ミケーネ文明、おこる(◯世紀)", a:"前16世紀", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["国家"], century:true, ans:-16 },
+  { q:"殷、興る(◯世紀)", a:"前16世紀", subject:"世界史", era:"古代", region:"中華王朝", theme:["国家"], century:true, ans:-16 },
+  { q:"カッシート王国、成立", a:"前1550", subject:"世界史", era:"古代", region:"西アジア", theme:["国家"], ans:-1550 },
+  { q:"アーリア人、パンジャーブ地方へ移動(◯世紀)", a:"前15世紀", subject:"世界史", era:"古代", region:"南アジア", theme:["その他"], century:true, ans:-15 },
+  { q:"アメンホテプ4世の改革がはじまる", a:"前1364", subject:"世界史", era:"古代", region:"アフリカ", theme:["政策"], ans:-1364 },
+  { q:"カデシュの戦い", a:"前1286", subject:"世界史", era:"古代", region:"西アジア", theme:["戦争"], ans:-1286 },
+  { q:"周の成立", a:"前1024", subject:"世界史", era:"古代", region:"中華王朝", theme:["国家"], ans:-1024 },
+  { q:"アーリア人、ガンジス川流域に進出(◯世紀)", a:"前10世紀", subject:"世界史", era:"古代", region:"南アジア", theme:["その他"], century:true, ans:-10 },
+  { q:"周、洛邑に遷都", a:"前770", subject:"世界史", era:"古代", region:"中華王朝", theme:["政策"], ans:-770 },
+  { q:"バビロン捕囚", a:"前585", subject:"世界史", era:"古代", region:"西アジア", theme:["その他"], ans:-585 },
+  { q:"大宝律令の制定", a:"701", subject:"日本史", era:"飛鳥", region:"日本", theme:["政策"], ans:701 },
+  { q:"養老律令の制定", a:"718", subject:"日本史", era:"奈良", region:"日本", theme:["政策"], ans:718 },
+  { q:"養老律令の施行", a:"758", subject:"日本史", era:"奈良", region:"日本", theme:["政策"], ans:758 },
+  { q:"ギリシアで暗黒時代が始まる(◯世紀)", a:"前12世紀", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["その他"], century: true, ans: -12 },
+  { q:"ポリスの形成、シノイキスモスが進む(◯世紀)", a:"前8世紀", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["国家"], century: true, ans: -8 },
+  { q:"ヴァルナ制が成立(◯世紀)", a:"前8世紀", subject:"世界史", era:"古代", region:"南アジア", theme:["その他"], century: true, ans: -8 },
+  { q:"エジプト新王国が滅びる", a:"前1069", subject:"世界史", era:"古代", region:"アフリカ", theme:["国家"], ans: -1069 },
+  { q:"平城京遷都", a:"710", subject:"日本史", era:"奈良", region:"日本", theme:["政策"], ans:710 },
+  { q:"初めて遣唐使を派遣", a:"630", subject:"日本史", era:"飛鳥", region:"日本", theme:["外交"], ans:630 },
+  { q:"和同開珎の鋳造", a:"708", subject:"日本史", era:"飛鳥", region:"日本", theme:["政策"], ans:708 },
+  { q:"蓄銭叙位令", a:"711", subject:"日本史", era:"奈良", region:"日本", theme:["政策"], ans:711 },
+  { q:"唐の建国", a:"618", subject:"日本史", era:"飛鳥", region:"中華王朝", theme:["その他"], ans:618 },
+  { q:"百済の滅亡", a:"660", subject:"日本史",era:"飛鳥", region:"朝鮮半島", theme:["戦争"], ans:660 },
+  { q:"高句麗の滅亡", a:"668", subject:"日本史", era:"飛鳥", region:"朝鮮半島", theme:["戦争"], ans:668 },
+  { q:"ドラコンの立法", a:"前621", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["政策"], ans:-621 },
+  { q:"ソロンの改革、はじまる", a:"前594", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["政策"], ans:-594 },
+  { q:"ペイシストラトスの僭主政治がはじまる", a:"前546", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["政策"], ans:-546 },
+  { q:"クレイステネスの改革、はじまる", a:"前508", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["政策"], ans:-508 },
+  { q:"リュクルゴスの制が形成され始める(◯世紀)", a:"前7世紀", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["政策"], century: true, ans:-7 },
+  { q:"イオニア植民市が反乱", a:"前500", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["反乱・革命"], ans:-500 },
+  { q:"マラトンの戦い", a:"前490", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["戦争"], ans:-490 },
+  { q:"テルモピレーの戦い", a:"前480", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["戦争"], ans:-480 },
+  { q:"サラミスの海戦", a:"前480", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["戦争"], ans:-480 },
+  { q:"プラタイアの戦い", a:"前479", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["戦争"], ans:-479 },
+  { q:"デロス同盟、結成", a:"前478", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["国家"], ans:-478 },
+  { q:"ペロポネソス戦争、はじまる", a:"前431", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["戦争"], ans:-431 },
+  { q:"カイロネイアの戦い", a:"前338", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["戦争"], ans:-338 },
+  { q:"イッソスの戦い", a:"前333", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["戦争"], ans:-333 },
+  { q:"ディアドコイ戦争、はじまる", a:"前323", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["戦争"], ans:-323 },
+  { q:"イオニア自然哲学がさかえる（◯世紀）", a:"前6世紀", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["文化"], century:true, ans:-6 },
+  { q:"フェニキア人が植民市カルタゴを建設", a:"前814", subject:"世界史", era:"古代", region:"地中海沿岸", theme:["国家"], ans:-814 },
+  { q:"メソポタミア文明が興る（◯世紀）", a:"前70世紀", subject:"世界史", era:"古代", region:"西アジア", theme:["その他"], century:true, ans:-70 },
+  { q:"仰韶文化が成立（◯世紀）", a:"前50世紀", subject:"世界史", era:"古代", region:"中華王朝", theme:["文化"], century:true, ans:-50 },
+  { q:"竜山文化が成立（◯世紀）", a:"前30世紀", subject:"世界史", era:"古代", region:"中華王朝", theme:["文化"], century:true, ans:-30 },
+  { q:"阿倍比羅夫が東北へ派遣される", a:"658", subject:"日本史", era:"飛鳥", region:"日本", theme:["政策"], ans:658 },
+  { q:"第一回遣唐使派遣", a:"630", subject:"日本史", era:"飛鳥", region:"日本", theme:["政策"], ans:630 },
+  { q:"多賀城が築かれる", a:"724", subject:"日本史", era:"奈良", region:"日本", theme:["政策"], ans:724 },
+  { q:"壱与、晋に遣使", a:"266", subject:"日本史", era:"古墳", region:"日本", theme:["政策"], ans:266 },
+  { q:"倭王武が宋に遣使、上表", a:"478", subject:"日本史", era:"古墳", region:"日本", theme:["政策"], ans:478 },
+  { q:"倭国、高句麗と交戦", a:"391", subject:"日本史", era:"古墳", region:"朝鮮半島", theme:["戦争"], ans:391 }
+];
+
+// ========== 並び替えロジック ==========
+let sgState = {
+  selSubject: new Set(['日本史','世界史']),
+  selEraJp: new Set(['旧石器','縄文','弥生','古墳','飛鳥','奈良','平安','鎌倉','室町','戦国','江戸','明治','大正','戦前','戦後','現代']),
+  selEraWorld: new Set(['先史・石器時代','古代','中世','近世','近代','現代']),
+  selRegion: new Set(['中華王朝','朝鮮半島','東南アジア','南アジア','西アジア','地中海沿岸','ヨーロッパ','アフリカ','アメリカ','日本']),
+  selTheme: new Set(['戦争','文化','国家','政策','その他','反乱・革命','外交']),
+  questionCount: 7,
+  sortGroups: [], sortCurrentIdx: 0,
+  slotContents: [null,null,null,null],
+  correctCount: 0,
+};
+
+function sgGetSortAns(q) {
+  if (!q.century) return q.ans;
+  const c = q.ans;
+  if (c > 0) return (c - 1) * 100 + 50;
+  else return c * 100 + 50;
+}
+function sgGetSortRange(q) {
+  if (!q.century) return [q.ans, q.ans];
+  const c = q.ans;
+  if (c > 0) return [(c-1)*100+1, c*100];
+  else return [c*100, (c+1)*100-1];
+}
+function sgRangesOverlap(qa, qb) {
+  const [aLo,aHi]=sgGetSortRange(qa), [bLo,bHi]=sgGetSortRange(qb);
+  return aLo<=bHi && bLo<=aHi;
+}
+      
+      function sgWeightedPick(items, weights) {
+  const total = weights.reduce((s, w) => s + w, 0);
+  let r = Math.random() * total;
+
+  for (let i = 0; i < items.length; i++) {
+    r -= weights[i];
+    if (r <= 0) return i;
+  }
+  return items.length - 1;
+}
+      
+      function sgGetEraRange(q) {
+  if(['戦後','現代'].includes(q.era)) return 30;
+  if(['明治','大正','戦前'].includes(q.era)) return 30;
+  if(['近代'].includes(q.era)) return 80;
+  if(['近世'].includes(q.era)) return 170;
+  if(['室町','戦国','江戸'].includes(q.era)) return 50;
+  if(['鎌倉','平安','奈良','飛鳥','中世'].includes(q.era)) return 100;
+  if(['弥生','古墳'].includes(q.era)) return 250;
+  if(['先史・石器時代'].includes(q.era)) return 5000;
+  if(['古代'].includes(q.era)) return 1000;
+  return 500;
+}
+      
+
+function sgGetFiltered() {
+  return SG_QUESTIONS.filter(q => {
+    if (!sgState.selSubject.has(q.subject)) return false;
+    if (q.subject==='日本史' && !sgState.selEraJp.has(q.era)) return false;
+    if (q.subject==='世界史' && !sgState.selEraWorld.has(q.era)) return false;
+    if (!sgState.selRegion.has(q.region)) return false;
+    if (!q.theme.some(t => sgState.selTheme.has(t))) return false;
+    return true;
+  });
+}
+
+function sgUpdateCountDisplay() {
+  const n = sgGetFiltered().length;
+  document.getElementById('sg-count-display').textContent = n;
+  document.getElementById('sg-start-btn').disabled = n < 4;
+}
+function sgUpdateSubjectCards() {
+  document.getElementById('sg-era-jp-card').style.display = sgState.selSubject.has('日本史') ? '' : 'none';
+  document.getElementById('sg-era-world-card').style.display = sgState.selSubject.has('世界史') ? '' : 'none';
+}
+function sgToggleTag(el) {
+  const g=el.dataset.group, v=el.dataset.val;
+  const m={subject:sgState.selSubject,'era-jp':sgState.selEraJp,'era-world':sgState.selEraWorld,region:sgState.selRegion,theme:sgState.selTheme};
+  if (m[g].has(v)) { m[g].delete(v); el.classList.remove('selected'); }
+  else { m[g].add(v); el.classList.add('selected'); }
+  sgUpdateSubjectCards(); sgUpdateCountDisplay();
+}
+function sgSelectAll(g) {
+  document.querySelectorAll(`#sortSection [data-group="${g}"]`).forEach(el => {
+    const m={'era-jp':sgState.selEraJp,'era-world':sgState.selEraWorld,region:sgState.selRegion,theme:sgState.selTheme};
+    m[g].add(el.dataset.val); el.classList.add('selected');
+  });
+  sgUpdateCountDisplay();
+}
+function sgClearFilter(g) {
+  const m={subject:sgState.selSubject,'era-jp':sgState.selEraJp,'era-world':sgState.selEraWorld,region:sgState.selRegion,theme:sgState.selTheme};
+  m[g].clear();
+  document.querySelectorAll(`#sortSection [data-group="${g}"]`).forEach(el => el.classList.remove('selected'));
+  sgUpdateSubjectCards(); sgUpdateCountDisplay();
+}
+function sgSelectCount(btn) {
+  document.querySelectorAll('#sg-count-options .sort-opt-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  sgState.questionCount = btn.dataset.val==='all' ? 999999 : parseInt(btn.dataset.val);
+}
+function sgToggleCollapse(group) {
+  const wrap = document.getElementById('sg-tags-wrap-'+group);
+  const arrow = document.getElementById('sg-arrow-'+group);
+  const hint = document.getElementById('sg-hint-'+group);
+  if (!wrap) return;
+  wrap.classList.toggle('collapsed');
+  const opened = !wrap.classList.contains('collapsed');
+  if (arrow) arrow.classList.toggle('open', opened);
+  if (hint) hint.textContent = opened ? '▲ 閉じる' : '絞り込む';
+}
+function sgShowScreen(id) {
+  ['sg-screen-filter','sg-screen-sort','sg-screen-explain','sg-screen-clear'].forEach(s => {
+    document.getElementById(s).style.display = 'none';
+  });
+  document.getElementById(id).style.display = 'block';
+}
+function sgBackToFilter() {
+  sgShowScreen('sg-screen-filter');
+  sgUpdateCountDisplay(); sgUpdateSubjectCards();
+}
+function sgShowFlash(type) {
+  const flash=document.getElementById('sg-flash');
+  const label=document.getElementById('sg-flash-label');
+  flash.className='sg-flash show '+type+'-flash';
+  label.textContent=type==='correct'?'正解！':'不正解';
+  setTimeout(()=>{ flash.className='sg-flash'; }, 700);
+}
+function sgBuildTopBar(total) {
+  const bar=document.getElementById('sg-top-bar'); bar.innerHTML='';
+  const max=Math.min(total,30);
+  for(let i=0;i<max;i++){
+    const c=document.createElement('div'); c.className='sg-progress-cell'; c.textContent=i+1;
+    bar.appendChild(c);
+  }
+}
+function sgUpdateTopBar(cur) {
+  document.querySelectorAll('#sg-top-bar .sg-progress-cell').forEach((c,i)=>{
+    c.className='sg-progress-cell'+(i<cur?' done':i===cur?' current':'');
+  });
+}
+
+    function sgBuildSortGroups() {
+  const pool = sgGetFiltered();
+
+  if (pool.length < 4) {
+    alert('並び替えモードには4問以上必要です');
+    return false;
+  }
+
+  const targetCount = Math.min(sgState.questionCount, 50);
+
+  sgState.sortGroups = [];
+
+  const usedCombos = new Set();
+  const usedGroups = [];
+  const questionAppearCount = {};
+
+  for(let attempt=0;
+      attempt<5000 &&
+      sgState.sortGroups.length<targetCount;
+      attempt++) {
+
+    const firstIdx =
+      Math.floor(Math.random()*pool.length);
+
+    const first = pool[firstIdx];
+
+    const firstAns =
+      sgGetSortAns(first);
+
+    const limit =
+      sgGetEraRange(first);
+
+    const candidates = pool.filter((q,i)=>{
+
+      if(i===firstIdx) return false;
+
+      const diff =
+        Math.abs(
+          sgGetSortAns(q)-firstAns
+        );
+
+      return diff <= limit;
+    });
+
+    if(candidates.length < 3) continue;
+
+    const weights =
+      candidates.map(q=>{
+
+        const diff =
+          Math.abs(
+            sgGetSortAns(q)-firstAns
+          );
+
+        return 1/(diff+1);
+      });
+
+    const picked=[first];
+
+    const remaining =
+      candidates.map((q,i)=>({
+        q,
+        w:weights[i]
+      }));
+
+    for(let k=0;k<3;k++){
+
+      const ws =
+        remaining.map(r=>r.w);
+
+      const idx =
+        sgWeightedPick(
+          remaining,
+          ws
+        );
+
+      picked.push(
+        remaining[idx].q
+      );
+
+      remaining.splice(idx,1);
+    }
+
+    if(picked.length<4) continue;
+
+    let ambiguous=false;
+
+    for(let i=0;i<4&&!ambiguous;i++){
+      for(let j=i+1;j<4&&!ambiguous;j++){
+
+        if(
+          sgRangesOverlap(
+            picked[i],
+            picked[j]
+          )
+        ){
+          ambiguous=true;
+        }
+      }
+    }
+
+    if(ambiguous) continue;
+
+    const key =
+      picked
+      .map(q=>q.q)
+      .sort()
+      .join('|');
+
+    if(usedCombos.has(key))
+      continue;
+
+    const pickSet =
+      picked.map(q=>q.q);
+
+    let tooSimilar=false;
+
+    for(const prev of usedGroups){
+
+      const overlap =
+        pickSet.filter(
+          t=>prev.includes(t)
+        ).length;
+
+      if(overlap>=3){
+        tooSimilar=true;
+        break;
+      }
+    }
+
+    if(tooSimilar) continue;
+
+    let overLimit=false;
+
+    for(const q of picked){
+
+      if(
+        (questionAppearCount[q.q]||0)
+        >=2
+      ){
+        overLimit=true;
+        break;
+      }
+    }
+
+    if(overLimit) continue;
+
+    sgState.sortGroups.push(picked);
+
+    usedCombos.add(key);
+
+    usedGroups.push(pickSet);
+
+    for(const q of picked){
+      questionAppearCount[q.q] =
+        (questionAppearCount[q.q]||0)+1;
+    }
+  }
+      
+
+  return sgState.sortGroups.length>0;
+}
+    
+ 
+function sgStartGame() {
+  if (!sgBuildSortGroups()) return;
+  startStudyTimer(); 
+  sgBuildTopBar(sgState.sortGroups.length);
+  sgShowScreen('sg-screen-sort');
+  sgRenderSortQuestion();
+}
+function sgRenderSortQuestion() {
+  if (sgState.sortCurrentIdx >= sgState.sortGroups.length) { sgShowClear(); return; }
+  const group = sgState.sortGroups[sgState.sortCurrentIdx];
+  const display = [...group].sort(() => Math.random() - 0.5);
+  sgState.slotContents = [null, null, null, null];
+
+  document.getElementById('sg-cur').textContent = sgState.sortCurrentIdx + 1;
+  document.getElementById('sg-total').textContent = sgState.sortGroups.length;
+  sgUpdateTopBar(sgState.sortCurrentIdx);
+
+  const slotsRow = document.getElementById('sg-slots-row');
+  slotsRow.innerHTML = '';
+  for (let i = 0; i < 4; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'sg-slot';
+    slot.innerHTML = `<div class="sg-slot-num">${i + 1}番目</div>`;
+    slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('drag-over'); });
+    slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
+    slot.addEventListener('drop', e => { e.preventDefault(); slot.classList.remove('drag-over'); sgOnDropSlot(e, i); });
+    slotsRow.appendChild(slot);
+  }
+
+  const cardsRow = document.getElementById('sg-cards-row');
+  cardsRow.innerHTML = '';
+  display.forEach(q => {
+    const card = document.createElement('div');
+    card.className = 'sg-card';
+    card.textContent = q.q;
+    card.draggable = true;
+    card.dataset.qtxt = q.q;
+    card.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', JSON.stringify({ from: 'cards', qtxt: q.q }));
+      setTimeout(() => card.classList.add('dragging-card'), 0);
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging-card'));
+    sgAddTouchDrag(card, q);
+    cardsRow.appendChild(card);
+  });
+  sgUpdateSubmitBtn();
+}
+
+function sgOnDropSlot(e, slotIdx) {
+  let data; try{data=JSON.parse(e.dataTransfer.getData('text/plain'));}catch(err){return;}
+  if (data.from==='cards') {
+    const prev=sgState.slotContents.findIndex(s=>s&&s.q===data.qtxt);
+    if (prev!==-1) sgState.slotContents[prev]=null;
+    sgState.slotContents[slotIdx]=SG_QUESTIONS.find(q=>q.q===data.qtxt)||{q:data.qtxt};
+  } else if (data.from==='slot') {
+    const tmp=sgState.slotContents[data.slotIdx];
+    sgState.slotContents[data.slotIdx]=sgState.slotContents[slotIdx];
+    sgState.slotContents[slotIdx]=tmp;
+  }
+  sgRefreshSortUI();
+}
+function sgRefreshSortUI() {
+  document.querySelectorAll('#sg-slots-row .sg-slot').forEach((slot,i)=>{
+    const ex=slot.querySelector('.sg-slot-card'); if(ex) ex.remove();
+    slot.className='sg-slot';
+    if (sgState.slotContents[i]) {
+      slot.classList.add('filled');
+      const card=document.createElement('div'); card.className='sg-slot-card'; card.draggable=true;
+      const txt=document.createElement('div'); txt.className='sg-slot-card-text'; txt.textContent=sgState.slotContents[i].q;
+      card.appendChild(txt);
+      card.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',JSON.stringify({from:'slot',slotIdx:i,qtxt:sgState.slotContents[i].q}));});
+      sgAddTouchDragSlot(card,i);
+      slot.appendChild(card);
+    }
+  });
+  const usedCounts={};
+  sgState.slotContents.filter(Boolean).forEach(q=>{usedCounts[q.q]=(usedCounts[q.q]||0)+1;});
+  const hiddenCounts={};
+  document.querySelectorAll('#sg-cards-row .sg-card').forEach(card=>{
+    const txt=card.dataset.qtxt; const usedN=usedCounts[txt]||0; const hiddenN=hiddenCounts[txt]||0;
+    if (hiddenN<usedN) { card.classList.add('used'); hiddenCounts[txt]=(hiddenN+1); }
+    else card.classList.remove('used');
+  });
+  sgUpdateSubmitBtn();
+}
+function sgUpdateSubmitBtn() {
+  document.getElementById('sg-submit-btn').disabled = sgState.slotContents.filter(Boolean).length < 4;
+}
+
+let sgTouchDragData=null, sgTouchClone=null;
+function sgAddTouchDrag(card, q) {
+  card.addEventListener('touchstart',e=>{
+    e.preventDefault();
+    sgTouchDragData={from:'cards',qtxt:q.q};
+    const t=e.touches[0];
+    sgTouchClone=card.cloneNode(true);
+    sgTouchClone.style.cssText=`position:fixed;left:${t.clientX-60}px;top:${t.clientY-30}px;width:120px;z-index:9999;opacity:0.85;pointer-events:none;border-radius:10px;`;
+    document.body.appendChild(sgTouchClone);
+  },{passive:false});
+  card.addEventListener('touchmove',e=>{
+    e.preventDefault(); const t=e.touches[0];
+    if(sgTouchClone){sgTouchClone.style.left=(t.clientX-60)+'px';sgTouchClone.style.top=(t.clientY-30)+'px';}
+    document.querySelectorAll('#sg-slots-row .sg-slot').forEach(s=>{
+      const r=s.getBoundingClientRect();
+      if(t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom) s.classList.add('drag-over');
+      else s.classList.remove('drag-over');
+    });
+  },{passive:false});
+  card.addEventListener('touchend',e=>{
+    const t=e.changedTouches[0];
+    if(sgTouchClone){sgTouchClone.remove();sgTouchClone=null;}
+    document.querySelectorAll('#sg-slots-row .sg-slot').forEach((s,i)=>{
+      s.classList.remove('drag-over');
+      const r=s.getBoundingClientRect();
+      if(sgTouchDragData&&t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom){
+        const prev=sgState.slotContents.findIndex(sc=>sc&&sc.q===sgTouchDragData.qtxt);
+        if(prev!==-1) sgState.slotContents[prev]=null;
+        sgState.slotContents[i]=SG_QUESTIONS.find(q=>q.q===sgTouchDragData.qtxt)||{q:sgTouchDragData.qtxt};
+        sgRefreshSortUI();
+      }
+    });
+    sgTouchDragData=null;
+  });
+}
+function sgAddTouchDragSlot(card, slotIdx) {
+  card.addEventListener('touchstart',e=>{
+    e.preventDefault();
+    sgTouchDragData={from:'slot',slotIdx,qtxt:sgState.slotContents[slotIdx]?.q};
+    const t=e.touches[0];
+    sgTouchClone=card.cloneNode(true);
+    sgTouchClone.style.cssText=`position:fixed;left:${t.clientX-60}px;top:${t.clientY-30}px;width:120px;z-index:9999;opacity:0.85;pointer-events:none;`;
+    document.body.appendChild(sgTouchClone);
+  },{passive:false});
+  card.addEventListener('touchmove',e=>{
+    e.preventDefault(); const t=e.touches[0];
+    if(sgTouchClone){sgTouchClone.style.left=(t.clientX-60)+'px';sgTouchClone.style.top=(t.clientY-30)+'px';}
+    document.querySelectorAll('#sg-slots-row .sg-slot').forEach(s=>{
+      const r=s.getBoundingClientRect();
+      if(t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom) s.classList.add('drag-over');
+      else s.classList.remove('drag-over');
+    });
+  },{passive:false});
+  card.addEventListener('touchend',e=>{
+    const t=e.changedTouches[0];
+    if(sgTouchClone){sgTouchClone.remove();sgTouchClone=null;}
+    document.querySelectorAll('#sg-slots-row .sg-slot').forEach((s,i)=>{
+      s.classList.remove('drag-over');
+      const r=s.getBoundingClientRect();
+      if(sgTouchDragData&&sgTouchDragData.from==='slot'&&t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom){
+        const fromIdx=sgTouchDragData.slotIdx;
+        const tmp=sgState.slotContents[fromIdx];
+        sgState.slotContents[fromIdx]=sgState.slotContents[i];
+        sgState.slotContents[i]=tmp;
+        sgRefreshSortUI();
+      }
+    });
+    sgTouchDragData=null;
+  });
+}
+function sgSubmitSort() {
+  const group=sgState.sortGroups[sgState.sortCurrentIdx];
+  const sorted=[...group].sort((a,b)=>sgGetSortAns(a)-sgGetSortAns(b));
+  const userOrder=sgState.slotContents.map(q=>q?.q||'');
+  const correctOrder=sorted.map(q=>q.q);
+  const isCorrect=JSON.stringify(userOrder)===JSON.stringify(correctOrder);
+  if(isCorrect) sgState.correctCount++;
+  recordAnswer(isCorrect); 
+  sgShowFlash(isCorrect?'correct':'wrong');
+  const sortData={sorted,userOrder};
+  sgState.sortCurrentIdx++;
+  setTimeout(()=>sgShowExplain(isCorrect?'correct':'wrong',sortData),400);
+}
+function sgShowExplain(result, sortData) {
+  sgShowScreen('sg-screen-explain');
+  const badge=document.getElementById('sg-badge');
+  badge.textContent=result==='correct'?'正解！':'不正解';
+  badge.className='sg-badge '+(result==='correct'?'correct':'wrong');
+  const table=document.getElementById('sg-sort-table'); table.innerHTML='';
+  sortData.sorted.forEach((item,i)=>{
+    const isWrong=result==='wrong'&&sortData.userOrder.indexOf(item.q)!==i;
+    const row=document.createElement('div'); row.className='sg-sort-row '+(isWrong?'wrong-row':'correct-row');
+    const yearLabel=item.century?item.a:(item.ans<0?`前${Math.abs(item.ans)}年`:`${item.ans}年`);
+    row.innerHTML=`<div class="sg-sort-rank">${i+1}</div><div class="sg-sort-year">${yearLabel}</div><div class="sg-sort-arrow-cell">→</div><div class="sg-sort-event">${item.q}</div>`;
+    table.appendChild(row);
+  });
+  const yourWrap=document.getElementById('sg-your-wrap');
+  if(result==='wrong'){
+    yourWrap.style.display='';
+    const yourTable=document.getElementById('sg-your-table'); yourTable.innerHTML='';
+    sortData.userOrder.forEach((qtxt,i)=>{
+      const isWrong=sortData.sorted.findIndex(s=>s.q===qtxt)!==i;
+      const row=document.createElement('div'); row.className='sg-your-row'+(isWrong?' wrong-pos':'');
+      row.innerHTML=`<div class="sg-your-rank">${i+1}</div><div class="sg-your-event">${qtxt}</div>`;
+      yourTable.appendChild(row);
+    });
+  } else yourWrap.style.display='none';
+}
+function sgNextQuestion() {
+  if(sgState.sortCurrentIdx>=sgState.sortGroups.length){sgShowClear();return;}
+  sgShowScreen('sg-screen-sort'); sgRenderSortQuestion();
+}
+function sgShowClear() {
+  stopStudyTimer(); // ← 追加
+  loadStats();      // ← 追加
+  const total=sgState.sortGroups.length;
+  document.getElementById('sg-cl-correct').textContent=sgState.correctCount;
+  document.getElementById('sg-cl-total').textContent=total;
+  document.getElementById('sg-cl-rate').textContent=total>0?Math.round((sgState.correctCount/total)*100)+'%':'0%';
+  sgShowScreen('sg-screen-clear');
+}
+
+// ========== 年表ロジック ==========
+let tlSelSubject = new Set(['日本史','世界史']);
+function tlToggleTag(el) {
+  const v=el.dataset.tlVal;
+  if(tlSelSubject.has(v)){tlSelSubject.delete(v);el.classList.remove('selected');}
+  else{tlSelSubject.add(v);el.classList.add('selected');}
+  tlRender();
+}
+function tlRender() {
+  const sorted=[...SG_QUESTIONS].filter(q=>tlSelSubject.has(q.subject)).sort((a,b)=>sgGetSortAns(a)-sgGetSortAns(b));
+  document.getElementById('tl-count').textContent=sorted.length;
+  const list=document.getElementById('tl-list'); list.innerHTML='';
+  if(!sorted.length){list.innerHTML='<div class="tl-empty">表示するデータがありません</div>';return;}
+  sorted.forEach(q=>{
+    const yearLabel=q.century?q.a:(q.ans<0?`前${Math.abs(q.ans)}年`:`${q.ans}年`);
+    const d=document.createElement('div'); d.className='tl-item';
+    d.innerHTML=`<div class="tl-year">${yearLabel}</div><div class="tl-body"><div class="tl-event">${q.q}</div><div class="tl-tags"><span class="tl-tag-sm">${q.subject}</span><span class="tl-tag-sm">${q.era}</span><span class="tl-tag-sm">${q.region}</span>${q.theme.map(t=>`<span class="tl-tag-sm">${t}</span>`).join('')}</div></div>`;
+    list.appendChild(d);
+  });
+}
+
+sgUpdateCountDisplay();
+sgUpdateSubjectCards();
+ 
+      
+// ========== ホーム画面 ==========
+
+// カウントダウン
+function calcDaysLeft(targetDateStr) {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const target = new Date(targetDateStr);
+  target.setHours(0,0,0,0);
+  return Math.ceil((target - today) / (1000 * 60 * 60 * 24));
+}
+function updateCountdown() {
+  document.getElementById('days-common-num').textContent = calcDaysLeft('2028-01-13');
+  document.getElementById('days-regular-num').textContent = calcDaysLeft('2026-08-31');
+}
+
+// 偉人画像
+function updatePersonImage() {
+  const today = new Date();
+  const seed = today.getFullYear() * 10000 + (today.getMonth()+1) * 100 + today.getDate();
+  const idx = (seed % 50) + 1;          // 50枚対応
+  const num = String(idx).padStart(2, '0');
+  const img = document.getElementById('home-person-img');
+  // GitHub Pages の場合 ./images/person_01.png のように参照される
+  img.src = `images-person_${num}.png`;
+  img.alt = `偉人${num}`;
+}
+
+// 学習記録 読み込み
+function loadStats() {
+  const data = JSON.parse(localStorage.getItem('historyAppStats') || '{}');
+  const total = data.totalAnswers || 0;
+  const correct = data.totalCorrect || 0;
+  const rate = total > 0 ? Math.round((correct / total) * 100) : 0;
+  const minutes = data.totalMinutes || 0;
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  const streak = data.streak || 0;
+  document.getElementById('stat-total').textContent = total > 0 ? total : '--';
+  document.getElementById('stat-rate').textContent = total > 0 ? rate + '%' : '--%';
+  document.getElementById('stat-time').textContent = total > 0 ? (hours > 0 ? `${hours}h${mins}m` : `${mins}m`) : '--';
+  document.getElementById('stat-streak').textContent = streak > 0 ? streak : '--';
+}
+
+// 1問ごとに記録（一問一答・並び替え共通）
+function recordAnswer(isCorrect) {
+  const data = JSON.parse(localStorage.getItem('historyAppStats') || '{}');
+  data.totalAnswers = (data.totalAnswers || 0) + 1;
+  if (isCorrect) data.totalCorrect = (data.totalCorrect || 0) + 1;
+  // 連続学習日数
+  const today = new Date().toDateString();
+  if (data.lastStudyDate !== today) {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    data.streak = (data.lastStudyDate === yesterday.toDateString())
+      ? (data.streak || 0) + 1
+      : 1;
+    data.lastStudyDate = today;
+  }
+  localStorage.setItem('historyAppStats', JSON.stringify(data));
+}
+
+// 学習時間タイマー（1分ごとに記録）
+let studyTimerInterval = null;
+function startStudyTimer() {
+  stopStudyTimer();
+  studyTimerInterval = setInterval(() => {
+    const data = JSON.parse(localStorage.getItem('historyAppStats') || '{}');
+    data.totalMinutes = (data.totalMinutes || 0) + 1;
+    localStorage.setItem('historyAppStats', JSON.stringify(data));
+  }, 60000);
+}
+function stopStudyTimer() {
+  if (studyTimerInterval) { clearInterval(studyTimerInterval); studyTimerInterval = null; }
+}
+
+updateCountdown();
+updatePersonImage();
+loadStats();
+      
+
 </script>
+  
     
   </body>
   
