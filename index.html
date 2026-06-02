@@ -4320,7 +4320,7 @@
   { q: "インダス文明の代表的遺跡で、パンジャーブ地方にあるのは", a: "ハラッパー", subject: "世界史", era: "古代", region: "南アジア", theme: ["遺産"] },
   { q: "インダス文明の代表的遺跡で、グジャラート地方にあるのは", a: "ドーラーヴィラー", subject: "世界史", era: "古代", region: "南アジア", theme: ["遺産"], difficulty: "難関" },                      
   { q: "インダス文明の遺跡から出土した印章に刻まれている未解読の文字は何", a: "インダス文字", subject: "世界史", era: "古代", region: "南アジア", theme: ["文化"] },
-  { q: "前1500年頃にカイバル峠を超えてパンジャーブ地方に侵入した民族は", a: "アーリア人", subject: "世界史", era: "古代", region: "南アジア", theme: ["その他"] },
+  { q: "前10年頃にカイバル峠を超えてパンジャーブ地方に侵入した民族は", a: "アーリア人", subject: "世界史", era: "古代", region: "南アジア", theme: ["その他"] },
   { q: "アーリア人の語族は何", a: "インド・ヨーロッパ語族", subject: "世界史", era: "古代", region: "南アジア", theme: ["その他"] },
   { q: "アーリア人が編纂した最古のヴェーダは何", a: "リグ・ヴェーダ", subject: "世界史", era: "古代", region: "南アジア", theme: ["宗教", "文化"], difficulty: "難関" },
   { q: "前1000年頃にアーリア人が定住したのはどこ", a: "ガンジス川流域", subject: "世界史", era: "古代", region: "南アジア", theme: ["地名"] },
@@ -5830,7 +5830,7 @@ function updateCountdown() {
 }
 
   function updatePersonImage() {
-  const idx = Math.floor(Math.random() * 50) + 1;
+  const idx = Math.floor(Math.random() * 4) + 1;
   const num = String(idx).padStart(2, '0');
   const img = document.getElementById('home-person-img');
   img.src = `images-person_${num}.png`;
