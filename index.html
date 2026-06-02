@@ -1738,8 +1738,8 @@
 
   <!-- 左：偉人＋吹き出し -->
   <div class="home-person-block">
-    <img id="home-person-img" src="" alt="偉人" class="home-person-img" onerror="this.style.display='none'">
-
+<img id="home-person-img" src="" alt="偉人" class="home-person-img" 
+  onerror="this.style.display='none'; retryPersonImage(this);">
     <div class="home-bubble-wrap">
       <svg class="home-bubble-svg" viewBox="0 0 160 110" xmlns="http://www.w3.org/2000/svg">
         <rect x="14" y="0" width="146" height="110" rx="14" ry="14"
@@ -5837,6 +5837,17 @@ function updateCountdown() {
   img.alt = `偉人${num}`;
 }
 
+      function retryPersonImage(img) {
+  const tries = parseInt(img.dataset.tries || '0');
+  if (tries >= 10) return; // 10回試してダメなら諦める
+  img.dataset.tries = tries + 1;
+  setTimeout(() => {
+    const idx = Math.floor(Math.random() * 4) + 1;
+    const num = String(idx).padStart(2, '0');
+    img.style.display = '';
+    img.src = `images-person_${num}.png`;
+  }, 200);
+}
 
 // 学習記録 読み込み
 function loadStats() {
