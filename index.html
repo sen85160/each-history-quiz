@@ -136,6 +136,9 @@
     }
 
     .filter-panel {
+      max-width: 900px;   /* ← この1行を追加 */
+  margin-left: auto;  /* ← 中央寄せ */
+  margin-right: auto; /* ← 中央寄せ */
       background: var(--surface);
       border: 2.5px solid var(--border);
       border-radius: 20px;
@@ -750,9 +753,13 @@
     }
 
     /* 問題一覧画面 */
-    .list-screen {
-      display: none;
-    }
+    
+   .list-screen {
+  display: none;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
 
     .list-screen.active {
       display: block;
@@ -1469,6 +1476,16 @@
 }
 
 @media (max-width: 600px) {
+  .filter-panel {
+    max-width: 90%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .list-screen {
+    max-width: 90%;
+    margin-left: 0;
+    margin-right: 0;
+  }
   .home-stats-grid { grid-template-columns: 1fr 1fr; }
   .home-stat-num { font-size: 18px; }
   .home-main-area {
@@ -1693,6 +1710,8 @@
   .color-theme-btn { padding: 10px 2px 8px; font-size: 9px; }
   .color-swatch { width: 26px; height: 26px; }
 }
+    
+
     
   </style>
   
@@ -1992,7 +2011,7 @@
     </div>
 
     <!-- 問題一覧画面 -->
-    <div class="list-screen" id="listScreen">
+    <div class="list-screen" id="listScreen">　
       <div class="list-header">
         <div class="list-title">問題一覧</div>
         <button class="btn btn-ghost" id="backFromListBtn" style="font-size:0.75rem;padding:7px 16px;">← 戻る</button>
