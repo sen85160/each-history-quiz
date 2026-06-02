@@ -4852,25 +4852,19 @@
     }
     
 
-
-  // テスト範囲モード：TEST_RANGE_QUESTIONSのみ
 function getFiltered() {
   const testCheck = document.getElementById('testRangeCheck');
   const isTestMode = testCheck && testCheck.checked;
 
-  // ベースとなる問題プール
   let pool;
   if (isTestMode) {
-    // テスト範囲ONの場合はTEST_RANGE_QUESTIONSのみ
     pool = TEST_RANGE_QUESTIONS;
   } else {
-    // OFFの場合はALL_QUESTIONS＋TEST_RANGE_QUESTIONSを合体（重複除く）
     const allQKeys = new Set(ALL_QUESTIONS.map(q => q.q));
     const extraQuestions = TEST_RANGE_QUESTIONS.filter(q => !allQKeys.has(q.q));
     pool = [...ALL_QUESTIONS, ...extraQuestions];
   }
 
-  // どちらの場合もフィルターを適用する
   return pool.filter(q => {
     if (filters.subject.length && !filters.subject.includes(q.subject)) return false;
     if (q.subject === '日本史' && filtersEraJP.length && !filtersEraJP.includes(q.era)) return false;
@@ -4882,21 +4876,6 @@ function getFiltered() {
   });
 }
 
-  // 通常モード：ALL_QUESTIONS＋TEST_RANGE_QUESTIONSを合体（重複除く）
-  const allQKeys = new Set(ALL_QUESTIONS.map(q => q.q));
-  const extraQuestions = TEST_RANGE_QUESTIONS.filter(q => !allQKeys.has(q.q));
-  const combined = [...ALL_QUESTIONS, ...extraQuestions];
-
-  return combined.filter(q => {
-    if (filters.subject.length && !filters.subject.includes(q.subject)) return false;
-    if (q.subject === '日本史' && filtersEraJP.length && !filtersEraJP.includes(q.era)) return false;
-    if (q.subject === '世界史' && filtersEraWH.length && !filtersEraWH.includes(q.era)) return false;
-    if (q.subject !== '日本史' && filters.region.length && !filters.region.includes(q.region)) return false;
-    if (filters.theme.length && !filters.theme.some(t => (Array.isArray(q.theme) ? q.theme : [q.theme]).includes(t))) return false;
-    if (filters.difficulty.length && !filters.difficulty.includes(q.difficulty || "基本")) return false;
-    return true;
-  });
-}
 
     function updateMatchCount() {
       document.getElementById('matchCount').textContent = getFiltered().length;
