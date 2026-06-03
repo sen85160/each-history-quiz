@@ -5000,7 +5000,8 @@ function judge(isCorrect) {
       document.getElementById('resultCorrect').textContent = correctCount;
       document.getElementById('resultWrong').textContent = total - correctCount;
       document.getElementById('resultTotal').textContent = total;
-      document.getElementById('resultScreen').classList.add('active');
+   　　document.getElementById('resultScreen').style.display = 'block';
+　　　　document.getElementById('resultScreen').classList.add('active');
     }
 
     function backToFilter() {
