@@ -4688,13 +4688,13 @@
  
     ];
     // ========== 状態 ==========
-    const filters = {
+  const filters = {
       subject: [],
       era: [],
       region: [],
       theme: [],
   　　difficulty: []
-      
+        
       
     };
     let currentQuestions = [],
@@ -4859,15 +4859,19 @@
       });
     });
 
-    function updateSelectAllBtns() {
-      document.querySelectorAll('.select-all-btn').forEach(btn => {
-        const group = btn.dataset.group;
-        const chips = [...document.querySelectorAll(`.chip[data-group="${group}"]`)];
-        const allSelected = chips.every(c => filters[group].includes(c.dataset.val));
-        btn.textContent = allSelected ? 'すべて解除' : 'すべて選択';
-        btn.classList.toggle('all-selected', allSelected);
-      });
-    }
+function updateSelectAllBtns() {
+  document.querySelectorAll('.select-all-btn').forEach(btn => {
+    const group = btn.dataset.group;
+
+    if (!filters[group]) return;
+
+    const chips = [...document.querySelectorAll(`.chip[data-group="${group}"]`)];
+    const allSelected = chips.every(c => filters[group].includes(c.dataset.val));
+
+    btn.textContent = allSelected ? 'すべて解除' : 'すべて選択';
+    btn.classList.toggle('all-selected', allSelected);
+  });
+}
     
 
 function getFiltered() {
