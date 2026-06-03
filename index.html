@@ -1758,7 +1758,7 @@
   <!-- 左：偉人＋吹き出し -->
   <div class="home-person-block">
 <img id="home-person-img" src="" alt="偉人" class="home-person-img" 
-  onerror="this.style.display='none'; retryPersonImage(this);">
+  onerror="this.style.display='none';">
     <div class="home-bubble-wrap">
       <svg class="home-bubble-svg" viewBox="0 0 160 110" xmlns="http://www.w3.org/2000/svg">
         <rect x="14" y="0" width="146" height="110" rx="14" ry="14"
@@ -2027,134 +2027,150 @@
   <div id="sortSection">
     <div class="sg-flash" id="sg-flash"><div class="sg-flash-label" id="sg-flash-label"></div></div>
 
-    <div id="sg-screen-filter" class="sg-screen">
-      <div class="sort-panel-title">🔀 並び替え — 出題条件</div>
-      <div class="sort-filter-card">
-        <div class="sort-filter-label">科目 <button class="sort-clr-btn" onclick="sgClearFilter('subject')">すべて解除</button></div>
-        <div class="sort-tags" id="sg-tags-subject">
-          <div class="sort-tag subject-jp selected" data-group="subject" data-val="日本史" onclick="sgToggleTag(this)">日本史</div>
-          <div class="sort-tag subject-world selected" data-group="subject" data-val="世界史" onclick="sgToggleTag(this)">世界史</div>
-        </div>
+<div id="sg-screen-filter" class="sg-screen">
+  <div class="filter-panel" style="margin-top:0;">
+    <div class="panel-title">並び替え — 出題条件を絞り込む</div>
+
+    <!-- 科目 -->
+    <div class="filter-group">
+      <div class="filter-label">
+        科目
+        <button class="select-all-btn" onclick="sgSelectAll('subject')">すべて選択</button>
+        <button class="select-all-btn" onclick="sgClearFilter('subject')">すべて解除</button>
       </div>
-      <div class="sort-filter-row-2col">
-        <div class="sort-filter-card" id="sg-era-jp-card">
-          <div class="sort-collapse-header" onclick="sgToggleCollapse('era-jp')">
-            <span class="sort-collapse-arrow" id="sg-arrow-era-jp">▶</span>
-            <span class="sort-collapse-title">時代（日本史）</span>
-            <span class="sort-collapse-hint" id="sg-hint-era-jp">絞り込む</span>
-          </div>
-          <div class="sort-collapsible collapsed" id="sg-tags-wrap-era-jp">
-            <div style="display:flex;gap:4px;padding:6px 2px 4px;">
-              <button class="sort-sel-all-btn" onclick="sgSelectAll('era-jp')">すべて</button>
-              <button class="sort-clr-btn" onclick="sgClearFilter('era-jp')">解除</button>
-            </div>
-            <div class="sort-tags" id="sg-tags-era-jp">
-              <div class="sort-tag selected" data-group="era-jp" data-val="旧石器" onclick="sgToggleTag(this)">旧石器</div>
-              <div class="sort-tag selected" data-group="era-jp" data-val="縄文" onclick="sgToggleTag(this)">縄文</div>
-              <div class="sort-tag selected" data-group="era-jp" data-val="弥生" onclick="sgToggleTag(this)">弥生</div>
-              <div class="sort-tag selected" data-group="era-jp" data-val="古墳" onclick="sgToggleTag(this)">古墳</div>
-              <div class="sort-tag selected" data-group="era-jp" data-val="飛鳥" onclick="sgToggleTag(this)">飛鳥</div>
-              <div class="sort-tag selected" data-group="era-jp" data-val="奈良" onclick="sgToggleTag(this)">奈良</div>
-              <div class="sort-tag selected" data-group="era-jp" data-val="平安" onclick="sgToggleTag(this)">平安</div>
-              <div class="sort-tag selected" data-group="era-jp" data-val="鎌倉" onclick="sgToggleTag(this)">鎌倉</div>
-              <div class="sort-tag selected" data-group="era-jp" data-val="室町" onclick="sgToggleTag(this)">室町</div>
-              <div class="sort-tag selected" data-group="era-jp" data-val="戦国" onclick="sgToggleTag(this)">戦国</div>
-              <div class="sort-tag selected" data-group="era-jp" data-val="江戸" onclick="sgToggleTag(this)">江戸</div>
-              <div class="sort-tag selected" data-group="era-jp" data-val="明治" onclick="sgToggleTag(this)">明治</div>
-              <div class="sort-tag selected" data-group="era-jp" data-val="大正" onclick="sgToggleTag(this)">大正</div>
-              <div class="sort-tag selected" data-group="era-jp" data-val="戦前" onclick="sgToggleTag(this)">戦前</div>
-              <div class="sort-tag selected" data-group="era-jp" data-val="戦後" onclick="sgToggleTag(this)">戦後</div>
-              <div class="sort-tag selected" data-group="era-jp" data-val="現代" onclick="sgToggleTag(this)">現代</div>
-            </div>
-          </div>
-        </div>
-        <div class="sort-filter-card" id="sg-era-world-card">
-          <div class="sort-collapse-header" onclick="sgToggleCollapse('era-world')">
-            <span class="sort-collapse-arrow" id="sg-arrow-era-world">▶</span>
-            <span class="sort-collapse-title">時代（世界史）</span>
-            <span class="sort-collapse-hint" id="sg-hint-era-world">絞り込む</span>
-          </div>
-          <div class="sort-collapsible collapsed" id="sg-tags-wrap-era-world">
-            <div style="display:flex;gap:4px;padding:6px 2px 4px;">
-              <button class="sort-sel-all-btn" onclick="sgSelectAll('era-world')">すべて</button>
-              <button class="sort-clr-btn" onclick="sgClearFilter('era-world')">解除</button>
-            </div>
-            <div class="sort-tags" id="sg-tags-era-world">
-              <div class="sort-tag selected" data-group="era-world" data-val="先史・石器時代" onclick="sgToggleTag(this)">先史・石器時代</div>
-              <div class="sort-tag selected" data-group="era-world" data-val="古代" onclick="sgToggleTag(this)">古代</div>
-              <div class="sort-tag selected" data-group="era-world" data-val="中世" onclick="sgToggleTag(this)">中世</div>
-              <div class="sort-tag selected" data-group="era-world" data-val="近世" onclick="sgToggleTag(this)">近世</div>
-              <div class="sort-tag selected" data-group="era-world" data-val="近代" onclick="sgToggleTag(this)">近代</div>
-              <div class="sort-tag selected" data-group="era-world" data-val="現代" onclick="sgToggleTag(this)">現代</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="sort-filter-row-2col">
-        <div class="sort-filter-card">
-          <div class="sort-collapse-header" onclick="sgToggleCollapse('region')">
-            <span class="sort-collapse-arrow" id="sg-arrow-region">▶</span>
-            <span class="sort-collapse-title">地域</span>
-            <span class="sort-collapse-hint" id="sg-hint-region">絞り込む</span>
-          </div>
-          <div class="sort-collapsible collapsed" id="sg-tags-wrap-region">
-            <div style="display:flex;gap:4px;padding:6px 2px 4px;">
-              <button class="sort-sel-all-btn" onclick="sgSelectAll('region')">すべて</button>
-              <button class="sort-clr-btn" onclick="sgClearFilter('region')">解除</button>
-            </div>
-            <div class="sort-tags" id="sg-tags-region">
-              <div class="sort-tag selected" data-group="region" data-val="中華王朝" onclick="sgToggleTag(this)">中華王朝</div>
-              <div class="sort-tag selected" data-group="region" data-val="朝鮮半島" onclick="sgToggleTag(this)">朝鮮半島</div>
-              <div class="sort-tag selected" data-group="region" data-val="東南アジア" onclick="sgToggleTag(this)">東南アジア</div>
-              <div class="sort-tag selected" data-group="region" data-val="南アジア" onclick="sgToggleTag(this)">南アジア</div>
-              <div class="sort-tag selected" data-group="region" data-val="西アジア" onclick="sgToggleTag(this)">西アジア</div>
-              <div class="sort-tag selected" data-group="region" data-val="地中海沿岸" onclick="sgToggleTag(this)">地中海沿岸</div>
-              <div class="sort-tag selected" data-group="region" data-val="ヨーロッパ" onclick="sgToggleTag(this)">ヨーロッパ</div>
-              <div class="sort-tag selected" data-group="region" data-val="アフリカ" onclick="sgToggleTag(this)">アフリカ</div>
-              <div class="sort-tag selected" data-group="region" data-val="アメリカ" onclick="sgToggleTag(this)">アメリカ</div>
-              <div class="sort-tag selected" data-group="region" data-val="日本" onclick="sgToggleTag(this)">日本</div>
-            </div>
-          </div>
-        </div>
-        <div class="sort-filter-card">
-          <div class="sort-collapse-header" onclick="sgToggleCollapse('theme')">
-            <span class="sort-collapse-arrow" id="sg-arrow-theme">▶</span>
-            <span class="sort-collapse-title">テーマ</span>
-            <span class="sort-collapse-hint" id="sg-hint-theme">絞り込む</span>
-          </div>
-          <div class="sort-collapsible collapsed" id="sg-tags-wrap-theme">
-            <div style="display:flex;gap:4px;padding:6px 2px 4px;">
-              <button class="sort-sel-all-btn" onclick="sgSelectAll('theme')">すべて</button>
-              <button class="sort-clr-btn" onclick="sgClearFilter('theme')">解除</button>
-            </div>
-            <div class="sort-tags" id="sg-tags-theme">
-              <div class="sort-tag selected" data-group="theme" data-val="戦争" onclick="sgToggleTag(this)">戦争</div>
-              <div class="sort-tag selected" data-group="theme" data-val="文化" onclick="sgToggleTag(this)">文化</div>
-              <div class="sort-tag selected" data-group="theme" data-val="国家" onclick="sgToggleTag(this)">国家</div>
-              <div class="sort-tag selected" data-group="theme" data-val="政策" onclick="sgToggleTag(this)">政策</div>
-              <div class="sort-tag selected" data-group="theme" data-val="その他" onclick="sgToggleTag(this)">その他</div>
-              <div class="sort-tag selected" data-group="theme" data-val="反乱・革命" onclick="sgToggleTag(this)">反乱・革命</div>
-　　　　　　　　<div class="sort-tag selected" data-group="theme" data-val="外交" onclick="sgToggleTag(this)">外交</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="sort-filter-card">
-        <div class="sort-filter-label">出題数</div>
-        <div class="sort-opt-row" id="sg-count-options">
-          <button class="sort-opt-btn selected" data-val="7" onclick="sgSelectCount(this)">7問</button>
-          <button class="sort-opt-btn" data-val="10" onclick="sgSelectCount(this)">10問</button>
-          <button class="sort-opt-btn" data-val="15" onclick="sgSelectCount(this)">15問</button>
-          <button class="sort-opt-btn" data-val="25" onclick="sgSelectCount(this)">25問</button>
-          <button class="sort-opt-btn" data-val="all" onclick="sgSelectCount(this)">すべて</button>
-        </div>
-      </div>
-      <div class="sort-filter-footer">
-        <button class="sort-timeline-btn" onclick="showNavSection('timelineSection')">📅 年表で見る</button>
-        <div class="sort-count-badge">対象：<span id="sg-count-display">0</span> 問</div>
-        <button class="sort-start-btn" id="sg-start-btn" onclick="sgStartGame()">▶ スタート</button>
+      <div class="filter-chips">
+        <div class="chip subject-jp active" data-group="subject" data-val="日本史" onclick="sgToggleChip(this)">日本史</div>
+        <div class="chip subject-wh active" data-group="subject" data-val="世界史" onclick="sgToggleChip(this)">世界史</div>
       </div>
     </div>
+
+    <!-- 時代（日本史） -->
+    <div class="filter-row-2col">
+      <div class="filter-group" id="sg-era-jp-card">
+        <div class="collapse-header" onclick="sgToggleCollapse('era-jp')">
+          <span class="collapse-arrow" id="sg-arrow-era-jp">▶</span>
+          <span class="collapse-title">時代（日本史）</span>
+        </div>
+        <div class="collapsible collapsed" id="sg-tags-wrap-era-jp">
+          <div class="collapsible-btns">
+            <button class="select-all-btn" onclick="sgSelectAll('era-jp')">すべて選択</button>
+            <button class="select-all-btn" onclick="sgClearFilter('era-jp')">すべて解除</button>
+          </div>
+          <div class="filter-chips" id="sg-tags-era-jp">
+            <div class="chip active" data-group="era-jp" data-val="旧石器" onclick="sgToggleChip(this)">旧石器</div>
+            <div class="chip active" data-group="era-jp" data-val="縄文" onclick="sgToggleChip(this)">縄文</div>
+            <div class="chip active" data-group="era-jp" data-val="弥生" onclick="sgToggleChip(this)">弥生</div>
+            <div class="chip active" data-group="era-jp" data-val="古墳" onclick="sgToggleChip(this)">古墳</div>
+            <div class="chip active" data-group="era-jp" data-val="飛鳥" onclick="sgToggleChip(this)">飛鳥</div>
+            <div class="chip active" data-group="era-jp" data-val="奈良" onclick="sgToggleChip(this)">奈良</div>
+            <div class="chip active" data-group="era-jp" data-val="平安" onclick="sgToggleChip(this)">平安</div>
+            <div class="chip active" data-group="era-jp" data-val="鎌倉" onclick="sgToggleChip(this)">鎌倉</div>
+            <div class="chip active" data-group="era-jp" data-val="室町" onclick="sgToggleChip(this)">室町</div>
+            <div class="chip active" data-group="era-jp" data-val="戦国" onclick="sgToggleChip(this)">戦国</div>
+            <div class="chip active" data-group="era-jp" data-val="江戸" onclick="sgToggleChip(this)">江戸</div>
+            <div class="chip active" data-group="era-jp" data-val="明治" onclick="sgToggleChip(this)">明治</div>
+            <div class="chip active" data-group="era-jp" data-val="大正" onclick="sgToggleChip(this)">大正</div>
+            <div class="chip active" data-group="era-jp" data-val="戦前" onclick="sgToggleChip(this)">戦前</div>
+            <div class="chip active" data-group="era-jp" data-val="戦後" onclick="sgToggleChip(this)">戦後</div>
+            <div class="chip active" data-group="era-jp" data-val="現代" onclick="sgToggleChip(this)">現代</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 時代（世界史） -->
+      <div class="filter-group" id="sg-era-world-card">
+        <div class="collapse-header" onclick="sgToggleCollapse('era-world')">
+          <span class="collapse-arrow" id="sg-arrow-era-world">▶</span>
+          <span class="collapse-title">時代（世界史）</span>
+        </div>
+        <div class="collapsible collapsed" id="sg-tags-wrap-era-world">
+          <div class="collapsible-btns">
+            <button class="select-all-btn" onclick="sgSelectAll('era-world')">すべて選択</button>
+            <button class="select-all-btn" onclick="sgClearFilter('era-world')">すべて解除</button>
+          </div>
+          <div class="filter-chips" id="sg-tags-era-world">
+            <div class="chip active" data-group="era-world" data-val="先史・石器時代" onclick="sgToggleChip(this)">先史・石器時代</div>
+            <div class="chip active" data-group="era-world" data-val="古代" onclick="sgToggleChip(this)">古代</div>
+            <div class="chip active" data-group="era-world" data-val="中世" onclick="sgToggleChip(this)">中世</div>
+            <div class="chip active" data-group="era-world" data-val="近世" onclick="sgToggleChip(this)">近世</div>
+            <div class="chip active" data-group="era-world" data-val="近代" onclick="sgToggleChip(this)">近代</div>
+            <div class="chip active" data-group="era-world" data-val="現代" onclick="sgToggleChip(this)">現代</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 地域・テーマ -->
+    <div class="filter-row-2col">
+      <div class="filter-group">
+        <div class="collapse-header" onclick="sgToggleCollapse('region')">
+          <span class="collapse-arrow" id="sg-arrow-region">▶</span>
+          <span class="collapse-title">地域</span>
+        </div>
+        <div class="collapsible collapsed" id="sg-tags-wrap-region">
+          <div class="collapsible-btns">
+            <button class="select-all-btn" onclick="sgSelectAll('region')">すべて選択</button>
+            <button class="select-all-btn" onclick="sgClearFilter('region')">すべて解除</button>
+          </div>
+          <div class="filter-chips" id="sg-tags-region">
+            <div class="chip active" data-group="region" data-val="中華王朝" onclick="sgToggleChip(this)">中華王朝</div>
+            <div class="chip active" data-group="region" data-val="朝鮮半島" onclick="sgToggleChip(this)">朝鮮半島</div>
+            <div class="chip active" data-group="region" data-val="東南アジア" onclick="sgToggleChip(this)">東南アジア</div>
+            <div class="chip active" data-group="region" data-val="南アジア" onclick="sgToggleChip(this)">南アジア</div>
+            <div class="chip active" data-group="region" data-val="西アジア" onclick="sgToggleChip(this)">西アジア</div>
+            <div class="chip active" data-group="region" data-val="地中海沿岸" onclick="sgToggleChip(this)">地中海沿岸</div>
+            <div class="chip active" data-group="region" data-val="ヨーロッパ" onclick="sgToggleChip(this)">ヨーロッパ</div>
+            <div class="chip active" data-group="region" data-val="アフリカ" onclick="sgToggleChip(this)">アフリカ</div>
+            <div class="chip active" data-group="region" data-val="アメリカ" onclick="sgToggleChip(this)">アメリカ</div>
+            <div class="chip active" data-group="region" data-val="日本" onclick="sgToggleChip(this)">日本</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="collapse-header" onclick="sgToggleCollapse('theme-sg')">
+          <span class="collapse-arrow" id="sg-arrow-theme">▶</span>
+          <span class="collapse-title">テーマ</span>
+        </div>
+        <div class="collapsible collapsed" id="sg-tags-wrap-theme">
+          <div class="collapsible-btns">
+            <button class="select-all-btn" onclick="sgSelectAll('theme')">すべて選択</button>
+            <button class="select-all-btn" onclick="sgClearFilter('theme')">すべて解除</button>
+          </div>
+          <div class="filter-chips" id="sg-tags-theme">
+            <div class="chip active" data-group="theme" data-val="戦争" onclick="sgToggleChip(this)">戦争</div>
+            <div class="chip active" data-group="theme" data-val="文化" onclick="sgToggleChip(this)">文化</div>
+            <div class="chip active" data-group="theme" data-val="国家" onclick="sgToggleChip(this)">国家</div>
+            <div class="chip active" data-group="theme" data-val="政策" onclick="sgToggleChip(this)">政策</div>
+            <div class="chip active" data-group="theme" data-val="その他" onclick="sgToggleChip(this)">その他</div>
+            <div class="chip active" data-group="theme" data-val="反乱・革命" onclick="sgToggleChip(this)">反乱・革命</div>
+            <div class="chip active" data-group="theme" data-val="外交" onclick="sgToggleChip(this)">外交</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 出題数 -->
+    <div class="filter-group">
+      <div class="filter-label">出題数</div>
+      <div class="filter-chips" id="sg-count-options">
+        <button class="chip active" data-val="7" onclick="sgSelectCount(this)">7問</button>
+        <button class="chip" data-val="10" onclick="sgSelectCount(this)">10問</button>
+        <button class="chip" data-val="15" onclick="sgSelectCount(this)">15問</button>
+        <button class="chip" data-val="25" onclick="sgSelectCount(this)">25問</button>
+        <button class="chip" data-val="all" onclick="sgSelectCount(this)">すべて</button>
+      </div>
+    </div>
+
+    <!-- アクション -->
+    <div class="filter-actions">
+      <button class="btn btn-primary" onclick="sgStartGame()">▶ スタート</button>
+      <button class="btn btn-ghost" onclick="showNavSection('timelineSection')">📅 年表で見る</button>
+      <div class="match-count">対象：<span id="sg-count-display">0</span> 問</div>
+    </div>
+
+  </div>
+</div>
 
     <div id="sg-screen-sort" class="sg-screen" style="display:none;">
       <div class="sg-top-bar" id="sg-top-bar"></div>
@@ -5360,8 +5376,10 @@ function sgGetFiltered() {
 
 function sgUpdateCountDisplay() {
   const n = sgGetFiltered().length;
-  document.getElementById('sg-count-display').textContent = n;
-  document.getElementById('sg-start-btn').disabled = n < 4;
+  const el = document.getElementById('sg-count-display');
+  const btn = document.getElementById('sg-start-btn');
+  if (el) el.textContent = n;
+  if (btn) btn.disabled = n < 4;
 }
 function sgUpdateSubjectCards() {
   document.getElementById('sg-era-jp-card').style.display = sgState.selSubject.has('日本史') ? '' : 'none';
@@ -5375,33 +5393,61 @@ function sgToggleTag(el) {
   sgUpdateSubjectCards(); sgUpdateCountDisplay();
 }
 function sgSelectAll(g) {
-  document.querySelectorAll(`#sortSection [data-group="${g}"]`).forEach(el => {
-    const m={'era-jp':sgState.selEraJp,'era-world':sgState.selEraWorld,region:sgState.selRegion,theme:sgState.selTheme};
-    m[g].add(el.dataset.val); el.classList.add('selected');
+  const m = { subject: sgState.selSubject, 'era-jp': sgState.selEraJp, 'era-world': sgState.selEraWorld, region: sgState.selRegion, theme: sgState.selTheme };
+  document.querySelectorAll(`#sg-screen-filter [data-group="${g}"]`).forEach(el => {
+    m[g].add(el.dataset.val);
+    el.classList.add('active');
   });
+  sgUpdateSubjectCards();
   sgUpdateCountDisplay();
 }
+
 function sgClearFilter(g) {
-  const m={subject:sgState.selSubject,'era-jp':sgState.selEraJp,'era-world':sgState.selEraWorld,region:sgState.selRegion,theme:sgState.selTheme};
-  m[g].clear();
-  document.querySelectorAll(`#sortSection [data-group="${g}"]`).forEach(el => el.classList.remove('selected'));
-  sgUpdateSubjectCards(); sgUpdateCountDisplay();
+  const m = { subject: sgState.selSubject, 'era-jp': sgState.selEraJp, 'era-world': sgState.selEraWorld, region: sgState.selRegion, theme: sgState.selTheme };
+  if (m[g]) m[g].clear();
+  document.querySelectorAll(`#sg-screen-filter [data-group="${g}"]`).forEach(el => el.classList.remove('active'));
+  sgUpdateSubjectCards();
+  sgUpdateCountDisplay();
 }
+      
 function sgSelectCount(btn) {
-  document.querySelectorAll('#sg-count-options .sort-opt-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  sgState.questionCount = btn.dataset.val==='all' ? 999999 : parseInt(btn.dataset.val);
+  document.querySelectorAll('#sg-count-options .chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  sgState.questionCount = btn.dataset.val === 'all' ? 999999 : parseInt(btn.dataset.val);
 }
 function sgToggleCollapse(group) {
-  const wrap = document.getElementById('sg-tags-wrap-'+group);
-  const arrow = document.getElementById('sg-arrow-'+group);
-  const hint = document.getElementById('sg-hint-'+group);
+  const wrap = document.getElementById('sg-tags-wrap-' + group);
+  const arrow = document.getElementById('sg-arrow-' + group);
   if (!wrap) return;
   wrap.classList.toggle('collapsed');
   const opened = !wrap.classList.contains('collapsed');
   if (arrow) arrow.classList.toggle('open', opened);
-  if (hint) hint.textContent = opened ? '▲ 閉じる' : '絞り込む';
 }
+
+      function sgToggleChip(el) {
+  const g = el.dataset.group;
+  const v = el.dataset.val;
+  const m = {
+    subject: sgState.selSubject,
+    'era-jp': sgState.selEraJp,
+    'era-world': sgState.selEraWorld,
+    region: sgState.selRegion,
+    theme: sgState.selTheme
+  };
+  if (!m[g]) return;
+  if (m[g].has(v)) {
+    m[g].delete(v);
+    el.classList.remove('active');
+  } else {
+    m[g].add(v);
+    el.classList.add('active');
+  }
+  sgUpdateSubjectCards();
+  sgUpdateCountDisplay();
+}
+      
+      
+      
 function sgShowScreen(id) {
   ['sg-screen-filter','sg-screen-sort','sg-screen-explain','sg-screen-clear'].forEach(s => {
     document.getElementById(s).style.display = 'none';
