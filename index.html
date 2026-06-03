@@ -5978,7 +5978,26 @@ document.getElementById('testRangeCheck').addEventListener('change', (e) => {
 updateCountdown();
 updatePersonImage();
 loadStats();
-      
+
+      function openFeedback() {
+  const text = prompt("フィードバックを入力してください");
+
+  if (!text) return;
+
+  fetch(
+    "https://docs.google.com/forms/d/e/1FAIpQLSeJgr1MigZlCEW9oQ628Rup02unGjqjP4Z9p4N8kiGx7p5I5A/formResponse",
+    {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: `entry.689759114=${encodeURIComponent(text)}`
+    }
+  );
+
+  alert("送信しました！");
+}
 
 </script>
   
