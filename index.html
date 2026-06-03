@@ -1931,7 +1931,16 @@
         </div>
       </div>
       
-      
+      <div class="filter-group">
+  <div class="filter-title">出題数</div>
+
+  <div class="chip-row">
+    <button type="button" class="count-chip active" data-count="10">10問</button>
+    <button type="button" class="count-chip" data-count="20">20問</button>
+    <button type="button" class="count-chip" data-count="30">30問</button>
+    <button type="button" class="count-chip" data-count="all">すべて</button>
+  </div>
+</div>
       
       
  <p class="filter-note">
@@ -4697,6 +4706,7 @@
         
       
     };
+    let quizCount = 10;
     let currentQuestions = [],
       currentIndex = 0,
       correctCount = 0,
@@ -4911,7 +4921,8 @@ function getFiltered() {
         document.getElementById('emptyState').classList.add('active');
         return;
       }
-      startQuiz(shuffle(filtered));
+      const questions = shuffle(filtered).slice(0, quizCount);
+startQuiz(questions);
     });
 
     function shuffle(arr) {
@@ -5982,6 +5993,19 @@ function stopStudyTimer() {
 document.getElementById('testRangeCheck').addEventListener('change', (e) => {
   updateMatchCount();
  
+});
+      document.querySelectorAll('#quiz-count-options .chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('#quiz-count-options .chip')
+      .forEach(c => c.classList.remove('active'));
+
+    chip.classList.add('active');
+
+    quizCount =
+      chip.dataset.count === 'all'
+        ? 999999
+        : parseInt(chip.dataset.count);
+  });
 });
 
 updateCountdown();
