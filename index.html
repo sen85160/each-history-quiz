@@ -1711,40 +1711,6 @@
   .color-swatch { width: 26px; height: 26px; }
 }
 
-    /* チップ全体のコンテナ */
-.chip-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 5px;
-}
-
-/* 通常のボタン（チップ）のデザイン */
-.chip {
-  padding: 8px 16px;
-  background-color: #f0f0f0; /* 未選択時のグレー */
-  color: #333;
-  border-radius: 20px;       /* 丸角 */
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  user-select: none;
-  font-family: 'Zen Maru Gothic', sans-serif;
-  font-weight: 500;
-}
-
-/* ホバーしたとき（PC用） */
-.chip:hover {
-  background-color: #e0e0e0;
-}
-
-/* アクティブ（選択中）になったとき。アプリのメインカラー（黄緑）に合わせます */
-.chip.active {
-  background-color: var(--orange, #78d61f); 
-  color: #fff;
-  font-weight: 700;
-  box-shadow: 0 2px 6px rgba(120, 214, 31, 0.4);
-}
 
     
   </style>
