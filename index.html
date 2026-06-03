@@ -5877,7 +5877,11 @@ function tlRender() {
   sorted.forEach(q=>{
     const yearLabel=q.century?q.a:(q.ans<0?`前${Math.abs(q.ans)}年`:`${q.ans}年`);
     const d=document.createElement('div'); d.className='tl-item';
-    d.innerHTML=`<div class="tl-year">${yearLabel}</div><div class="tl-body"><div class="tl-event">${q.q}</div><div class="tl-tags"><span class="tl-tag-sm">${q.subject}</span><span class="tl-tag-sm">${q.era}</span><span class="tl-tag-sm">${q.region}</span>${q.theme.map(t=>`<span class="tl-tag-sm">${t}</span>`).join('')}</div></div>`;
+    d.innerHTML=`
+<div class="tl-year">${yearLabel}</div>
+<div class="tl-body">
+  <div class="tl-event">${q.q}</div>
+</div>`;
     list.appendChild(d);
   });
 }
