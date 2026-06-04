@@ -1711,6 +1711,98 @@
   .color-swatch { width: 26px; height: 26px; }
 }
 
+    /* 苦手問題ボックス */
+.home-tbd-box {
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  gap: 8px;
+}
+.weak-title {
+  font-size: 11px;
+  font-weight: 900;
+  color: var(--text-sub);
+  letter-spacing: 2px;
+}
+.weak-tag-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.weak-tag-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+}
+.weak-tag-name {
+  flex: 1;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 10px;
+}
+.weak-tag-bar-wrap {
+  width: 60px;
+  height: 6px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.weak-tag-bar {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--red);
+}
+.weak-tag-pct {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--red);
+  min-width: 28px;
+  text-align: right;
+}
+.weak-footer {
+  border-top: 1.5px dashed var(--border);
+  padding-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.weak-count {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-sub);
+}
+.weak-count span {
+  color: var(--red);
+  font-size: 13px;
+  font-weight: 900;
+}
+.weak-btn {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  transition: all 0.15s;
+}
+.weak-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.weak-btn:disabled {
+  background: var(--border);
+  color: var(--text-sub);
+  cursor: not-allowed;
+  transform: none;
+}
 
     
   </style>
@@ -1792,7 +1884,14 @@
   </div>
 
   <!-- 右：未定枠 -->
-  <div class="home-tbd-box"></div>
+<div class="home-tbd-box" id="weakBox">
+  <div class="weak-title">📉 苦手ジャンル</div>
+  <div id="weakTagList" class="weak-tag-list"></div>
+  <div class="weak-footer">
+    <div class="weak-count">正答率50%以下：<span id="weakCount">0</span>問</div>
+    <button class="weak-btn" id="weakStartBtn" onclick="startWeakQuiz()">苦手問題を出題 →</button>
+  </div>
+</div>
 
 </div>
  
@@ -5035,10 +5134,11 @@ startQuiz(questions);
       area.onclick = null;
     }
 
+
 function judge(isCorrect) {
   if (isCorrect) correctCount++;
   else wrongQuestions.push(currentQuestions[currentIndex]);
-  recordAnswer(isCorrect); // ← 追加
+  recordAnswer(isCorrect, currentQuestions[currentIndex]); // questionを渡す
   currentIndex++;
   if (currentIndex >= currentQuestions.length) showResult();
   else showQuestion();
@@ -5060,11 +5160,12 @@ function judge(isCorrect) {
 　　　　document.getElementById('resultScreen').classList.add('active');
     }
 
-    function backToFilter() {
-      document.getElementById('resultScreen').classList.remove('active');
-      document.getElementById('filterPanel').style.display = 'block';
-      updateMatchCount();
-    }
+  function backToFilter() {
+  document.getElementById('resultScreen').classList.remove('active');
+  document.getElementById('resultScreen').style.display = 'none'; // ← 追加
+  document.getElementById('filterPanel').style.display = 'block';
+  updateMatchCount();
+}
 
     function retryWrong() {
       if (!wrongQuestions.length) {
@@ -5177,6 +5278,7 @@ function showNavSection(section) {
     homeScreen.style.display = 'block';
     document.getElementById('navHome').classList.add('active');
     loadStats();
+    loadWeakBox();
   } else if (section === 'filterPanel') {
     filterPanel.style.display = 'block';
     document.getElementById('navQuiz').classList.add('active');
@@ -5866,17 +5968,17 @@ function sgAddTouchDragSlot(card, slotIdx) {
   });
 }
 function sgSubmitSort() {
-  const group=sgState.sortGroups[sgState.sortCurrentIdx];
-  const sorted=[...group].sort((a,b)=>sgGetSortAns(a)-sgGetSortAns(b));
-  const userOrder=sgState.slotContents.map(q=>q?.q||'');
-  const correctOrder=sorted.map(q=>q.q);
-  const isCorrect=JSON.stringify(userOrder)===JSON.stringify(correctOrder);
-  if(isCorrect) sgState.correctCount++;
-  recordAnswer(isCorrect); 
-  sgShowFlash(isCorrect?'correct':'wrong');
-  const sortData={sorted,userOrder};
+  const group = sgState.sortGroups[sgState.sortCurrentIdx];
+  const sorted = [...group].sort((a,b) => sgGetSortAns(a) - sgGetSortAns(b));
+  const userOrder = sgState.slotContents.map(q => q?.q || '');
+  const correctOrder = sorted.map(q => q.q);
+  const isCorrect = JSON.stringify(userOrder) === JSON.stringify(correctOrder);
+  if (isCorrect) sgState.correctCount++;
+  recordAnswer(isCorrect, null); // 並び替えはquestion単位記録なし
+  sgShowFlash(isCorrect ? 'correct' : 'wrong');
+  const sortData = { sorted, userOrder };
   sgState.sortCurrentIdx++;
-  setTimeout(()=>sgShowExplain(isCorrect?'correct':'wrong',sortData),400);
+  setTimeout(() => sgShowExplain(isCorrect ? 'correct' : 'wrong', sortData), 400);
 }
 function sgShowExplain(result, sortData) {
   sgShowScreen('sg-screen-explain');
@@ -6000,23 +6102,52 @@ function loadStats() {
   document.getElementById('stat-rate').textContent = total > 0 ? rate + '%' : '--%';
   document.getElementById('stat-time').textContent = total > 0 ? (hours > 0 ? `${hours}h${mins}m` : `${mins}m`) : '--';
   document.getElementById('stat-streak').textContent = streak > 0 ? streak : '--';
+  loadWeakBox();
 }
 
 // 1問ごとに記録（一問一答・並び替え共通）
-function recordAnswer(isCorrect) {
+function recordAnswer(isCorrect, question) {
   const data = JSON.parse(localStorage.getItem('historyAppStats') || '{}');
+  
+  // 総計
   data.totalAnswers = (data.totalAnswers || 0) + 1;
   if (isCorrect) data.totalCorrect = (data.totalCorrect || 0) + 1;
+  
   // 連続学習日数
   const today = new Date().toDateString();
   if (data.lastStudyDate !== today) {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     data.streak = (data.lastStudyDate === yesterday.toDateString())
-      ? (data.streak || 0) + 1
-      : 1;
+      ? (data.streak || 0) + 1 : 1;
     data.lastStudyDate = today;
   }
+
+  // 問題単位の記録（直近5回）
+  if (question) {
+    data.questionStats = data.questionStats || {};
+    const key = question.q;
+    const qs = data.questionStats[key] || { history: [] };
+    qs.history.push(isCorrect ? 1 : 0);
+    if (qs.history.length > 5) qs.history.shift(); // 直近5回だけ保持
+    data.questionStats[key] = qs;
+
+    // タグ単位の記録
+    data.tagStats = data.tagStats || {};
+    const tags = [
+      `${question.era}（${question.subject}）`,
+      `${question.region}（${question.subject}）`,
+      ...(Array.isArray(question.theme) ? question.theme : [question.theme])
+        .map(t => `${t}（${question.subject}）`)
+    ];
+    tags.forEach(tag => {
+      const ts = data.tagStats[tag] || { correct: 0, wrong: 0 };
+      if (isCorrect) ts.correct++;
+      else ts.wrong++;
+      data.tagStats[tag] = ts;
+    });
+  }
+
   localStorage.setItem('historyAppStats', JSON.stringify(data));
 }
 
@@ -6052,6 +6183,89 @@ document.getElementById('testRangeCheck').addEventListener('change', (e) => {
         : parseInt(chip.dataset.count);
   });
 });
+      
+      
+      
+      
+      // ========== 苦手問題 ==========
+
+function getWeakQuestions() {
+  const data = JSON.parse(localStorage.getItem('historyAppStats') || '{}');
+  const qs = data.questionStats || {};
+  const allQ = [...ALL_QUESTIONS, ...TEST_RANGE_QUESTIONS];
+  
+  return allQ.filter(q => {
+    const stat = qs[q.q];
+    if (!stat || !stat.history || stat.history.length === 0) return false;
+    const total = stat.history.length;
+    const correct = stat.history.filter(v => v === 1).length;
+    const rate = correct / total;
+    return rate <= 0.5;
+  });
+}
+
+function getWeakTags() {
+  const data = JSON.parse(localStorage.getItem('historyAppStats') || '{}');
+  const ts = data.tagStats || {};
+  
+  return Object.entries(ts)
+    .map(([tag, stat]) => {
+      const total = stat.correct + stat.wrong;
+      const rate = total > 0 ? stat.correct / total : 1;
+      return { tag, rate, total };
+    })
+    .filter(t => t.total >= 3) // 3回以上答えたタグのみ
+    .sort((a, b) => a.rate - b.rate)
+    .slice(0, 4); // 上位4件
+}
+
+function loadWeakBox() {
+  const weakQ = getWeakQuestions();
+  const weakTags = getWeakTags();
+
+  // 苦手問題数
+  const countEl = document.getElementById('weakCount');
+  if (countEl) countEl.textContent = weakQ.length;
+
+  // 出題ボタンの有効・無効
+  const btn = document.getElementById('weakStartBtn');
+  if (btn) btn.disabled = weakQ.length === 0;
+
+  // 苦手タグリスト
+  const list = document.getElementById('weakTagList');
+  if (!list) return;
+  list.innerHTML = '';
+
+  if (weakTags.length === 0) {
+    list.innerHTML = '<div style="font-size:10px;color:var(--text-sub);padding:4px 0;">まだデータがありません</div>';
+    return;
+  }
+
+  weakTags.forEach((t, i) => {
+    const pct = Math.round(t.rate * 100);
+    const row = document.createElement('div');
+    row.className = 'weak-tag-row';
+    row.innerHTML = `
+      <div style="font-size:10px;font-weight:800;color:var(--text-sub);min-width:14px;">${i + 1}</div>
+      <div class="weak-tag-name">${t.tag}</div>
+      <div class="weak-tag-bar-wrap">
+        <div class="weak-tag-bar" style="width:${pct}%"></div>
+      </div>
+      <div class="weak-tag-pct">${pct}%</div>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function startWeakQuiz() {
+  const weakQ = getWeakQuestions();
+  if (weakQ.length === 0) return;
+  showNavSection('filterPanel');
+  // 少し待ってからクイズ起動（画面遷移のあと）
+  setTimeout(() => {
+    startQuiz(shuffle(weakQ));
+  }, 50);
+}
 
 updateCountdown();
 updatePersonImage();
