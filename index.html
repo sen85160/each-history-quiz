@@ -17,6 +17,8 @@
 </script>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   
   <link rel="manifest" href="manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
@@ -65,7 +67,7 @@
     }
 
     body {
-      padding-bottom:80px;
+      padding-bottom:70px;
       background: var(--bg);
       color: var(--text);
       font-family: 'M PLUS Rounded 1c', sans-serif;
@@ -946,16 +948,13 @@
   bottom:0;
   left:0;
   width:100%;
-  height:70px;
-
+  height:60px;
   background:white;
   border-top:2px solid var(--border);
-
   display:flex;
   justify-content:space-around;
-  align-items:center;　
-  padding:0 8px;
-
+  align-items:center;
+  padding:0 4px;
   z-index:9999;
 }
 
@@ -963,10 +962,32 @@
   border:none;
   background:none;
   cursor:pointer;
-
-  font-size:12px;
+  font-size:11px;
   font-weight:700;
   color:var(--text-sub);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:1px;
+  padding:4px 6px;
+  border-radius:12px;
+  transition:all 0.2s ease;
+  white-space:nowrap;
+}
+
+.bottom-nav i{
+  font-size:20px;
+  margin-bottom:0;
+  line-height:1;
+}
+
+.bottom-nav button.active{
+  background:var(--main-green);
+  color:white;
+  font-weight:700;
+  transform:translateY(-3px);
+  box-shadow:0 3px 10px rgba(0,0,0,0.15);
 }
    #homeScreen{
   display:none;
@@ -982,35 +1003,6 @@
   border-radius:20px;
 }
     
-.bottom-nav button{
-  border:none;
-  background:none;
-
-  color:#777;
-  font-size:12px;
-
-  padding:8px 12px;
-  border-radius:16px;
-
-  transition:all 0.2s ease;
-}
-
-.bottom-nav button.active{
-  background:var(--main-green);
-
-  color:white;
-  font-weight:700;
-
-  transform:translateY(-3px);
-
-  box-shadow:0 3px 10px rgba(0,0,0,0.15);
-}
-    
-  .bottom-nav i{
-  font-size:20px;
-  margin-bottom:4px;
-}
-  
   /* ══ 並び替え・年表セクション共通 ══ */
 #sortSection, #timelineSection {
   display: none;
@@ -1138,6 +1130,25 @@
   font-weight: 700; color: var(--text-sub); cursor: pointer;
 }
 .sg-hud-back:hover { border-color: var(--orange); color: var(--text); }
+
+.map-choice-btn {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 8px;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  text-align: center;
+  line-height: 1.4;
+}
+.map-choice-btn:hover:not(:disabled) {
+  border-color: var(--main-green);
+  background: rgba(120,214,31,0.08);
+}
 .sg-hud-label { font-size: 12px; font-weight: 800; color: var(--text-sub); letter-spacing: 1px; }
 .sg-sort-wrap {
   padding: 16px; display: flex; flex-direction: column;
@@ -1895,6 +1906,8 @@
 </div>
 
 </div>
+
+<!-- 地図クイズ ホットバーカード削除済み -->
  
 
 
@@ -1991,7 +2004,7 @@
               <button class="chip" data-group="region" data-val="東南アジア">東南アジア</button>
               <button class="chip" data-group="region" data-val="南アジア">南アジア</button>
               <button class="chip" data-group="region" data-val="西アジア">西アジア</button>
-              <button class="chip" data-group="region" data-val="中央ユーラシア">中央ユーラシア</button>
+              <button class="chip" data-group="region" data-val="中央アジア・朝鮮">中央アジア・朝鮮</button>
               <button class="chip" data-group="region" data-val="地中海沿岸">地中海沿岸</button>
               <button class="chip" data-group="region" data-val="イスラム圏">イスラム圏</button>
               <button class="chip" data-group="region" data-val="ヨーロッパ">ヨーロッパ</button>
@@ -2338,6 +2351,175 @@
     <div class="timeline-list-wrap" id="tl-list"></div>
   </div>
   
+<!-- 地図セクション -->
+<div id="mapSection" style="display:none;">
+  <div id="map-screen-filter">
+    <div class="filter-panel" style="margin-top:0;">
+      <div class="panel-title">地図クイズ — 出題条件を絞り込む</div>
+
+      <!-- モード -->
+      <div class="filter-group">
+        <div class="filter-label">モード</div>
+        <div class="filter-chips" id="map-mode-chips">
+          <div class="chip active" data-map-mode="choice" onclick="mapSelectMode(this)">4択選択式</div>
+          <div class="chip" data-map-mode="tap" onclick="mapSelectMode(this)">ピンポイント選択</div>
+        </div>
+      </div>
+
+      <!-- 出題数 -->
+      <div class="filter-group">
+        <div class="filter-label">出題数</div>
+        <div class="filter-chips" id="map-count-chips">
+          <div class="chip" data-map-num="5" onclick="mapSelectCount(this)">5問</div>
+          <div class="chip active" data-map-num="10" onclick="mapSelectCount(this)">10問</div>
+          <div class="chip" data-map-num="20" onclick="mapSelectCount(this)">20問</div>
+          <div class="chip" data-map-num="all" onclick="mapSelectCount(this)">すべて</div>
+        </div>
+      </div>
+
+      <!-- 地域・時代（2列） -->
+      <div class="filter-row-2col">
+        <!-- 地域 -->
+        <div class="filter-group">
+          <div class="collapse-header" onclick="mapToggleCollapse('region')">
+            <span class="collapse-arrow" id="map-arrow-region">▶</span>
+            <span class="collapse-title">地域（エリア）</span>
+          </div>
+          <div class="collapsible collapsed" id="map-wrap-region">
+            <div class="collapsible-btns">
+              <button class="select-all-btn" onclick="mapSelectAll('region')">すべて選択</button>
+              <button class="select-all-btn" onclick="mapClearFilter('region')">すべて解除</button>
+            </div>
+            <div class="filter-chips" id="map-region-chips">
+              <div class="chip active" data-map-region="全世界" onclick="mapToggleRegion(this)">全世界</div>
+              <div class="chip" data-map-region="日本" onclick="mapToggleRegion(this)">日本</div>
+              <div class="chip" data-map-region="中華王朝" onclick="mapToggleRegion(this)">中華王朝</div>
+              <div class="chip" data-map-region="中央アジア・朝鮮" onclick="mapToggleRegion(this)">中央アジア・朝鮮</div>
+              <div class="chip" data-map-region="南アジア" onclick="mapToggleRegion(this)">南アジア</div>
+              <div class="chip" data-map-region="東南アジア" onclick="mapToggleRegion(this)">東南アジア</div>
+              <div class="chip" data-map-region="アメリカ大陸" onclick="mapToggleRegion(this)">アメリカ大陸</div>
+              <div class="chip" data-map-region="オリエント" onclick="mapToggleRegion(this)">オリエント</div>
+              <div class="chip" data-map-region="イスラム圏" onclick="mapToggleRegion(this)">イスラム圏</div>
+              <div class="chip" data-map-region="アフリカ" onclick="mapToggleRegion(this)">アフリカ</div>
+              <div class="chip" data-map-region="ヨーロッパ" onclick="mapToggleRegion(this)">ヨーロッパ</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 時代 -->
+        <div class="filter-group">
+          <div class="collapse-header" onclick="mapToggleCollapse('era')">
+            <span class="collapse-arrow" id="map-arrow-era">▶</span>
+            <span class="collapse-title">時代</span>
+          </div>
+          <div class="collapsible collapsed" id="map-wrap-era">
+            <div class="collapsible-btns">
+              <button class="select-all-btn" onclick="mapSelectAll('era')">すべて選択</button>
+              <button class="select-all-btn" onclick="mapClearFilter('era')">すべて解除</button>
+            </div>
+            <div class="filter-chips" id="map-era-chips">
+              <div class="chip active" data-map-era="全時代" onclick="mapToggleEra(this)">全時代</div>
+              <div class="chip" data-map-era="古代" onclick="mapToggleEra(this)">古代</div>
+              <div class="chip" data-map-era="中世" onclick="mapToggleEra(this)">中世</div>
+              <div class="chip" data-map-era="近世" onclick="mapToggleEra(this)">近世</div>
+              <div class="chip" data-map-era="近代" onclick="mapToggleEra(this)">近代</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ジャンル -->
+      <div class="filter-group">
+        <div class="collapse-header" onclick="mapToggleCollapse('cat')">
+          <span class="collapse-arrow" id="map-arrow-cat">▶</span>
+          <span class="collapse-title">ジャンル</span>
+        </div>
+        <div class="collapsible collapsed" id="map-wrap-cat">
+          <div class="collapsible-btns">
+            <button class="select-all-btn" onclick="mapSelectAll('cat')">すべて選択</button>
+            <button class="select-all-btn" onclick="mapClearFilter('cat')">すべて解除</button>
+          </div>
+          <div class="filter-chips" id="map-category-chips">
+            <div class="chip active" data-map-cat="都市" onclick="mapToggleCat(this)">都市</div>
+            <div class="chip active" data-map-cat="遺跡" onclick="mapToggleCat(this)">遺跡</div>
+            <div class="chip active" data-map-cat="戦場" onclick="mapToggleCat(this)">戦場</div>
+            <div class="chip active" data-map-cat="国家領域" onclick="mapToggleCat(this)">国家（領域）</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 難易度（タップモードの時だけ表示） -->
+      <div class="filter-group" id="map-diff-group" style="display:none;">
+        <div class="filter-label">難易度（正解判定の範囲）</div>
+        <div class="filter-chips" id="map-diff-chips">
+          <div class="chip" data-map-diff="500" onclick="mapSelectDiff(this)">ゆるめ（500km）</div>
+          <div class="chip active" data-map-diff="200" onclick="mapSelectDiff(this)">標準（200km）</div>
+          <div class="chip" data-map-diff="80" onclick="mapSelectDiff(this)">シビア（80km）</div>
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn btn-primary" onclick="mapStartQuiz()">▶ スタート</button>
+        <div class="match-count">対象：<span id="map-count-display">0</span> 問</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- クイズ画面 -->
+  <div id="map-screen-quiz" style="display:none;">
+    <div class="sg-hud">
+      <button class="sg-hud-back" onclick="mapBackToFilter()">← 戻る</button>
+      <div class="sg-hud-label">地図クイズ &nbsp; <span id="map-cur">1</span> / <span id="map-total">10</span></div>
+      <div style="width:60px;"></div>
+    </div>
+    <div id="map-question-card" style="background:var(--surface);border:2px solid var(--border);border-radius:16px;margin:10px 12px;padding:14px 18px;box-shadow:0 4px 16px var(--shadow);">
+      <div style="font-size:11px;font-weight:800;color:var(--text-sub);letter-spacing:2px;margin-bottom:6px;">問題</div>
+      <div id="map-question-text" style="font-family:'Zen Maru Gothic',sans-serif;font-size:1.15rem;font-weight:700;line-height:1.7;"></div>
+      <div id="map-hint-text" style="font-size:11px;color:var(--text-sub);margin-top:6px;"></div>
+    </div>
+
+    <!-- タップモード用地図 -->
+    <div id="map-tap-area">
+      <div id="map-leaflet" style="height:50vh;margin:0 12px;border-radius:14px;border:2px solid var(--border);overflow:hidden;"></div>
+      <div style="text-align:center;padding:10px 0 6px;">
+        <div style="font-size:11px;color:var(--text-sub);" id="map-tap-hint">地図をタップして場所を選んでください</div>
+        <button id="map-submit-btn" class="btn btn-primary" style="margin-top:8px;display:none;" onclick="mapSubmitAnswer()">回答する</button>
+      </div>
+    </div>
+
+    <!-- 4択モード用地図＋選択肢 -->
+    <div id="map-choice-area" style="display:none;">
+      <div id="map-leaflet-choice" style="height:40vh;margin:0 12px;border-radius:14px;border:2px solid var(--border);overflow:hidden;"></div>
+      <div style="margin:10px 12px 4px;background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:12px 16px;box-shadow:0 2px 10px var(--shadow);">
+        <div style="font-size:10px;font-weight:800;color:var(--text-sub);letter-spacing:2px;margin-bottom:4px;">問題</div>
+        <div style="font-family:'Zen Maru Gothic',sans-serif;font-size:1.2rem;font-weight:900;color:var(--text);line-height:1.5;">「<span id="map-choice-target"></span>」はどれ？</div>
+        <div id="map-choice-hint" style="font-size:11px;color:var(--text-sub);margin-top:6px;padding-top:6px;border-top:1px solid var(--border);line-height:1.6;"></div>
+      </div>
+      <div id="map-choices" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin:6px 12px;"></div>
+    </div>
+
+    <div id="map-feedback" style="display:none;margin:10px 12px;padding:12px 16px;border-radius:12px;font-size:13px;font-weight:700;"></div>
+    <div style="text-align:center;padding:6px 0 10px;">
+      <button id="map-next-btn" class="btn btn-primary" style="display:none;" onclick="mapNextQuestion()">次へ →</button>
+    </div>
+  </div>
+
+  <!-- 結果画面 -->
+  <div id="map-screen-result" style="display:none;">
+    <div style="text-align:center;padding:48px 24px;">
+      <div style="font-size:56px;margin-bottom:12px;">🗺️</div>
+      <div style="font-family:'Zen Maru Gothic',sans-serif;font-size:2.2rem;font-weight:900;color:var(--main-green-dark);margin-bottom:20px;">クリア！</div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;">
+        <div class="sg-stat-box"><div class="sg-stat-num" id="map-res-correct">0</div><div class="sg-stat-label">正解数</div></div>
+        <div class="sg-stat-box"><div class="sg-stat-num" id="map-res-total">0</div><div class="sg-stat-label">出題数</div></div>
+        <div class="sg-stat-box"><div class="sg-stat-num" id="map-res-rate">0%</div><div class="sg-stat-label">正答率</div></div>
+      </div>
+      <button class="btn btn-primary" onclick="mapBackToFilter()">↺ もう一度</button>
+    </div>
+  </div>
+
+</div>
+
 <!-- 設定画面 -->
 <div id="settingsScreen" style="display:none;">
   <div class="settings-wrap">
@@ -2391,7 +2573,7 @@
 
     </div>
 
-    <div class="settings-version">ver. 1.1.2</div>
+    <div class="settings-version">ver. 2.0.0</div>
 
   </div>
 </div>
@@ -4715,7 +4897,7 @@
   { q: "７４０年に九州で反乱を起こした人物は誰か", a: "藤原広嗣", subject: "日本史", era: "奈良", region: "日本", theme: ["人物", "反乱・革命", "戦争"] },
   { q: "藤原広嗣は藤原何家の人物か", a: "式家", subject: "日本史", era: "奈良", region: "日本", theme: ["人物"] },
   { q: "聖武天皇が国内の安定を図るために基づいた仏教の力を重んずる思想はなにか", a: "鎮護国家思想", subject: "日本史", era: "奈良", region: "日本", theme: ["宗教", "文化"] },
-  { q: "７４１年に聖武天皇が恭仁京で発布した詔はなにか", a: "国分寺建立の詔", subject: "日本史", era: "奈良", region: "日本", theme: ["政策", "宗教"] },
+  { q: "７４１年に聖武天皇が恭仁京で発布した詔はなにか", a: "国分寺建立 of の詔", subject: "日本史", era: "奈良", region: "日本", theme: ["政策", "宗教"] },
   { q: "７４３年に聖武天皇が紫香楽宮で発布した詔はなにか", a: "大仏造立の詔", subject: "日本史", era: "奈良", region: "日本", theme: ["政策", "宗教", "遺産"] },
   { q: "聖武天皇の後の天皇で、大仏開眼供養の時の天皇は誰か", a: "孝謙天皇", subject: "日本史", era: "奈良", region: "日本", theme: ["人物"] , difficulty: "難関"},
   { q: "光明皇太后の信任を得て橘諸兄のあとに権力を握った人物は誰", a: "藤原仲麻呂", subject: "日本史", era: "奈良", region: "日本", theme: ["人物", "政策"] },
@@ -4838,7 +5020,7 @@
   { q: "マリウスと対立し、元老院中心の政治を守ろうとした人物は誰か", a: "スラ", subject: "世界史", era: "古代", region: "地中海沿岸", theme: ["人物", "政策"] },
   { q: "前９１年にイタリア半島の同盟市が参政権を求めて蜂起した戦いをなんというか", a: "同盟市戦争", subject: "世界史", era: "古代", region: "地中海沿岸", theme: ["戦争", "反乱・革命"] },
   { q: "同盟市戦争の結果、ローマ市民権が与えられたのはどのような人物か", a: "イタリア半島の全自由民", subject: "世界史", era: "古代", region: "地中海沿岸", theme: ["政策"] },
-  { q: "光仁天皇の息子で、仏教政治の悪弊を断ち、王権強化を掲げた人物は誰", a: "桓武天皇", subject: "日本史", era: "平安", region: "日本", theme: ["人物"] },
+        { q: "光仁天皇の息子で、仏教政治の悪弊を断ち、王権強化を掲げた人物は誰", a: "桓武天皇", subject: "日本史", era: "平安", region: "日本", theme: ["人物"] },
   { q: "桓武天皇が７８４年に遷都した山城国の都は何", a: "長岡京", subject: "日本史", era: "平安", region: "日本", theme: ["地名", "政策"] },
   { q: "長岡京造営していたが暗殺された藤原式家の人物は誰", a: "藤原種継", subject: "日本史", era: "平安", region: "日本", theme: ["人物"] },
   { q: "藤原種継暗殺事件に関わったとして断罪されて亡くなった人物は誰", a: "早良親王", subject: "日本史", era: "平安", region: "日本", theme: ["人物"] },
@@ -5121,6 +5303,20 @@ startQuiz(questions);
       return a;
     }
 
+    // 学習時間タイマー
+    let studyTimerInterval = null;
+    function startStudyTimer() {
+      stopStudyTimer();
+      studyTimerInterval = setInterval(() => {
+        const data = JSON.parse(localStorage.getItem('historyAppStats') || '{}');
+        data.totalMinutes = (data.totalMinutes || 0) + 1;
+        localStorage.setItem('historyAppStats', JSON.stringify(data));
+      }, 60000);
+    }
+    function stopStudyTimer() {
+      if (studyTimerInterval) { clearInterval(studyTimerInterval); studyTimerInterval = null; }
+    }
+
     function startQuiz(questions) {
       startStudyTimer();
       currentQuestions = questions;
@@ -5219,6 +5415,7 @@ function judge(isCorrect) {
       startQuiz(shuffle(wrongQuestions));
     }
     document.getElementById('backToFilterBtn').addEventListener('click', () => {
+      stopStudyTimer();
       document.getElementById('quizArea').classList.remove('active');
       document.getElementById('filterPanel').style.display = 'block';
       updateMatchCount();
@@ -5280,11 +5477,18 @@ function judge(isCorrect) {
   <i class="fa-solid fa-shuffle"></i><br>
   並び替え
 </button>
+    
+    
+<button id="navMap">
+  <i class="fa-solid fa-map-location-dot"></i><br>
+  地図問題
+</button>
 
 <button id="navTimeline">
   <i class="fa-solid fa-clock-rotate-left"></i><br>
   年表
 </button>
+
 
 <button id="navSettings">
   <i class="fa-solid fa-gear"></i><br>
@@ -5305,6 +5509,7 @@ const filterPanel = document.getElementById('filterPanel');
 const sortSection = document.getElementById('sortSection');
 const timelineSection = document.getElementById('timelineSection');
 const settingsScreen = document.getElementById('settingsScreen');
+const mapSection = document.getElementById('mapSection');
 
 function showNavSection(section) {
   homeScreen.style.display = 'none';
@@ -5315,6 +5520,7 @@ function showNavSection(section) {
   sortSection.classList.remove('active');
   timelineSection.classList.remove('active');
   settingsScreen.style.display = 'none';
+  mapSection.style.display = 'none';
   document.querySelectorAll('.bottom-nav button').forEach(btn => btn.classList.remove('active'));
 
   if (section === 'homeScreen') {
@@ -5334,6 +5540,10 @@ function showNavSection(section) {
     timelineSection.classList.add('active');
     document.getElementById('navTimeline').classList.add('active');
     tlRender();
+  } else if (section === 'mapSection') {
+    mapSection.style.display = 'block';
+    document.getElementById('navMap').classList.add('active');
+    mapUpdateCount();
   }
 }
 
@@ -5341,6 +5551,7 @@ document.getElementById('navHome').addEventListener('click', () => showNavSectio
 document.getElementById('navQuiz').addEventListener('click', () => showNavSection('filterPanel'));
 document.getElementById('navSort').addEventListener('click', () => showNavSection('sortSection'));
 document.getElementById('navTimeline').addEventListener('click', () => showNavSection('timelineSection'));
+document.getElementById('navMap').addEventListener('click', () => showNavSection('mapSection'));
       
 
 // ナビの設定ボタンを上書き
@@ -5352,6 +5563,7 @@ document.getElementById('navSettings').addEventListener('click', () => {
   document.getElementById('listScreen').classList.remove('active');
   sortSection.classList.remove('active');
   timelineSection.classList.remove('active');
+  mapSection.style.display = 'none';
   settingsScreen.style.display = 'block';
   document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
   document.getElementById('navSettings').classList.add('active');
@@ -5407,6 +5619,556 @@ function confirmResetStats() {
     alert('リセットしました。');
   }
 }
+
+// ========== 地図クイズ ==========
+
+const MAP_PLACES = [
+  { name:'岩宿遺跡', hint:'相沢忠洋が発見した旧石器時代の遺跡', lat:36.338, lng:139.144, region:'日本', era:'古代', cat:'遺跡' },
+  { name:'白滝遺跡群', hint:'黒曜石が産出する旧石器時代の遺跡群', lat:44.146, lng:143.565, region:'日本', era:'古代', cat:'遺跡' },
+  { name:'茶臼山・上野平遺跡', hint:'黒曜石が産出する旧石器〜縄文時代の遺跡', lat:36.183, lng:138.050, region:'日本', era:'古代', cat:'遺跡' },
+  { name:'三内丸山遺跡', hint:'縄文時代の大集落遺跡', lat:40.784, lng:140.697, region:'日本', era:'古代', cat:'遺跡' },
+  { name:'大森貝塚', hint:'モースが発見した縄文時代の貝塚', lat:35.593, lng:139.720, region:'日本', era:'古代', cat:'遺跡' },
+  { name:'板付遺跡', hint:'縄文時代晩期末の水稲耕作の跡が残る遺跡', lat:33.589, lng:130.444, region:'日本', era:'古代', cat:'遺跡' },
+  { name:'吉野ケ里遺跡', hint:'弥生時代の大環濠集落遺跡', lat:33.344, lng:130.400, region:'日本', era:'古代', cat:'遺跡' },
+  { name:'登呂遺跡', hint:'水田跡が残る弥生時代の遺跡', lat:34.966, lng:138.411, region:'日本', era:'古代', cat:'遺跡' },
+  { name:'紫雲出山遺跡', hint:'高地性集落の遺跡', lat:34.240, lng:133.534, region:'日本', era:'古代', cat:'遺跡' },
+  { name:'志賀島', hint:'漢委奴国王の金印が発見された島', lat:33.667, lng:130.333, region:'日本', era:'古代', cat:'遺跡' },
+  { name:'難波宮', hint:'孝徳天皇らが遷都した宮', lat:34.693, lng:135.502, region:'日本', era:'古代', cat:'都市' },
+  { name:'近江大津宮', hint:'中大兄皇子が遷都した都', lat:35.006, lng:135.875, region:'日本', era:'古代', cat:'都市' },
+  { name:'飛鳥浄御原宮', hint:'天武天皇が即位した宮', lat:34.470, lng:135.820, region:'日本', era:'古代', cat:'都市' },
+  { name:'藤原京', hint:'持統天皇が遷都した最初の本格的都城', lat:34.502, lng:135.800, region:'日本', era:'古代', cat:'都市' },
+  { name:'磐井の乱', hint:'527年、筑紫国造磐井が新羅と組んで反乱を起こした地', lat:33.370, lng:130.660, region:'日本', era:'古代', cat:'戦場' },
+  { name:'白村江の戦い', hint:'663年、百済復興のために派兵した倭が唐・新羅連合軍に敗れた場所', lat:35.920, lng:126.630, region:'中央アジア・朝鮮', era:'古代', cat:'戦場' },
+  { name:'平城京', hint:'710年、元明天皇が遷都。奈良時代の都', lat:34.685, lng:135.805, region:'日本', era:'古代', cat:'都市' },
+  { name:'多賀城', hint:'陸奥国府として築かれ鎮守府が置かれた', lat:38.303, lng:141.005, region:'日本', era:'古代', cat:'都市' },
+  { name:'渟足柵', hint:'647年に築かれた東北経営の城柵', lat:37.916, lng:139.036, region:'日本', era:'古代', cat:'遺跡' },
+  { name:'磐舟柵', hint:'648年に築かれた東北経営の城柵', lat:38.241, lng:139.521, region:'日本', era:'古代', cat:'遺跡' },
+  { name:'恭仁京', hint:'聖武天皇が遷都。国分寺建立の詔を発した地', lat:34.752, lng:135.817, region:'日本', era:'古代', cat:'都市' },
+  { name:'紫香楽宮', hint:'聖武天皇が大仏造立の詔を発した離宮', lat:34.978, lng:136.144, region:'日本', era:'古代', cat:'都市' },
+  { name:'長岡京', hint:'桓武天皇が遷都したが工事難航で廃された都', lat:34.922, lng:135.702, region:'日本', era:'古代', cat:'都市' },
+  { name:'平安京', hint:'794年、桓武天皇が遷都', lat:35.011, lng:135.768, region:'日本', era:'古代', cat:'都市' },
+  { name:'胆沢城', hint:'802年、坂上田村麻呂が蝦夷を制圧して築いた城', lat:39.068, lng:141.134, region:'日本', era:'古代', cat:'遺跡' },
+  { name:'徳丹城', hint:'文室綿麻呂が築いた城柵', lat:39.427, lng:141.130, region:'日本', era:'古代', cat:'遺跡' },
+  { name:'伊治呰麻呂の乱', hint:'780年、蝦夷の豪族が反乱を起こした地', lat:38.600, lng:141.100, region:'日本', era:'古代', cat:'戦場' },
+  { name:'殷墟', hint:'殷の時代の代表的遺跡。甲骨文字が出土', lat:36.122, lng:114.323, region:'中華王朝', era:'古代', cat:'遺跡' },
+  { name:'鎬京', hint:'周の首都', lat:34.266, lng:108.954, region:'中華王朝', era:'古代', cat:'都市' },
+  { name:'洛邑', hint:'前770年、周が犬戎の侵入を受けて遷都した都', lat:34.618, lng:112.454, region:'中華王朝', era:'古代', cat:'都市' },
+  { name:'楽浪郡', hint:'前108年、漢が置いた郡。倭人が定期的に使者を送った', lat:39.019, lng:125.738, region:'中央アジア・朝鮮', era:'古代', cat:'都市' },
+  { name:'高句麗', hint:'1〜7世紀、朝鮮半島北部〜満州を支配した国', lat:40.5, lng:127.0, region:'中央アジア・朝鮮', era:'古代', cat:'国家領域', radius:400 },
+  { name:'百済', hint:'4〜7世紀、朝鮮半島南西部の国', lat:36.2, lng:127.0, region:'中央アジア・朝鮮', era:'古代', cat:'国家領域', radius:200 },
+  { name:'新羅', hint:'4〜10世紀、朝鮮半島南東部から半島を統一した国', lat:35.8, lng:129.2, region:'中央アジア・朝鮮', era:'古代', cat:'国家領域', radius:200 },
+  { name:'伽耶諸国', hint:'1〜6世紀、朝鮮半島南部の小国連合', lat:35.3, lng:128.3, region:'中央アジア・朝鮮', era:'古代', cat:'国家領域', radius:120 },
+  { name:'モヘンジョ＝ダロ', hint:'インダス文明の代表的都市遺跡', lat:27.329, lng:68.136, region:'南アジア', era:'古代', cat:'遺跡' },
+  { name:'ハラッパー', hint:'インダス文明の遺跡', lat:30.629, lng:72.864, region:'南アジア', era:'古代', cat:'遺跡' },
+  { name:'ドーラーヴィラー', hint:'インダス文明の遺跡', lat:23.887, lng:70.210, region:'南アジア', era:'古代', cat:'遺跡' },
+  { name:'メンフィス', hint:'エジプト古王国の首都', lat:29.851, lng:31.251, region:'オリエント', era:'古代', cat:'都市' },
+  { name:'テーベ', hint:'エジプト中王国・新王国の首都', lat:25.688, lng:32.639, region:'オリエント', era:'古代', cat:'都市' },
+  { name:'アマルナ', hint:'アメンホテプ4世が遷都した都市', lat:27.645, lng:30.899, region:'オリエント', era:'古代', cat:'都市' },
+  { name:'バビロン', hint:'バビロン捕囚が行われた新バビロニアの首都', lat:32.543, lng:44.422, region:'オリエント', era:'古代', cat:'都市' },
+  { name:'ニネヴェ', hint:'王立図書館で有名なアッシリア王国の首都', lat:36.359, lng:43.157, region:'オリエント', era:'古代', cat:'都市' },
+  { name:'ペルセポリス', hint:'ダレイオス1世が建設した祭儀上の首都', lat:29.935, lng:52.891, region:'オリエント', era:'古代', cat:'都市' },
+  { name:'スサ', hint:'アケメネス朝ペルシアの行政上の首都', lat:32.190, lng:48.258, region:'オリエント', era:'古代', cat:'都市' },
+  { name:'ダマスクス', hint:'アラム人が拠点とした内陸中継貿易の都市', lat:33.510, lng:36.291, region:'オリエント', era:'古代', cat:'都市' },
+  { name:'イェルサレム', hint:'ヘブライ王国の首都', lat:31.769, lng:35.216, region:'オリエント', era:'古代', cat:'都市' },
+  { name:'ミレトス（イオニア植民市）', hint:'アケメネス朝に対して反乱を起こし、ペルシア戦争の引き金になった', lat:37.533, lng:27.273, region:'オリエント', era:'古代', cat:'都市' },
+  { name:'カデシュの戦い', hint:'ヒッタイトとエジプト新王国の戦い（前1274年頃）', lat:34.567, lng:36.517, region:'オリエント', era:'古代', cat:'戦場' },
+  { name:'リディア', hint:'世界最古の金属貨幣の鋳造が行われた小アジアの国', lat:40.020, lng:34.610, region:'オリエント', era:'古代', cat:'国家領域', radius:200 },
+  { name:'メディア', hint:'アッシリア王国を滅ぼしたイラン高原の国', lat:34.000, lng:38.000, region:'オリエント', era:'古代', cat:'国家領域', radius:600 },
+  { name:'ヒッタイト人の国', hint:'古バビロニアを滅ぼした小アジアの国。鉄製武器をもたらした', lat:40.020, lng:34.610, region:'オリエント', era:'古代', cat:'国家領域', radius:400 },
+  { name:'カルタゴ', hint:'フェニキア人が建設した植民市。ポエニ戦争の舞台', lat:36.853, lng:10.323, region:'アフリカ', era:'古代', cat:'都市' },
+  { name:'アレクサンドリア', hint:'アレクサンドロス大王が建設した都市（エジプト）', lat:31.200, lng:29.919, region:'アフリカ', era:'古代', cat:'都市' },
+  { name:'ピラミッド（ギザ）', hint:'古王国時代のファラオが築いた巨大陵墓', lat:29.979, lng:31.134, region:'アフリカ', era:'古代', cat:'遺跡' },
+  { name:'アテネ', hint:'古代ギリシアの都市国家。民主政・哲学の発祥地', lat:37.971, lng:23.726, region:'ヨーロッパ', era:'古代', cat:'都市' },
+  { name:'スパルタ', hint:'古代ギリシアの都市国家。軍国主義で知られる', lat:37.075, lng:22.431, region:'ヨーロッパ', era:'古代', cat:'都市' },
+  { name:'ローマ', hint:'ラテン人が建国した都市国家。共和政・帝政の首都', lat:41.902, lng:12.496, region:'ヨーロッパ', era:'古代', cat:'都市' },
+  { name:'シチリア', hint:'第一回ポエニ戦争の結果、ローマが属州とした島', lat:37.600, lng:14.015, region:'ヨーロッパ', era:'古代', cat:'都市' },
+  { name:'クレタ文明', hint:'クノッソス宮殿などで有名な海洋的青銅器文明', lat:35.298, lng:25.163, region:'ヨーロッパ', era:'古代', cat:'遺跡' },
+  { name:'ミケーネ文明', hint:'シュリーマンが発掘した好戦的な青銅器文明', lat:37.731, lng:22.756, region:'ヨーロッパ', era:'古代', cat:'遺跡' },
+  { name:'トロイア文明', hint:'シュリーマンが発掘したトロイア戦争の舞台', lat:39.957, lng:26.238, region:'ヨーロッパ', era:'古代', cat:'遺跡' },
+  { name:'テルモピュライ', hint:'前480年、スパルタ300人がペルシア軍を食い止めた峠', lat:38.797, lng:22.533, region:'ヨーロッパ', era:'古代', cat:'戦場' },
+  { name:'サラミスの海戦', hint:'テミストクレス率いるギリシア連合軍が勝利した海戦（前480年）', lat:37.961, lng:23.494, region:'ヨーロッパ', era:'古代', cat:'戦場' },
+  { name:'カンネーの戦い', hint:'前216年、ハンニバルがローマ軍を包囲殲滅した戦い', lat:41.307, lng:16.131, region:'ヨーロッパ', era:'古代', cat:'戦場' },
+  { name:'ザマの戦い', hint:'スキピオ率いるローマがカルタゴを撃破した戦い（前202年）', lat:36.200, lng:8.800, region:'ヨーロッパ', era:'古代', cat:'戦場' },
+  { name:'イッソスの戦い', hint:'アレクサンドロス大王がアケメネス朝に勝利した戦い（前333年）', lat:36.770, lng:36.175, region:'ヨーロッパ', era:'古代', cat:'戦場' },
+  { name:'アクティウム海戦', hint:'前31年、オクタウィアヌスがアントニウスを破った海戦', lat:38.943, lng:20.743, region:'ヨーロッパ', era:'古代', cat:'戦場' },
+  { name:'プトレマイオス朝', hint:'ヘレニズム三国のひとつ。アレクサンドリアを首都にエジプトに成立', lat:29.979, lng:31.134, region:'アフリカ', era:'古代', cat:'国家領域', radius:500 },
+  { name:'セレウコス朝', hint:'ヘレニズム三国のひとつ。', lat:34.000, lng:38.000, region:'オリエント', era:'古代', cat:'国家領域', radius:1400 },
+  { name:'アンティゴノス朝', hint:'ヘレニズム三国のひとつ。', lat:40.623, lng:22.941, region:'ヨーロッパ', era:'古代', cat:'国家領域', radius:300 },
+  { name:'ダキア地方', hint:'ローマ帝国、トラヤヌスに征服された地域', lat:45.943, lng:24.967, region:'ヨーロッパ', era:'古代', cat:'都市' },
+  { name:'ガリア地方', hint:'カエサルが遠征で征服した', lat:46.603, lng:1.888, region:'ヨーロッパ', era:'古代', cat:'都市' },
+  { name:'大隅国', hint:'隼人を服属させ設置された国', lat:31.411, lng:130.998, region:'日本', era:'古代', cat:'都市' },
+  { name:'出雲国', hint:'完全な形で風土記が残る国', lat:35.366, lng:132.754, region:'日本', era:'古代', cat:'都市' },
+  { name:'出羽国', hint:'蝦夷平定のために712年に設置された国', lat:38.924, lng:139.922, region:'日本', era:'古代', cat:'都市' },
+  { name:'コンスタンティノープル', hint:'330年にコンスタンティヌス帝が建設した東ローマ帝国の首都', lat:41.0082, lng:28.9784, region:'ヨーロッパ', era:'中世', cat:'都市' },
+　{ name:'メッカ', hint:'イスラーム教の聖地。ムハンマドの生誕地', lat:21.4225, lng:39.8262, region:'イスラム圏', era:'中世', cat:'都市' },
+　{ name:'メディナ', hint:'622年のヒジュラの目的地', lat:24.5247, lng:39.5692, region:'イスラム圏', era:'中世', cat:'都市' },
+　{ name:'バグダード', hint:'アッバース朝の首都', lat:33.3152, lng:44.3661, region:'イスラム圏', era:'中世', cat:'都市' },
+　{ name:'アンティオキア', hint:'シリア北部の重要都市。十字軍国家の中心の一つ', lat:36.2021, lng:36.1606, region:'オリエント', era:'中世', cat:'都市' },
+　{ name:'ガール水道橋', hint:'南フランスに残るローマ時代の水道橋', lat:43.9475, lng:4.5350, region:'ヨーロッパ', era:'古代', cat:'遺跡' },
+　{ name:'カーバ神殿', hint:'メッカにあるイスラーム教最大の聖地', lat:21.4225, lng:39.8262, region:'イスラム圏', era:'中世', cat:'遺跡' },
+　{ name:'ハギア・ソフィア聖堂', hint:'ビザンツ帝国を代表する大聖堂', lat:41.0086, lng:28.9802, region:'ヨーロッパ', era:'中世', cat:'遺跡' },
+　{ name:'ハドリアヌスの長城', hint:'ローマ帝国がブリテン島北部に築いた防壁', lat:55.0250, lng:-2.3500, region:'ヨーロッパ', era:'古代', cat:'遺跡' },
+　{ name:'トゥール・ポワティエ間の戦い', hint:'732年、フランク王国がウマイヤ朝軍を撃退', lat:47.3941, lng:0.6889, region:'ヨーロッパ', era:'中世', cat:'戦場' },
+　{ name:'ニハーヴァンドの戦い', hint:'642年、ササン朝滅亡の決定打となった戦い', lat:34.1885, lng:48.3770, region:'イスラム圏', era:'中世', cat:'戦場' },
+　{ name:'タラス河畔の戦い', hint:'751年、唐とアッバース朝が衝突した戦い', lat:42.9000, lng:71.3667, region:'中央アジア・朝鮮', era:'中世', cat:'戦場' },
+　{ name:'フランク王国', hint:'メロヴィング朝・カロリング朝が支配したゲルマン国家', lat:48.5000, lng:6.0000, region:'ヨーロッパ', era:'中世', cat:'国家領域', radius:600 },
+　{ name:'ブルグンド王国', hint:'ガリア東部に建国されたゲルマン国家', lat:46.5000, lng:5.5000, region:'ヨーロッパ', era:'中世', cat:'国家領域', radius:250 },
+　{ name:'西ゴート王国', hint:'イベリア半島を支配したゲルマン国家', lat:40.0000, lng:-4.0000, region:'ヨーロッパ', era:'中世', cat:'国家領域', radius:500 },
+　{ name:'東ゴート王国', hint:'イタリア半島を支配したゲルマン国家', lat:42.5000, lng:12.5000, region:'ヨーロッパ', era:'中世', cat:'国家領域', radius:300 },
+　{ name:'ランゴバルド王国', hint:'568年以降に北イタリアへ侵入したゲルマン国家', lat:45.3000, lng:9.5000, region:'ヨーロッパ', era:'中世', cat:'国家領域', radius:250 },
+　{ name:'ヴァンダル王国', hint:'北アフリカに建国されたゲルマン国家', lat:36.8000, lng:10.1800, region:'アフリカ', era:'中世', cat:'国家領域', radius:350 },
+　{ name:'アングロ・サクソン王国', hint:'ノルマン征服以前のイングランド諸王国', lat:52.5000, lng:-1.5000, region:'ヨーロッパ', era:'中世', cat:'国家領域', radius:400 },
+];
+
+let mapState = {
+  questions:[], currentIdx:0, correctCount:0,
+  selectedRegions: new Set(['全世界']),
+  selectedEras: new Set(['全時代']),
+  selectedCats: new Set(['都市','遺跡','戦場','国家領域']),
+  tolerance:200, leafletMap:null, leafletMapChoice:null, marker:null, answered:false,
+  selectedLat:null, selectedLng:null,
+  mode: 'choice',
+  numQuestions: 10,
+};
+
+function mapSelectMode(el) {
+  document.querySelectorAll('#map-mode-chips .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  mapState.mode = el.dataset.mapMode;
+  document.getElementById('map-diff-group').style.display = mapState.mode === 'tap' ? '' : 'none';
+}
+
+function mapSelectCount(el) {
+  document.querySelectorAll('#map-count-chips .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  mapState.numQuestions = el.dataset.mapNum === 'all' ? 99999 : parseInt(el.dataset.mapNum);
+}
+
+function mapToggleRegion(el) {
+  const v = el.dataset.mapRegion;
+  if (v === '全世界') {
+    document.querySelectorAll('#map-region-chips .chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    mapState.selectedRegions = new Set(['全世界']);
+  } else {
+    document.querySelector('[data-map-region="全世界"]').classList.remove('active');
+    mapState.selectedRegions.delete('全世界');
+    if (el.classList.contains('active')) { el.classList.remove('active'); mapState.selectedRegions.delete(v); }
+    else { el.classList.add('active'); mapState.selectedRegions.add(v); }
+    if (mapState.selectedRegions.size === 0) {
+      document.querySelector('[data-map-region="全世界"]').classList.add('active');
+      mapState.selectedRegions.add('全世界');
+    }
+  }
+  mapUpdateCount();
+}
+
+function mapToggleEra(el) {
+  const v = el.dataset.mapEra;
+  if (v === '全時代') {
+    document.querySelectorAll('#map-era-chips .chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    mapState.selectedEras = new Set(['全時代']);
+  } else {
+    document.querySelector('[data-map-era="全時代"]').classList.remove('active');
+    mapState.selectedEras.delete('全時代');
+    if (el.classList.contains('active')) { el.classList.remove('active'); mapState.selectedEras.delete(v); }
+    else { el.classList.add('active'); mapState.selectedEras.add(v); }
+    if (mapState.selectedEras.size === 0) {
+      document.querySelector('[data-map-era="全時代"]').classList.add('active');
+      mapState.selectedEras.add('全時代');
+    }
+  }
+  mapUpdateCount();
+}
+
+function mapToggleCat(el) {
+  const v = el.dataset.mapCat;
+  if (el.classList.contains('active')) { el.classList.remove('active'); mapState.selectedCats.delete(v); }
+  else { el.classList.add('active'); mapState.selectedCats.add(v); }
+  mapUpdateCount();
+}
+
+function mapSelectDiff(el) {
+  document.querySelectorAll('#map-diff-chips .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  mapState.tolerance = parseInt(el.dataset.mapDiff);
+}
+
+function mapGetFiltered() {
+  return MAP_PLACES.filter(p => {
+    const regionOk = mapState.selectedRegions.has('全世界') || mapState.selectedRegions.has(p.region);
+    const eraOk = mapState.selectedEras.has('全時代') || mapState.selectedEras.has(p.era);
+    const catOk = mapState.selectedCats.has(p.cat);
+    return regionOk && eraOk && catOk;
+  });
+}
+
+function mapUpdateCount() {
+  const el = document.getElementById('map-count-display');
+  if (el) el.textContent = mapGetFiltered().length;
+}
+
+function mapShuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i>0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+function mapHaversine(lat1,lng1,lat2,lng2) {
+  const R=6371, dL=(lat2-lat1)*Math.PI/180, dN=(lng2-lng1)*Math.PI/180;
+  const a=Math.sin(dL/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dN/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+function mapStartQuiz() {
+  const filtered = mapGetFiltered();
+  if (filtered.length === 0) { alert('条件に一致する問題がありません'); return; }
+  const take = Math.min(mapState.numQuestions, filtered.length);
+  mapState.questions = mapShuffle(filtered).slice(0, take);
+  mapState.currentIdx = 0; mapState.correctCount = 0;
+  startStudyTimer();
+  document.getElementById('map-screen-filter').style.display = 'none';
+  document.getElementById('map-screen-result').style.display = 'none';
+  document.getElementById('map-screen-quiz').style.display = 'block';
+  mapShowQuestion();
+}
+
+function mapGetMapView(q) {
+  const views = {
+    '日本':{ lat:36.5, lng:137.0, zoom:5 },
+    '中華王朝':{ lat:35.0, lng:108.0, zoom:4 },
+    '中央アジア・朝鮮':{ lat:40.0, lng:95.0, zoom:3 },
+    '南アジア':{ lat:22.0, lng:80.0, zoom:4 },
+    '東南アジア':{ lat:10.0, lng:108.0, zoom:4 },
+    'アメリカ大陸':{ lat:5.0, lng:-78.0, zoom:3 },
+    'オリエント':{ lat:28.0, lng:40.0, zoom:4 },
+    'イスラム圏':{ lat:30.0, lng:45.0, zoom:3 },
+    'アフリカ':{ lat:5.0, lng:20.0, zoom:3 },
+    'ヨーロッパ':{ lat:48.0, lng:14.0, zoom:4 },
+    '全世界':{ lat:25.0, lng:30.0, zoom:2 },
+  };
+  const region = mapState.selectedRegions.has('全世界') ? '全世界' : (q.region||'全世界');
+  return views[region] || views['全世界'];
+}
+
+function mapDestroyMaps() {
+  if (mapState.leafletMap) { mapState.leafletMap.remove(); mapState.leafletMap = null; }
+  if (mapState.leafletMapChoice) { mapState.leafletMapChoice.remove(); mapState.leafletMapChoice = null; }
+  mapState.marker = null;
+}
+
+// ダミー選択ロジック
+// 優先順：同region同era同cat → 同region同era → 同region → 全体
+// ただし国家領域は国家領域同士のみ、それ以外と混在しない
+// 近い場所ほど選ばれやすい重み付きランダム選択
+function mapWeightedSample(pool, q, count) {
+  if (pool.length <= count) return [...pool];
+  // 各候補との距離を計算して重みを付ける（近いほど重み大）
+  const withDist = pool.map(p => ({
+    p,
+    dist: mapHaversine(q.lat, q.lng, p.lat, p.lng)
+  }));
+  const result = [];
+  const remaining = [...withDist];
+  for (let k = 0; k < count && remaining.length > 0; k++) {
+    // 重み = 1/(dist+100) で近いほど選ばれやすい
+    const weights = remaining.map(r => 1 / Math.pow(r.dist + 50, 2));
+    const total = weights.reduce((s, w) => s + w, 0);
+    let r = Math.random() * total;
+    let idx = 0;
+    for (let i = 0; i < weights.length; i++) {
+      r -= weights[i];
+      if (r <= 0) { idx = i; break; }
+    }
+    result.push(remaining[idx].p);
+    remaining.splice(idx, 1);
+  }
+  return result;
+}
+
+function mapGetDummies(q, count) {
+  const isTerritory = q.cat === '国家領域';
+
+  const pool = MAP_PLACES.filter(p => {
+    if (p.name === q.name) return false;
+    if (p.lat === q.lat && p.lng === q.lng) return false;
+    if (isTerritory) return p.cat === '国家領域';
+    return p.cat !== '国家領域';
+  });
+
+  if (isTerritory) {
+    const byEraRegion = pool.filter(p => p.era === q.era && p.region === q.region);
+    if (byEraRegion.length >= count) return mapWeightedSample(byEraRegion, q, count);
+    const byEra = pool.filter(p => p.era === q.era);
+    if (byEra.length >= count) return mapWeightedSample(byEra, q, count);
+    return mapWeightedSample(pool, q, count);
+  }
+
+  // 通常問題：
+  // 段階1: 同cat + 同region + 同era（3つ以上ある場合のみ）
+  let candidates = pool.filter(p => p.cat === q.cat && p.region === q.region && p.era === q.era);
+  if (candidates.length >= count) return mapWeightedSample(candidates, q, count);
+
+  // 段階2: 同cat + 同region（3つ以上ある場合のみ）
+  candidates = pool.filter(p => p.cat === q.cat && p.region === q.region);
+  if (candidates.length >= count) return mapWeightedSample(candidates, q, count);
+
+  // 段階3: 同region（3つ以上ある場合のみ）
+  candidates = pool.filter(p => p.region === q.region);
+  if (candidates.length >= count) return mapWeightedSample(candidates, q, count);
+
+  // 段階4: 同cat（3つ以上ある場合のみ）
+  candidates = pool.filter(p => p.cat === q.cat);
+  if (candidates.length >= count) return mapWeightedSample(candidates, q, count);
+
+  // 最終: 全体から近い順
+  return mapWeightedSample(pool, q, count);
+}
+
+function mapMakePin(color, label, isSquare, size=30) {
+  const borderR = isSquare ? '6px' : '50%';
+  return L.divIcon({
+    html: `<div style="background:${color};color:white;border-radius:${borderR};width:${size}px;height:${size}px;display:flex;align-items:center;justify-content:center;font-size:${size*0.5}px;font-weight:900;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.35);">${label}</div>`,
+    iconSize:[size,size], iconAnchor:[size/2,size/2], className:''
+  });
+}
+
+function mapInitChoiceMode(q) {
+  const dummies = mapGetDummies(q, 3);
+  // dummies同士でも同座標が重複しないようにフィルタ
+  const uniqueDummies = [];
+  const usedCoords = new Set([`${q.lat},${q.lng}`]);
+  for (const d of dummies) {
+    const key = `${d.lat},${d.lng}`;
+    if (!usedCoords.has(key)) { uniqueDummies.push(d); usedCoords.add(key); }
+  }
+  // 足りない場合は同座標制約なしで補充
+  if (uniqueDummies.length < 3) {
+    const extras = MAP_PLACES.filter(p => {
+      if (p.name === q.name) return false;
+      if (uniqueDummies.some(u => u.name === p.name)) return false;
+      const key = `${p.lat},${p.lng}`;
+      if (usedCoords.has(key)) return false;
+      return q.cat === '国家領域' ? p.cat === '国家領域' : p.cat !== '国家領域';
+    });
+    for (const e of mapShuffle(extras)) {
+      if (uniqueDummies.length >= 3) break;
+      uniqueDummies.push(e);
+    }
+  }
+  const allFour = mapShuffle([q, ...uniqueDummies.slice(0, 3)]);
+
+  const nums = ['①','②','③','④'];
+  const colors = ['#3498db','#e67e22','#9b59b6','#1abc9c'];
+
+  const map = L.map('map-leaflet-choice', { zoomControl:true, dragging:true, scrollWheelZoom:false })
+    .setView([25, 30], 2);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',{
+    attribution:'© OpenStreetMap contributors © CARTO', maxZoom:19,
+  }).addTo(map);
+  mapState.leafletMapChoice = map;
+  mapState.choiceData = allFour;
+
+  // ピンを立てる（国家領域は四角）
+  allFour.forEach((p, i) => {
+    const isSquare = p.cat === '国家領域';
+    const icon = mapMakePin(colors[i], nums[i], isSquare, 30);
+    L.marker([p.lat, p.lng], {icon}).addTo(map);
+  });
+
+  // 全ピンが見えるようにfitBounds
+  const bounds = L.latLngBounds(allFour.map(p => [p.lat, p.lng]));
+  map.fitBounds(bounds, {padding:[36,36], maxZoom:10, minZoom:4});
+
+  // 問題文・ヒント
+  document.getElementById('map-choice-target').textContent = q.name;
+  document.getElementById('map-choice-hint').textContent = 'ヒント：' + q.hint;
+
+  // ①〜④ボタン
+  const choicesEl = document.getElementById('map-choices');
+  choicesEl.innerHTML = '';
+  allFour.forEach((p, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'map-choice-btn';
+    btn.innerHTML = `<span style="font-size:18px;font-weight:900;color:${colors[i]};">${nums[i]}</span>`;
+    btn.dataset.idx = i;
+    btn.onclick = () => mapAnswerChoice(i, allFour.indexOf(q), allFour, colors, nums);
+    choicesEl.appendChild(btn);
+  });
+}
+
+function mapShowQuestion() {
+  const q = mapState.questions[mapState.currentIdx];
+  mapState.answered = false; mapState.selectedLat = null; mapState.selectedLng = null;
+
+  document.getElementById('map-cur').textContent = mapState.currentIdx + 1;
+  document.getElementById('map-total').textContent = mapState.questions.length;
+  document.getElementById('map-question-text').textContent = '「' + q.name + '」はどこ？';
+  document.getElementById('map-hint-text').textContent = 'ヒント：' + q.hint;
+  document.getElementById('map-feedback').style.display = 'none';
+  document.getElementById('map-next-btn').style.display = 'none';
+
+  mapDestroyMaps();
+
+  if (mapState.mode === 'tap') {
+    document.getElementById('map-question-card').style.display = 'block';
+    document.getElementById('map-tap-area').style.display = 'block';
+    document.getElementById('map-choice-area').style.display = 'none';
+    document.getElementById('map-submit-btn').style.display = 'none';
+    document.getElementById('map-tap-hint').style.display = 'block';
+    mapInitTapMap(q);
+  } else {
+    document.getElementById('map-question-card').style.display = 'none';
+    document.getElementById('map-tap-area').style.display = 'none';
+    document.getElementById('map-choice-area').style.display = 'block';
+    mapInitChoiceMode(q);
+  }
+}
+
+function mapInitTapMap(q) {
+  const v = mapGetMapView(q);
+  const map = L.map('map-leaflet').setView([v.lat, v.lng], v.zoom);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',{
+    attribution:'© OpenStreetMap contributors © CARTO', maxZoom:19,
+  }).addTo(map);
+  mapState.leafletMap = map;
+
+  map.on('click', function(e) {
+    if (mapState.answered) return;
+    mapState.selectedLat = e.latlng.lat; mapState.selectedLng = e.latlng.lng;
+    if (mapState.marker) map.removeLayer(mapState.marker);
+    mapState.marker = L.circleMarker([e.latlng.lat, e.latlng.lng],{
+      radius:10, color:'#fff', weight:3, fillColor:'#78d61f', fillOpacity:0.9,
+    }).addTo(map);
+    document.getElementById('map-submit-btn').style.display = 'inline-block';
+    document.getElementById('map-tap-hint').style.display = 'none';
+  });
+}
+
+function mapAnswerChoice(chosenIdx, correctIdx, allFour, colors, nums) {
+  if (mapState.answered) return;
+  mapState.answered = true;
+  const isCorrect = chosenIdx === correctIdx;
+  if (isCorrect) mapState.correctCount++;
+  recordAnswer(isCorrect, null);
+
+  // ボタン色付け
+  document.querySelectorAll('.map-choice-btn').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === correctIdx) {
+      btn.style.background = 'rgba(77,187,52,0.2)';
+      btn.style.border = '2px solid #4dbb34';
+    } else if (i === chosenIdx && !isCorrect) {
+      btn.style.background = 'rgba(223,59,59,0.1)';
+      btn.style.border = '2px solid #df3b3b';
+    }
+  });
+
+  // 全ピンを名前付きに差し替え（正解は★、他は番号＋名前）
+  if (mapState.leafletMapChoice) {
+    // 既存ピンを全削除して描き直す
+    mapState.leafletMapChoice.eachLayer(layer => {
+      if (layer instanceof L.Marker) mapState.leafletMapChoice.removeLayer(layer);
+    });
+
+    allFour.forEach((p, i) => {
+      const correct = i === correctIdx;
+      const isSquare = p.cat === '国家領域';
+      const bg = correct ? '#e74c3c' : colors[i];
+      const label = correct ? '★' : nums[i];
+      const size = correct ? 34 : 28;
+      const icon = mapMakePin(bg, label, isSquare, size);
+      L.marker([p.lat, p.lng], {icon})
+        .addTo(mapState.leafletMapChoice)
+        .bindPopup(`<b>${correct ? '★ ' : nums[i]+' '}${p.name}</b>`);
+    });
+
+    // 正解にズーム
+    const cp = allFour[correctIdx];
+    mapState.leafletMapChoice.setView([cp.lat, cp.lng], Math.max(mapState.leafletMapChoice.getZoom(), 4));
+    // 少し待ってからポップアップ表示
+    setTimeout(() => {
+      mapState.leafletMapChoice.eachLayer(layer => {
+        if (layer instanceof L.Marker) {
+          const ll = layer.getLatLng();
+          if (Math.abs(ll.lat - cp.lat) < 0.01 && Math.abs(ll.lng - cp.lng) < 0.01) {
+            layer.openPopup();
+          }
+        }
+      });
+    }, 400);
+  }
+
+  // フィードバック
+  const fb = document.getElementById('map-feedback');
+  fb.style.display = 'block';
+  if (isCorrect) {
+    fb.style.cssText = 'display:block;margin:6px 12px;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:700;background:rgba(77,187,52,0.15);border:2px solid #4dbb34;color:#237536;';
+    fb.textContent = '✅ 正解！';
+  } else {
+    fb.style.cssText = 'display:block;margin:6px 12px;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:700;background:rgba(223,59,59,0.1);border:2px solid #df3b3b;color:#df3b3b;';
+    fb.textContent = `❌ 不正解。正解は ${nums[correctIdx]}「${allFour[correctIdx].name}」`;
+  }
+  document.getElementById('map-next-btn').style.display = 'inline-block';
+}
+
+function mapSubmitAnswer() {
+  if (mapState.selectedLat === null) return;
+  const q = mapState.questions[mapState.currentIdx];
+  const dist = mapHaversine(mapState.selectedLat, mapState.selectedLng, q.lat, q.lng);
+  const isCorrect = dist <= mapState.tolerance;
+  mapState.answered = true;
+  if (isCorrect) mapState.correctCount++;
+  recordAnswer(isCorrect, null);
+
+  const correctIcon = L.divIcon({
+    html:'<div style="background:#e74c3c;color:white;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);">★</div>',
+    iconSize:[28,28], iconAnchor:[14,14], className:''
+  });
+  L.marker([q.lat, q.lng], {icon: correctIcon}).addTo(mapState.leafletMap).bindPopup('<b>' + q.name + '</b>').openPopup();
+  mapState.leafletMap.setView([q.lat, q.lng], Math.max(mapState.leafletMap.getZoom(), 5));
+
+  const fb = document.getElementById('map-feedback');
+  fb.style.display = 'block';
+  if (isCorrect) {
+    fb.style.cssText = 'display:block;margin:10px 12px;padding:12px 16px;border-radius:12px;font-size:13px;font-weight:700;background:rgba(77,187,52,0.15);border:2px solid #4dbb34;color:#237536;';
+    fb.textContent = '✅ 正解！距離：約' + Math.round(dist) + 'km';
+  } else {
+    fb.style.cssText = 'display:block;margin:10px 12px;padding:12px 16px;border-radius:12px;font-size:13px;font-weight:700;background:rgba(223,59,59,0.1);border:2px solid #df3b3b;color:#df3b3b;';
+    fb.textContent = '❌ 不正解。正解は★印の場所。距離：約' + Math.round(dist) + 'km';
+  }
+  document.getElementById('map-submit-btn').style.display = 'none';
+  document.getElementById('map-next-btn').style.display = 'inline-block';
+}
+
+function mapNextQuestion() {
+  mapState.currentIdx++;
+  if (mapState.currentIdx >= mapState.questions.length) { mapShowResult(); }
+  else { mapShowQuestion(); }
+}
+
+function mapShowResult() {
+  stopStudyTimer();
+  document.getElementById('map-screen-quiz').style.display = 'none';
+  document.getElementById('map-screen-result').style.display = 'block';
+  const total = mapState.questions.length;
+  document.getElementById('map-res-correct').textContent = mapState.correctCount;
+  document.getElementById('map-res-total').textContent = total;
+  document.getElementById('map-res-rate').textContent = Math.round((mapState.correctCount / total) * 100) + '%';
+  mapDestroyMaps();
+}
+
+function mapBackToFilter() {
+  stopStudyTimer();
+  mapDestroyMaps();
+  document.getElementById('map-screen-quiz').style.display = 'none';
+  document.getElementById('map-screen-result').style.display = 'none';
+  document.getElementById('map-screen-filter').style.display = 'block';
+  mapUpdateCount();
+}
+
+setTimeout(() => { mapUpdateCount(); }, 100);
 
 // フィードバック・問い合わせ
 // ↓ GoogleフォームのURLをここに入れてください
@@ -5701,6 +6463,7 @@ function sgShowScreen(id) {
   document.getElementById(id).style.display = 'block';
 }
 function sgBackToFilter() {
+  stopStudyTimer();
   sgShowScreen('sg-screen-filter');
   sgUpdateCountDisplay(); sgUpdateSubjectCards();
 }
@@ -5888,8 +6651,14 @@ function sgUpdateTopBar(cur) {
   return sgState.sortGroups.length>0;
 }
     
- 
+      
 function sgStartGame() {
+  
+  sgState.sortGroups = [];
+  sgState.sortCurrentIdx = 0;
+  sgState.correctCount = 0;
+  sgState.slotContents = [null, null, null, null];
+  
   if (!sgBuildSortGroups()) return;
   startStudyTimer(); 
   sgBuildTopBar(sgState.sortGroups.length);
@@ -6232,20 +7001,6 @@ function recordAnswer(isCorrect, question) {
   localStorage.setItem('historyAppStats', JSON.stringify(data));
 }
 
-// 学習時間タイマー（1分ごとに記録）
-let studyTimerInterval = null;
-function startStudyTimer() {
-  stopStudyTimer();
-  studyTimerInterval = setInterval(() => {
-    const data = JSON.parse(localStorage.getItem('historyAppStats') || '{}');
-    data.totalMinutes = (data.totalMinutes || 0) + 1;
-    localStorage.setItem('historyAppStats', JSON.stringify(data));
-  }, 60000);
-}
-function stopStudyTimer() {
-  if (studyTimerInterval) { clearInterval(studyTimerInterval); studyTimerInterval = null; }
-}
-      
       
 document.getElementById('testRangeCheck').addEventListener('change', (e) => {
   updateMatchCount();
@@ -6346,6 +7101,52 @@ function startWeakQuiz() {
   setTimeout(() => {
     startQuiz(shuffle(weakQ));
   }, 50);
+}
+      
+      // ========== 地図フィルター用 collapse / select-all / clear ==========
+function mapToggleCollapse(group) {
+  let wrapId, arrowId;
+  if (group === 'region') { wrapId = 'map-wrap-region'; arrowId = 'map-arrow-region'; }
+  else if (group === 'era') { wrapId = 'map-wrap-era'; arrowId = 'map-arrow-era'; }
+  else if (group === 'cat') { wrapId = 'map-wrap-cat'; arrowId = 'map-arrow-cat'; }
+  else return;
+  const wrap = document.getElementById(wrapId);
+  const arrow = document.getElementById(arrowId);
+  if (!wrap) return;
+  wrap.classList.toggle('collapsed');
+  if (arrow) arrow.classList.toggle('open', !wrap.classList.contains('collapsed'));
+}
+
+function mapSelectAll(group) {
+  if (group === 'region') {
+    document.querySelectorAll('#map-region-chips .chip').forEach(c => c.classList.add('active'));
+    mapState.selectedRegions = new Set(['全世界','日本','中華王朝','中央アジア・朝鮮','南アジア','東南アジア','アメリカ大陸','オリエント','イスラム圏','アフリカ','ヨーロッパ']);
+  } else if (group === 'era') {
+    document.querySelectorAll('#map-era-chips .chip').forEach(c => c.classList.add('active'));
+    mapState.selectedEras = new Set(['全時代','古代','中世','近世','近代']);
+  } else if (group === 'cat') {
+    document.querySelectorAll('#map-category-chips .chip').forEach(c => c.classList.add('active'));
+    mapState.selectedCats = new Set(['都市','遺跡','戦場','国家領域']);
+  }
+  mapUpdateCount();
+}
+
+function mapClearFilter(group) {
+  if (group === 'region') {
+    document.querySelectorAll('#map-region-chips .chip').forEach(c => c.classList.remove('active'));
+    const def = document.querySelector('#map-region-chips .chip[data-map-region="全世界"]');
+    if (def) def.classList.add('active');
+    mapState.selectedRegions = new Set(['全世界']);
+  } else if (group === 'era') {
+    document.querySelectorAll('#map-era-chips .chip').forEach(c => c.classList.remove('active'));
+    const def = document.querySelector('#map-era-chips .chip[data-map-era="全時代"]');
+    if (def) def.classList.add('active');
+    mapState.selectedEras = new Set(['全時代']);
+  } else if (group === 'cat') {
+    document.querySelectorAll('#map-category-chips .chip').forEach(c => c.classList.remove('active'));
+    mapState.selectedCats.clear();
+  }
+  mapUpdateCount();
 }
 
 updateCountdown();
