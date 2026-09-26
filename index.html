@@ -6708,8 +6708,8 @@ function mapInitChoiceMode(q) {
 
   const map = L.map('map-leaflet-choice', { zoomControl:true, dragging:true, scrollWheelZoom:false })
     .setView([25, 30], 2);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',{
-    attribution:'© OpenStreetMap contributors © CARTO', maxZoom:19,
+  L.tileLayer('https://{s}.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',{
+    attribution:'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ', maxZoom:16, subdomains:['server','services'],
   }).addTo(map);
   mapState.leafletMapChoice = map;
   mapState.choiceData = allFour;
@@ -6773,8 +6773,8 @@ function mapShowQuestion() {
 function mapInitTapMap(q) {
   const v = mapGetMapView(q);
   const map = L.map('map-leaflet').setView([v.lat, v.lng], v.zoom);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',{
-    attribution:'© OpenStreetMap contributors © CARTO', maxZoom:19,
+  L.tileLayer('https://{s}.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',{
+    attribution:'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ', maxZoom:16, subdomains:['server','services'],
   }).addTo(map);
   mapState.leafletMap = map;
 
